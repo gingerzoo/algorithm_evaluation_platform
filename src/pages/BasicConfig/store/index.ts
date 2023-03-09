@@ -56,6 +56,7 @@ export const getSystemAction = createAsyncThunk(
     dispatch(changeSceneNumAction(res.scene));
     const scene = subs[res.scene].link.slice(1);
     dispatch(changeSceneAction(scene));
+    console.log("洒洒水啦");
   }
 );
 
