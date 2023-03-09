@@ -48,15 +48,19 @@ const initialState: Iscene = {
 export const getSystemAction = createAsyncThunk(
   "system_overview",
   async (par: string, { dispatch }) => {
-    dispatch(changeDataNameAction(par));
-    const res = await getSystemOverview(par);
-    console.log("拿到系统简况！");
-    dispatch(changeSystemAction(res));
-    dispatch(changeInputComAction(res.default_cmd));
-    dispatch(changeSceneNumAction(res.scene));
-    const scene = subs[res.scene].link.slice(1);
-    dispatch(changeSceneAction(scene));
-    console.log("洒洒水啦");
+    try {
+      dispatch(changeDataNameAction(par));
+      const res = await getSystemOverview(par);
+      console.log("拿到系统简况！");
+      dispatch(changeSystemAction(res));
+      dispatch(changeInputComAction(res.default_cmd));
+      dispatch(changeSceneNumAction(res.scene));
+      const scene = subs[res.scene].link.slice(1);
+      dispatch(changeSceneAction(scene));
+      console.log("洒洒水啦");
+    } catch (err) {
+      alert(err);
+    }
   }
 );
 
