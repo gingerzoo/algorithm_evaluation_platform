@@ -47,7 +47,7 @@ const initialState: Iscene = {
 
 export const getSystemAction = createAsyncThunk(
   "system_overview",
-  async (par: string, { dispatch, getState }) => {
+  async (par: string, { dispatch }) => {
     dispatch(changeDataNameAction(par));
     const res = await getSystemOverview(par);
     console.log("拿到系统简况！");
