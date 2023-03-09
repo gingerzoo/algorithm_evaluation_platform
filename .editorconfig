@@ -1,0 +1,22 @@
+# EditorConfig is awesome: https://EditorConfig.org
+
+# top-most EditorConfig file
+root = true
+
+# Unix-style newlines with a newline ending every file
+[*]
+end_of_line = lf #设置换行符，值为lf、cr和crlf
+insert_final_newline = true #设为true表示使文件以一个空白行结尾
+
+charset = utf-8 #设置文件的字符集未utf-8
+
+# 缩进风格
+indent_style = space  #设置缩进风格(tab是硬缩进，space为软缩进)
+indent_size = 4
+
+trim_trailing_whitespace=true #去除行尾的任意空白字符
+
+[*.md]
+
+max_line_length=off  #关闭每行最大字数的限制
+trim_trailing_whitespace=false
