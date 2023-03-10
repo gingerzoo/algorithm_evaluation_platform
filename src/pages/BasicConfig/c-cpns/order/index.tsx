@@ -10,14 +10,15 @@ interface Iprops {
   title: string;
   isSecene?: boolean;
   isCommand?: boolean;
-  regTest?: string;
+  inputPlace?: boolean;
 }
 
 const Order: FC<Iprops> = (props) => {
-  const { title, isSecene, isCommand, regTest, children } = props;
-  const { scene } = useAppSelector(
+  const { title, isSecene, isCommand, children, inputPlace } = props;
+  const { scene, inputRun } = useAppSelector(
     (state) => ({
-      scene: state.basicConfig.scene
+      scene: state.basicConfig.scene,
+      inputRun: state.basicConfig.inputRun
     }),
     shallowEqual
   );
@@ -44,7 +45,7 @@ const Order: FC<Iprops> = (props) => {
       )}
 
       {isCommand ? (
-        regTest ? (
+        inputPlace || inputRun ? (
           <CheckCircleOutlined style={{ fontSize: "22px", color: "#79CC86" }} />
         ) : (
           <QuestionCircleOutlined

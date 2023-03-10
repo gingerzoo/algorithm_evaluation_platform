@@ -10,6 +10,8 @@ import System_overview from "@/components/system_overview";
 import App_cover from "@/components/app_cover";
 import { useAppDispatch, useAppSelector } from "@/store";
 import {
+  changeInputPlaceAction,
+  changeInputRunAction,
   changeIsAsureAction,
   changeNextPathAction,
   changeNowProcessAction,
@@ -30,12 +32,12 @@ interface Iprops {
 
 const BasicConfig: FC<Iprops> = () => {
   //拿到redux中管理的状态
-  const { scene, inputCom, sceneNum, commit_status, run_status, isAsure } =
+  const { scene, inputPlace, sceneNum, commit_status, run_status, isAsure } =
     useAppSelector(
       (state) => ({
         scene: state.basicConfig.scene,
         sceneNum: state.basicConfig.sceneNum,
-        inputCom: state.basicConfig.inputCom,
+        inputPlace: state.basicConfig.inputPlace,
         dataset_type: state.basicConfig.dataSet,
         commit_status: state.basicConfig.commit_status,
         commit_info: state.basicConfig.commit_info,
@@ -92,13 +94,13 @@ const BasicConfig: FC<Iprops> = () => {
     // console.log("查看图片");
   }, [isPicture]);
 
-  //input输入框失去焦点时的处理函数
-  //   function inputClickHandle(e: React.FormEvent<HTMLInputElement>) {
-  //     if (e.target.value) {
-  //       dispatch(changeInputComAction(e.target.value));
-  //       setIsPass(true);
-  //     }
-  //   }
+  //   input输入框失去焦点时的处理函数
+  function inputClickHandle(e: React.FormEvent<HTMLInputElement>) {
+    if (e.currentTarget.value) {
+      dispatch(changeInputRunAction(e.currentTarget.value));
+      dispatch(changeInputPlaceAction(e.currentTarget.value));
+    }
+  }
 
   //选中场景选择按钮的处理函数
   function sceneClickHandle(key: string, domEvent: any) {
@@ -171,14 +173,14 @@ const BasicConfig: FC<Iprops> = () => {
         <Dataset_upload commandClickHandle={pictureCover} />
       </div>
       <div className="confi">
-        <Order title="运行命令" regTest={inputCom} isCommand={true}>
+        <Order title="运行命令" isCommand={true} inputPlace>
           <Input
             type="text"
-            placeholder={"请输入运行命令"}
-            value={inputCom}
-            // onInput={(e) => {
-            //   inputClickHandle(e);
-            // }}
+            placeholder={inputPlace}
+            // value={inputPlace}
+            onBlur={(e) => {
+              inputClickHandle(e);
+            }}
           />
         </Order>
 

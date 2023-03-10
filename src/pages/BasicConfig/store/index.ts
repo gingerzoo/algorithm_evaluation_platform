@@ -16,20 +16,21 @@ type Iscene = {
   sceneNum: number;
   nextPath: string;
   nowProcess: string[];
-  inputCom: string;
+  inputPlace: string;
   dataSet: number;
   dataName: string;
   system: Isystem;
   commit_status: number;
   commit_info: string;
   isAsure: boolean;
+  inputRun: string;
 };
 const initialState: Iscene = {
   scene: "",
   sceneNum: -1,
   nextPath: "",
   nowProcess: ["基础配置"],
-  inputCom: ``,
+  inputPlace: ``,
   dataSet: 0,
   dataName: "",
   system: {
@@ -42,7 +43,8 @@ const initialState: Iscene = {
   commit_status: -1,
   commit_info: "",
   //0代表RGB 1代表近红外 2代表雷达
-  isAsure: false
+  isAsure: false,
+  inputRun: ""
 };
 
 export const getSystemAction = createAsyncThunk(
@@ -52,14 +54,15 @@ export const getSystemAction = createAsyncThunk(
       dispatch(changeDataNameAction(par));
       const res = await getSystemOverview(par);
       console.log("拿到系统简况！");
+      console.log("hi", res);
       dispatch(changeSystemAction(res));
-      dispatch(changeInputComAction(res.default_cmd));
+      dispatch(changeInputPlaceAction(res.default_cmd));
       dispatch(changeSceneNumAction(res.scene));
       const scene = subs[res.scene].link.slice(1);
       dispatch(changeSceneAction(scene));
       console.log("洒洒水啦");
     } catch (err) {
-      alert(err);
+      alert("hi" + err);
     }
   }
 );
@@ -75,10 +78,14 @@ export const commitDataAction = createAsyncThunk<
     state: IrootState;
   }
 >("effectResult", async (par, { dispatch, getState }) => {
-  const run_cmd = getState().basicConfig.inputCom;
+  const run_placeholder = getState().basicConfig.inputPlace;
+  const run_command = getState().basicConfig.inputRun;
+  const real_run_cmd = run_command ? run_command : run_placeholder;
+
   const scene = getState().basicConfig.sceneNum;
   const data_type = getState().basicConfig.dataSet;
-  const res = await commitData(run_cmd, scene, data_type);
+
+  const res = await commitData(real_run_cmd, scene, data_type);
   dispatch(changeStatusCommAction(res.status));
   dispatch(changeInfoCommAction(res.info));
   console.log("数据配置成功");
@@ -105,8 +112,11 @@ const sceneSlice = createSlice({
     changeNowProcessAction(state, { payload }) {
       state.nowProcess = payload;
     },
-    changeInputComAction(state, { payload }) {
-      state.inputCom = payload;
+    changeInputPlaceAction(state, { payload }) {
+      state.inputPlace = payload;
+    },
+    changeInputRunAction(state, { payload }) {
+      state.inputRun = payload;
     },
     changeDataSetAction(state, { payload }) {
       state.dataSet = payload;
@@ -134,7 +144,8 @@ export const {
   changeSceneNumAction,
   changeNextPathAction,
   changeNowProcessAction,
-  changeInputComAction,
+  changeInputPlaceAction,
+  changeInputRunAction,
   changeDataSetAction,
   changeDataNameAction,
   changeSystemAction,

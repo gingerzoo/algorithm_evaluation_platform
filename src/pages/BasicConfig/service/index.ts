@@ -8,12 +8,14 @@ interface Istatus {
 }
 
 export function getSystemOverview(docker_name: string) {
+  // /baseConfig/loadDocker
   return lxrequest.post<Isystem>("/baseConfig/loadDocker", {
     docker_name
   });
 }
 
 export function commitData(run_cmd: string, scene: number, data_type: number) {
+  // /baseConfig/retConfig
   return lxrequest.request<Istatus>({
     url: "/baseConfig/retConfig",
     method: "post",
