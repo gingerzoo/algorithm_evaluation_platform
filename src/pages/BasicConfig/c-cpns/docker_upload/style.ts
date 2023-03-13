@@ -66,5 +66,9 @@ export const UploadWrap = styled.div`
       cursor: pointer;
       background-color: #447ed9;
     }
+
+    .ant-select-selector {
+      background-color: blue;
+    }
   }
 `;

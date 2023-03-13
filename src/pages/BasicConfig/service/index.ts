@@ -32,3 +32,10 @@ export function runBasicEffect() {
     url: "/baseConfig/runBasicEffectiveness"
   });
 }
+
+export function getAlogrithmName() {
+  return lxrequest.request({
+    url: "/loadmodel",
+    method: "get"
+  });
+}

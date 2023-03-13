@@ -12,7 +12,10 @@ class MyRequest {
       },
       (err) => {
         //这里抛出错误和返回Promise.reject到底有啥区别？？？？
-        throw new Error(err);
+        // throw new Error(err);
+        return Promise.reject(err);
+        // Promise.reject(err);
+        //抛出异常后代码就不会向下执行了
       }
     );
   }

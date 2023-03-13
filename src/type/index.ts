@@ -53,8 +53,8 @@ export interface Iremo {
   f1_result: number;
   map_score: number;
   map_result: number;
-  auc_score: number;
-  auc_result: number;
+  mar_score: number;
+  mar_result: number;
   population_score: number;
   population_result: number;
 }

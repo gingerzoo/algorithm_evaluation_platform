@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useRef, useState } from "react";
+import React, { memo, useCallback, useEffect, useRef, useState } from "react";
 import type { FC, ReactNode } from "react";
 import { ConfigWrap } from "./style";
 import { Input, InputRef, Menu, message } from "antd";
@@ -10,6 +10,7 @@ import System_overview from "@/components/system_overview";
 import App_cover from "@/components/app_cover";
 import { useAppDispatch, useAppSelector } from "@/store";
 import {
+  changeAlgoListAction,
   changeInputPlaceAction,
   changeInputRunAction,
   changeIsAsureAction,
@@ -17,7 +18,8 @@ import {
   changeNowProcessAction,
   changeSceneAction,
   changeSceneNumAction,
-  commitDataAction
+  commitDataAction,
+  getAlogListAction
 } from "./store";
 import { useNavigate } from "react-router-dom";
 import Picture_show from "@/components/picture_show";
@@ -25,6 +27,7 @@ import Docker_upload from "./c-cpns/docker_upload";
 import Dataset_upload from "./c-cpns/dataset_upload";
 import { getBasicEffectAction } from "../BasicWork/store";
 import { shallowEqual } from "react-redux";
+import Algorithm_upload from "./c-cpns/algorithm_upload";
 
 interface Iprops {
   children?: ReactNode;
@@ -66,6 +69,10 @@ const BasicConfig: FC<Iprops> = () => {
     key: item.link,
     label: item.title
   }));
+
+  useEffect(() => {
+    dispatch(getAlogListAction());
+  }, []);
 
   //是否点击了查看系统概况的按钮
   const [isSystem, setIsSystem] = useState(false);
@@ -180,22 +187,24 @@ const BasicConfig: FC<Iprops> = () => {
     <ConfigWrap isSystem={isSystem} isPicture={isPicture}>
       {contextHolder}
       <div className="top">
-        <Docker_upload commandClickHandle={systemCover} />
+        <Algorithm_upload commandClickHandle={systemCover} />
         <Dataset_upload commandClickHandle={pictureCover} />
       </div>
       <div className="confi">
-        <Order title="运行命令" isCommand={true}>
-          <Input
-            type="text"
-            placeholder={inputPlace}
-            // value={inputRun}
-            value={inputRun}
-            onChange={(e) => {
-              inputClickHandle(e);
-            }}
-          />
-        </Order>
-
+        <label htmlFor="commandInput">
+          <Order title="运行命令" isCommand={true}>
+            <Input
+              type="text"
+              placeholder={inputPlace}
+              // value={inputRun}
+              value={inputRun}
+              onChange={(e) => {
+                inputClickHandle(e);
+              }}
+              id="commandInput"
+            />
+          </Order>
+        </label>
         <Order title="场景选择" isSecene={true}>
           <Menu
             mode="horizontal"
@@ -228,6 +237,13 @@ const BasicConfig: FC<Iprops> = () => {
           <Picture_show />
         </App_cover>
       </div>
+      {/* <button
+        onClick={() => {
+          dispatch(getAlogListAction());
+        }}
+      >
+        点我测试
+      </button> */}
     </ConfigWrap>
   );
 };

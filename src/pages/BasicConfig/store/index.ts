@@ -2,7 +2,7 @@ import { subs } from "@/assets/data/local_data";
 import { IrootState } from "@/store";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { message } from "antd";
-import { commitData, getSystemOverview } from "../service";
+import { commitData, getAlogrithmName, getSystemOverview } from "../service";
 
 export type Isystem = {
   status: number;
@@ -25,6 +25,7 @@ type Iscene = {
   commit_info: string;
   isAsure: boolean;
   inputRun: string;
+  algolist: string[];
 };
 const initialState: Iscene = {
   scene: "",
@@ -45,7 +46,8 @@ const initialState: Iscene = {
   commit_info: "",
   //0代表RGB 1代表近红外 2代表雷达
   isAsure: false,
-  inputRun: ""
+  inputRun: "",
+  algolist: [""]
 };
 
 export const getSystemAction = createAsyncThunk(
@@ -104,6 +106,20 @@ export const commitDataAction = createAsyncThunk<
   };
 });
 
+export const getAlogListAction = createAsyncThunk(
+  "alogrithmList",
+  (par, { dispatch }) => {
+    try {
+      getAlogrithmName().then((res) => {
+        dispatch(changeAlgoListAction(res.model_name));
+        console.log(res);
+      });
+    } catch (err) {
+      alert("网络连接错误");
+    }
+  }
+);
+
 const sceneSlice = createSlice({
   name: "sceneslice",
   initialState,
@@ -143,6 +159,9 @@ const sceneSlice = createSlice({
     },
     changeIsAsureAction(state, { payload }) {
       state.isAsure = payload;
+    },
+    changeAlgoListAction(state, { payload }) {
+      state.algolist = payload;
     }
   }
 });
@@ -159,7 +178,8 @@ export const {
   changeSystemAction,
   changeInfoCommAction,
   changeStatusCommAction,
-  changeIsAsureAction
+  changeIsAsureAction,
+  changeAlgoListAction
 } = sceneSlice.actions;
 
 export default sceneSlice.reducer;

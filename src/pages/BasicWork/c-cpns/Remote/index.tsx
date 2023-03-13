@@ -29,11 +29,11 @@ const WorkRemote: FC<Iprops> = (props) => {
           result: basicEffect.map_result
         },
         {
-          name: "AUC",
+          name: "mar",
           assess: "阈值预计为50%以上",
           weight: 9,
-          score: basicEffect.auc_score,
-          result: basicEffect.auc_result
+          score: basicEffect.mar_score,
+          result: basicEffect.mar_result
         }
       ]}
       population_result={basicEffect.population_result}

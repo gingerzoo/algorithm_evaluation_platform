@@ -2,6 +2,7 @@ import { commitData, runBasicEffect } from "@/pages/BasicConfig/service";
 import { IrootState } from "@/store";
 import { Iguid, Inav, Iremo, Ivoice } from "@/type";
 import { createAsyncThunk, createSlice, Slice } from "@reduxjs/toolkit";
+import { message } from "antd";
 import { AxiosError } from "axios";
 import { resolve } from "path";
 
@@ -56,8 +57,8 @@ const initialState: Iprops = {
     f1_result: -1,
     map_score: -1,
     map_result: -1,
-    auc_score: -1,
-    auc_result: -1,
+    mar_score: -1,
+    mar_result: -1,
     population_score: -1,
     population_result: -1
   },
@@ -112,11 +113,16 @@ export const getBasicEffectAction = createAsyncThunk<
       info: res.info
     };
   } catch (err: any) {
+    message.open({
+      type: "error",
+      content: "网络错误，请检查与服务器的连接"
+    });
     const error: AxiosError<ValidationErrors> = err;
-    if (!error.response) {
-      throw err;
-    }
+
     // 我们遇到了合法性的错误，让我们把这些错误返回以便我们能在组件中引用它们并且设置表单错误
+    if (!error.response) {
+      throw new Error("fff");
+    }
     return rejectWithValue(error.response.data);
   }
 });
