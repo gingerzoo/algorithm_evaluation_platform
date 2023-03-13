@@ -1,7 +1,7 @@
-import React, { memo, useCallback, useState } from "react";
+import React, { memo, useCallback, useRef, useState } from "react";
 import type { FC, ReactNode } from "react";
 import { ConfigWrap } from "./style";
-import { Input, Menu, message } from "antd";
+import { Input, InputRef, Menu, message } from "antd";
 
 import Order from "./c-cpns/order";
 import { subs } from "@/assets/data/local_data";
@@ -32,20 +32,28 @@ interface Iprops {
 
 const BasicConfig: FC<Iprops> = () => {
   //拿到redux中管理的状态
-  const { scene, inputPlace, sceneNum, commit_status, run_status, isAsure } =
-    useAppSelector(
-      (state) => ({
-        scene: state.basicConfig.scene,
-        sceneNum: state.basicConfig.sceneNum,
-        inputPlace: state.basicConfig.inputPlace,
-        dataset_type: state.basicConfig.dataSet,
-        commit_status: state.basicConfig.commit_status,
-        commit_info: state.basicConfig.commit_info,
-        run_status: state.basicEffect.run_status,
-        isAsure: state.basicConfig.isAsure
-      }),
-      shallowEqual
-    );
+  const {
+    scene,
+    inputPlace,
+    inputRun,
+    sceneNum,
+    commit_status,
+    run_status,
+    isAsure
+  } = useAppSelector(
+    (state) => ({
+      scene: state.basicConfig.scene,
+      sceneNum: state.basicConfig.sceneNum,
+      inputPlace: state.basicConfig.inputPlace,
+      inputRun: state.basicConfig.inputRun,
+      dataset_type: state.basicConfig.dataSet,
+      commit_status: state.basicConfig.commit_status,
+      commit_info: state.basicConfig.commit_info,
+      run_status: state.basicEffect.run_status,
+      isAsure: state.basicConfig.isAsure
+    }),
+    shallowEqual
+  );
   //派发函数
   const dispatch = useAppDispatch();
   //路由跳转函数
@@ -118,6 +126,7 @@ const BasicConfig: FC<Iprops> = () => {
   function affirmBtnClick() {
     messageApi.destroy();
     dispatch(changeIsAsureAction(true));
+
     dispatch(commitDataAction()).then((res) => {
       //类型谓词
       if (commitDataAction.fulfilled.match(res)) {
@@ -173,12 +182,13 @@ const BasicConfig: FC<Iprops> = () => {
         <Dataset_upload commandClickHandle={pictureCover} />
       </div>
       <div className="confi">
-        <Order title="运行命令" isCommand={true} inputPlace>
+        <Order title="运行命令" isCommand={true}>
           <Input
             type="text"
             placeholder={inputPlace}
-            // value={inputPlace}
-            onBlur={(e) => {
+            // value={inputRun}
+            value={inputRun}
+            onChange={(e) => {
               inputClickHandle(e);
             }}
           />

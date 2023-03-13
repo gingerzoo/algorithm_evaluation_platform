@@ -33,6 +33,9 @@ const DockerUpload: FC<Iprops> = (props) => {
   function inputHandleClick() {
     if (inputRef.current?.files) {
       const file = inputRef.current.files[0];
+      //   (document.getElementById("commandInput") as any).value = "";
+      //   console.log((document.getElementById("commandInput") as any).value);
+
       dispatch(getSystemAction(file.name));
       dispatch(changeIsAsureAction(false));
     }

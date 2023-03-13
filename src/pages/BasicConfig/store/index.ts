@@ -57,6 +57,7 @@ export const getSystemAction = createAsyncThunk(
       console.log("hi", res);
       dispatch(changeSystemAction(res));
       dispatch(changeInputPlaceAction(res.default_cmd));
+      dispatch(changeInputRunAction(""));
       dispatch(changeSceneNumAction(res.scene));
       const scene = subs[res.scene].link.slice(1);
       dispatch(changeSceneAction(scene));
@@ -88,6 +89,7 @@ export const commitDataAction = createAsyncThunk<
   const res = await commitData(real_run_cmd, scene, data_type);
   dispatch(changeStatusCommAction(res.status));
   dispatch(changeInfoCommAction(res.info));
+  dispatch(changeInputRunAction(real_run_cmd));
   console.log("数据配置成功");
   //这个回调函数返回一个promise
   return {
