@@ -1,6 +1,6 @@
-export const BASE_URL = "http://10.2.12.202:7226";
+// export const BASE_URL = "http://10.2.12.202:7226";
 
-// export const BASE_URL = "http://127.0.01:8000";
+export const BASE_URL = "http://127.0.01:8000";
 
 export const TIMEOUT = 100000;
 

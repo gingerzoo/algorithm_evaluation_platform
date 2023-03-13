@@ -11,8 +11,8 @@ class MyRequest {
         return res.data;
       },
       (err) => {
-        Promise.reject(err);
-        console.log(err, "请求出现了错误");
+        //这里抛出错误和返回Promise.reject到底有啥区别？？？？
+        throw new Error(err);
       }
     );
   }

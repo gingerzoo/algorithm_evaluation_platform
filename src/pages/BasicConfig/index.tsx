@@ -71,6 +71,8 @@ const BasicConfig: FC<Iprops> = () => {
   const [isSystem, setIsSystem] = useState(false);
   //是否点击了浏览数据集样本的按钮
   const [isPicture, setIsPicture] = useState(false);
+  //input命令输入框的值
+  //   const [command,setCommand]=useState("")
 
   //校验成功的提示信息
   const success = (info: string) => {

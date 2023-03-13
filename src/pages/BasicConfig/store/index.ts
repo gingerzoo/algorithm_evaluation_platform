@@ -1,6 +1,7 @@
 import { subs } from "@/assets/data/local_data";
 import { IrootState } from "@/store";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { message } from "antd";
 import { commitData, getSystemOverview } from "../service";
 
 export type Isystem = {
@@ -50,20 +51,25 @@ const initialState: Iscene = {
 export const getSystemAction = createAsyncThunk(
   "system_overview",
   async (par: string, { dispatch }) => {
+    dispatch(changeDataNameAction(par));
     try {
-      dispatch(changeDataNameAction(par));
       const res = await getSystemOverview(par);
-      console.log("拿到系统简况！");
-      console.log("hi", res);
+      console.log(res);
       dispatch(changeSystemAction(res));
       dispatch(changeInputPlaceAction(res.default_cmd));
+      console.log("拿到系统简况！");
       dispatch(changeInputRunAction(""));
       dispatch(changeSceneNumAction(res.scene));
       const scene = subs[res.scene].link.slice(1);
       dispatch(changeSceneAction(scene));
       console.log("洒洒水啦");
     } catch (err) {
-      alert("hi" + err);
+      message.open({
+        type: "error",
+        content: "网络请求发生错误",
+        duration: 2
+      });
+      console.log(err);
     }
   }
 );
