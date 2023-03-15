@@ -15,15 +15,19 @@ const SystemOverview: FC<Iprops> = (props) => {
   return (
     <OverviewWrap>
       <h2>系统概况</h2>
-      <p>算法名称&nbsp;:&nbsp;{system.model_name}</p>
+      <p className="model_name">算法名称&nbsp;:&nbsp;{system.model_name}</p>
       {system.scene != -1 ? (
         <p>默认场景&nbsp;:&nbsp;{subs[system.scene].title}</p>
       ) : (
         ""
       )}
 
-      <p>默认运行命令&nbsp;:&nbsp;{system.default_cmd}</p>
-      <p>默认数据集路径&nbsp;:&nbsp;{system.default_data_path}</p>
+      <p className="default-run-cmd">
+        默认运行命令&nbsp;:&nbsp;{system.default_cmd}
+      </p>
+      <p className="default-dataset-path">
+        默认数据集路径&nbsp;:&nbsp;{system.default_data_path}
+      </p>
     </OverviewWrap>
   );
 };

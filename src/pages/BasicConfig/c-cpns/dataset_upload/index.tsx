@@ -2,8 +2,9 @@ import React, { memo } from "react";
 import type { FC, ReactNode } from "react";
 import { SwitcherFilled } from "@ant-design/icons";
 import { useAppDispatch, useAppSelector } from "@/store";
-import { changeDataSetAction, changeIsAsureAction } from "../../store";
+import { changeDataSetAction, changeStatusCommAction } from "../../store";
 import { UploadWrap } from "../docker_upload/style";
+import { changeStatusBeAction } from "@/pages/BasicWork/store";
 
 interface Iprops {
   children?: ReactNode;
@@ -36,7 +37,8 @@ const DataUpload: FC<Iprops> = (props) => {
         onClick={(e) => {
           console.log(e.target);
           dispatch(changeDataSetAction(index));
-          dispatch(changeIsAsureAction(false));
+          dispatch(changeStatusCommAction(-1));
+          dispatch(changeStatusBeAction(-1));
         }}
       >
         {item}
@@ -51,7 +53,7 @@ const DataUpload: FC<Iprops> = (props) => {
           <SwitcherFilled style={{ fontSize: "22px", color: "#0077FA" }} />
         </span>
         <p className="title">选择数据集路径</p>
-        <p>{dataset}</p>
+        <p className="datasets">{dataset}</p>
       </div>
       <span className="command" onClick={(e) => btnClickHandle(e)}>
         浏览数据集样本

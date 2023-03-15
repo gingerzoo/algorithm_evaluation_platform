@@ -29,7 +29,8 @@ export function commitData(run_cmd: string, scene: number, data_type: number) {
 
 export function runBasicEffect() {
   return lxrequest.request<Iguid | Inav | Iremo | Ivoice>({
-    url: "/baseConfig/runBasicEffectiveness"
+    url: "/baseConfig/runBasicEffectiveness",
+    timeout: 90000000
   });
 }
 

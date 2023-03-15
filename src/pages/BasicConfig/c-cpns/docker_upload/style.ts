@@ -30,7 +30,7 @@ export const UploadWrap = styled.div`
       font-size: 14px;
       background-color: rgba(72, 125, 184, 1);
 
-      padding: 3px 5px;
+      padding: 4px 5px;
       margin: 0 6px;
       &:hover {
         transform: scale(1.1);
@@ -51,6 +51,11 @@ export const UploadWrap = styled.div`
       border: none;
       /* filter: alpha(opacity=0); */
       opacity: 0;
+    }
+
+    p.datasets {
+      /* background-color: green; */
+      margin-top: 28px;
     }
   }
 

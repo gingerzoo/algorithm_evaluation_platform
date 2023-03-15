@@ -13,6 +13,7 @@ interface Iprops {
   navigateBe: Inav;
   remoteBe: Iremo;
   voiceBe: Ivoice;
+  isPending: boolean;
 }
 
 type Ipromise = {
@@ -73,7 +74,8 @@ const initialState: Iprops = {
     population_result: -1
   },
   run_status: -1,
-  run_info: ""
+  run_info: "",
+  isPending: false
 };
 
 export const getBasicEffectAction = createAsyncThunk<
@@ -87,7 +89,7 @@ export const getBasicEffectAction = createAsyncThunk<
   const scene = getState().basicConfig.sceneNum;
   try {
     const res = await runBasicEffect();
-    console.log("我是执行时的异步网络请求");
+    console.log("运行算法结束");
 
     dispatch(changeStatusBeAction(res.status));
     dispatch(changeInfoBeAction(res.info));
@@ -113,17 +115,17 @@ export const getBasicEffectAction = createAsyncThunk<
       info: res.info
     };
   } catch (err: any) {
-    message.open({
-      type: "error",
-      content: "网络错误，请检查与服务器的连接"
-    });
-    const error: AxiosError<ValidationErrors> = err;
+    return {
+      status: -1,
+      info: `网络发生错误：${err}`
+    };
 
     // 我们遇到了合法性的错误，让我们把这些错误返回以便我们能在组件中引用它们并且设置表单错误
-    if (!error.response) {
-      throw new Error("fff");
-    }
-    return rejectWithValue(error.response.data);
+    // const error: AxiosError<ValidationErrors> = err;
+    // if (!error.response) {
+    //   throw new Error("fff");
+    // }
+    // return rejectWithValue(error.response.data);
   }
 });
 
@@ -149,16 +151,28 @@ const basicEffectSlice = createSlice({
     changeInfoBeAction(state, { payload }) {
       state.run_info = payload;
     }
-  }
-
-  //   extraReducers: (builder) => {
-  //     builder.addCase(getBasicEffectAction.fulfilled, (state, { payload }) => {
-  //       if (payload) {
-  //         state.run_status = payload.status;
-  //         state.run_info = payload.info;
-  //       }
-  //     });
+  },
+  //   extraReducers: {
+  //     [getBasicEffectAction.pending]: (state) => {
+  //       state.isPending = true;
+  //     },
+  //     [getBasicEffectAction.fulfilled]: (state) => {
+  //       state.isPending = false;
+  //     }
   //   }
+
+  extraReducers: (builder) => {
+    builder
+      .addCase(getBasicEffectAction.pending, (state) => {
+        state.isPending = true;
+      })
+      .addCase(getBasicEffectAction.fulfilled, (state) => {
+        state.isPending = false;
+      })
+      .addCase(getBasicEffectAction.rejected, (state) => {
+        state.isPending = false;
+      });
+  }
 });
 
 export const {

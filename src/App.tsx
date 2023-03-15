@@ -1,4 +1,4 @@
-import React, { memo, Suspense, useCallback, useState } from "react";
+import React, { memo, Suspense, useCallback, useEffect, useState } from "react";
 import type { FC, ReactNode } from "react";
 import { useRoutes } from "react-router-dom";
 
@@ -17,6 +17,7 @@ import AppSide from "@/components/app_side";
 import Green_hand from "./components/green_hand";
 import App_cover from "./components/app_cover";
 import Header_process from "./components/header_process";
+import { getAlogListAction } from "./pages/BasicConfig/store";
 
 interface Iprops {
   children?: ReactNode;
@@ -38,6 +39,11 @@ const App: FC<Iprops> = () => {
     setIsGreen(!isGreen);
     console.log("我被点了");
   }, [isGreen]);
+
+  useEffect(() => {
+    //请求模型列表
+    dispatch(getAlogListAction());
+  }, []);
 
   return (
     <AppWrap isGreen={isGreen}>

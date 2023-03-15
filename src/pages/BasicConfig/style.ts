@@ -3,6 +3,8 @@ import styled from "styled-components";
 interface Iprops {
   isSystem: boolean;
   isPicture: boolean;
+  run_status: number;
+  //   isPending: boolean;
 }
 
 export const ConfigWrap = styled.div<Iprops>`
@@ -42,6 +44,13 @@ export const ConfigWrap = styled.div<Iprops>`
 
   .oper {
     display: flex;
+    .spinning {
+      /* display: ${(props) => (props.run_status == 0 ? "block" : "none")}; */
+      height: 50px;
+      /* margin: 0 30px; */
+      margin: 0 50px 0 -30px;
+      line-height: 55px;
+    }
     .btn {
       height: 50px;
       line-height: 50px;
@@ -56,9 +65,12 @@ export const ConfigWrap = styled.div<Iprops>`
       }
     }
     .next {
-      background-color: #79cb85;
+      background-color: ${(props) =>
+        props.run_status == 0 ? " #79cb85" : "#C8C8C8"};
+
       &:hover {
-        background-color: #97c8a8;
+        background-color: ${(props) =>
+          props.run_status == 0 ? " #97c8a8" : "#C8C8C8"};
       }
     }
   }

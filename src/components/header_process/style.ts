@@ -11,9 +11,14 @@ export const ProcessWrap = styled.div`
   background-color: #447ed9;
 
   .title {
+    box-sizing: border-box;
     width: 225px;
     /* font-size: 18px; */
+    padding: 0 15px;
     text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   .process {
     .anticon {

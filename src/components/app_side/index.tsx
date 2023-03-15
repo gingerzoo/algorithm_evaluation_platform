@@ -27,14 +27,13 @@ const AppSide: FC<Iprops> = (props) => {
   );
 
   function linkBtnHandle(e: any) {
-    console.log(e.key);
     dispatch(changeNextPathAction(e.key));
     navigate(e.key);
     // console.log(e.key);
   }
   return (
     <SideWrap>
-      <Sider width={250}>
+      <Sider width={"250px"}>
         <Menu
           mode="inline"
           defaultSelectedKeys={["/config"]}

@@ -21,11 +21,17 @@ interface Iprops {
 
 const MyTable: FC<Iprops> = (props) => {
   const { secIndex, population_result, population_score } = props;
-  const { module_name, sceneNum, dataset } = useAppSelector((state) => ({
-    module_name: state.basicConfig.system.model_name,
-    sceneNum: state.basicConfig.sceneNum,
-    dataset: state.basicConfig.dataSet
-  }));
+  const { module_names, sceneNum, dataset, scene } = useAppSelector(
+    (state) => ({
+      module_names: state.basicConfig.modelNames,
+      sceneNum: state.basicConfig.sceneNum,
+      dataset: state.basicConfig.dataSet,
+      scene: state.basicConfig.scene
+    })
+  );
+
+  const pageScene = location.hash.split("/").pop();
+  const nowModelName = module_names[`${pageScene}Name`];
   const secondIndex = (
     <table className="smalltable table_v1 table_color">
       <tbody>
@@ -94,11 +100,13 @@ const MyTable: FC<Iprops> = (props) => {
         <tbody>
           <tr>
             <td className="row-header">算法名称</td>
-            <td>{module_name}算法</td>
+            <td>{nowModelName}算法</td>
           </tr>
           <tr>
             <td className="row-header">算法说明</td>
-            <td>{module_name}算法采用xxx方案,实现xxxx效果</td>
+            <td>
+              {nowModelName}算法采用xxx方案,实现{pageScene}效果
+            </td>
           </tr>
           <tr>
             <td className="row-header">输入说明</td>

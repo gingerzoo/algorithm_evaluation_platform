@@ -16,14 +16,14 @@ const WorkVoice: FC<Iprops> = (props) => {
       secIndex={[
         {
           name: "字错误率",
-          assess: "",
+          assess: "阈值预计为50%以上",
           weight: 9,
           score: basicEffect.word_error_rate_score,
           result: basicEffect.word_error_rate_result
         },
         {
           name: "句错误率",
-          assess: "",
+          assess: "阈值预计为50%以上",
           weight: 9,
           score: basicEffect.sentence_error_rate_score,
           result: basicEffect.sentence_error_rate_result

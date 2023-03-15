@@ -4,10 +4,14 @@ export const OverviewWrap = styled.div`
   h2 {
     height: 60px;
     line-height: 60px;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     text-align: center;
   }
   p {
-    padding: 0 0 20px 12px;
+    padding: 0 0 30px 12px;
+  }
+  .default-run-cmd,
+  .default-dataset-path {
+    word-wrap: break-word;
   }
 `;

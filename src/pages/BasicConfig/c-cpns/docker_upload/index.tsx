@@ -3,7 +3,8 @@ import type { FC, ReactNode } from "react";
 import { UploadWrap } from "./style";
 import { SwitcherFilled } from "@ant-design/icons";
 import { useAppDispatch, useAppSelector } from "@/store";
-import { changeIsAsureAction, getSystemAction } from "../../store";
+import { changeStatusCommAction, getSystemAction } from "../../store";
+import { changeStatusBeAction } from "@/pages/BasicWork/store";
 
 interface Iprops {
   children?: ReactNode;
@@ -37,7 +38,8 @@ const DockerUpload: FC<Iprops> = (props) => {
       //   console.log((document.getElementById("commandInput") as any).value);
 
       dispatch(getSystemAction(file.name));
-      dispatch(changeIsAsureAction(false));
+      dispatch(changeStatusBeAction(-1));
+      dispatch(changeStatusCommAction(-1));
     }
   }
 

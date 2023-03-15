@@ -1,32 +1,30 @@
-import React, { memo, useCallback, useEffect, useRef, useState } from "react";
+import React, { memo, useCallback, useEffect, useState } from "react";
+import { shallowEqual } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import type { FC, ReactNode } from "react";
-import { ConfigWrap } from "./style";
-import { Input, InputRef, Menu, message } from "antd";
+import { Input, Menu, message, Spin } from "antd";
+import { LoadingOutlined } from "@ant-design/icons";
 
 import Order from "./c-cpns/order";
 import { subs } from "@/assets/data/local_data";
-
+import { ConfigWrap } from "./style";
 import System_overview from "@/components/system_overview";
 import App_cover from "@/components/app_cover";
 import { useAppDispatch, useAppSelector } from "@/store";
 import {
-  changeAlgoListAction,
   changeInputPlaceAction,
   changeInputRunAction,
-  changeIsAsureAction,
   changeNextPathAction,
   changeNowProcessAction,
   changeSceneAction,
   changeSceneNumAction,
-  commitDataAction,
-  getAlogListAction
+  changeStatusCommAction,
+  commitDataAction
 } from "./store";
-import { useNavigate } from "react-router-dom";
 import Picture_show from "@/components/picture_show";
 import Docker_upload from "./c-cpns/docker_upload";
 import Dataset_upload from "./c-cpns/dataset_upload";
-import { getBasicEffectAction } from "../BasicWork/store";
-import { shallowEqual } from "react-redux";
+import { changeStatusBeAction, getBasicEffectAction } from "../BasicWork/store";
 import Algorithm_upload from "./c-cpns/algorithm_upload";
 
 interface Iprops {
@@ -42,7 +40,8 @@ const BasicConfig: FC<Iprops> = () => {
     sceneNum,
     commit_status,
     run_status,
-    isAsure
+    isPending,
+    curModule
   } = useAppSelector(
     (state) => ({
       scene: state.basicConfig.scene,
@@ -53,7 +52,9 @@ const BasicConfig: FC<Iprops> = () => {
       commit_status: state.basicConfig.commit_status,
       commit_info: state.basicConfig.commit_info,
       run_status: state.basicEffect.run_status,
-      isAsure: state.basicConfig.isAsure
+      //   isAsure: state.basicConfig.isAsure,
+      curModule: state.basicConfig.currentModule,
+      isPending: state.basicEffect.isPending
     }),
     shallowEqual
   );
@@ -64,15 +65,14 @@ const BasicConfig: FC<Iprops> = () => {
   //全局信息提示(校验信息)
   const [messageApi, contextHolder] = message.useMessage();
 
+  //转圈圈的图标
+  const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
+
   //场景选择的数据
   const items = subs.map((item) => ({
     key: item.link,
     label: item.title
   }));
-
-  useEffect(() => {
-    dispatch(getAlogListAction());
-  }, []);
 
   //是否点击了查看系统概况的按钮
   const [isSystem, setIsSystem] = useState(false);
@@ -111,21 +111,27 @@ const BasicConfig: FC<Iprops> = () => {
     // console.log("查看图片");
   }, [isPicture]);
 
+  //   input输入框输入内容时的处理函数
+  function inputChangeHandle(e: React.FormEvent<HTMLInputElement>) {
+    console.log("input框发生改变");
+    dispatch(changeInputRunAction(e.currentTarget.value));
+  }
+
   //   input输入框失去焦点时的处理函数
-  function inputClickHandle(e: React.FormEvent<HTMLInputElement>) {
+  function inputBlurHandle(e: React.FormEvent<HTMLInputElement>) {
+    console.log("input框失去焦点");
     if (e.currentTarget.value) {
-      dispatch(changeInputRunAction(e.currentTarget.value));
-      dispatch(changeInputPlaceAction(e.currentTarget.value));
+      dispatch(changeStatusBeAction(-1));
+      dispatch(changeStatusCommAction(-1));
     }
   }
 
   //选中场景选择按钮的处理函数
   function sceneClickHandle(key: string, domEvent: any) {
-    console.log("有人选我！");
-    console.log(key);
     const scene = key.slice(1);
     const sceneNum = Number(key.slice(0, 1));
-    // setScenaria(scene);
+    dispatch(changeStatusBeAction(-1));
+    dispatch(changeStatusCommAction(-1));
     dispatch(changeSceneAction(scene));
     dispatch(changeSceneNumAction(sceneNum));
     domEvent.currentTarget.classList.add("ant-menu-item-selected");
@@ -133,61 +139,77 @@ const BasicConfig: FC<Iprops> = () => {
 
   //确认配置按钮处理函数
   function affirmBtnClick() {
+    dispatch(changeStatusBeAction(-1));
+    dispatch(changeStatusCommAction(-1));
     messageApi.destroy();
-    dispatch(changeIsAsureAction(true));
-
-    dispatch(commitDataAction()).then((res) => {
-      //类型谓词
-      if (commitDataAction.fulfilled.match(res)) {
-        if (!res.payload.isAsure) success("配置成功");
-        else failed(res.payload.info);
-      }
-    });
+    if (curModule) {
+      dispatch(commitDataAction()).then((res) => {
+        //类型谓词
+        if (commitDataAction.fulfilled.match(res)) {
+          if (!res.payload.isAsure) success("配置成功");
+          else failed(res.payload.info);
+        }
+      });
+    } else {
+      failed("请加载完算法模型后再进行此步骤");
+    }
   }
 
   //执行测试按钮处理函数
   function runBasicBtnClick() {
     messageApi.destroy();
-    dispatch(getBasicEffectAction()).then((res) => {
-      if (isAsure) {
+    if (!commit_status) {
+      dispatch(getBasicEffectAction()).then((res) => {
         if (getBasicEffectAction.fulfilled.match(res)) {
           console.log(res.payload);
           if (!res.payload.status) {
             success("执行成功");
           } else {
-            failed(res.payload.info);
+            // failed(res.payload.info);
+            failed("算法运行失败");
           }
         }
-      } else {
-        failed("请确认配置");
-      }
-    });
+      });
+    } else {
+      failed("请确认配置");
+    }
   }
 
   //下一步按钮点击处理函数
   function nextBtnClick() {
-    messageApi.destroy();
-    if (!isAsure) {
-      failed("请确认配置");
-    } else if (commit_status) {
-      console.log(commit_status);
-      failed("模型配置错误");
-    } else if (run_status) {
-      failed("算法运行错误");
-    } else {
-      const nextPage = `/basicwork/${scene}`;
-      dispatch(changeNextPathAction(nextPage));
-      dispatch(changeNowProcessAction(["基础设置", "基础效能"]));
+    // messageApi.destroy();
+    // if (!commit_status) {
+    //   failed("请确认配置");
+    // } else if (commit_status) {
+    //   console.log(commit_status);
+    //   failed("模型配置错误");
+    // } else if (run_status) {
+    //   failed("算法运行错误");
+    // } else {
+    //   const nextPage = `/basicwork/${scene}`;
+    //   dispatch(changeNextPathAction(nextPage));
+    //   dispatch(changeNowProcessAction(["基础设置", "基础效能"]));
 
-      navigate(`/basicwork/${scene}`);
-    }
+    //   navigate(`/basicwork/${scene}`);
+    // }
+    const nextPage = `/basicwork/${scene}`;
+    dispatch(changeNextPathAction(nextPage));
+    dispatch(changeNowProcessAction(["基础设置", "基础效能"]));
+
+    navigate(`/basicwork/${scene}`);
   }
 
   return (
-    <ConfigWrap isSystem={isSystem} isPicture={isPicture}>
+    <ConfigWrap
+      isSystem={isSystem}
+      isPicture={isPicture}
+      //   isPending={isPending}
+      run_status={run_status}
+    >
       {contextHolder}
       <div className="top">
         <Algorithm_upload commandClickHandle={systemCover} />
+        {/* <Docker_upload commandClickHandle={systemCover} /> */}
         <Dataset_upload commandClickHandle={pictureCover} />
       </div>
       <div className="confi">
@@ -199,7 +221,10 @@ const BasicConfig: FC<Iprops> = () => {
               // value={inputRun}
               value={inputRun}
               onChange={(e) => {
-                inputClickHandle(e);
+                inputChangeHandle(e);
+              }}
+              onBlur={(e) => {
+                inputBlurHandle(e);
               }}
               id="commandInput"
             />
@@ -217,15 +242,22 @@ const BasicConfig: FC<Iprops> = () => {
         </Order>
       </div>
       <div className="oper">
-        <div className="affirm btn" onClick={affirmBtnClick}>
+        <button className="affirm btn" onClick={affirmBtnClick}>
           <span>确认配置</span>
-        </div>
-        <div className="execute btn" onClick={runBasicBtnClick}>
+        </button>
+        <button className="execute btn" onClick={runBasicBtnClick}>
           <span>执行基础效能测试</span>
+        </button>
+        <div className="spinning">
+          <Spin spinning={isPending} size={"large"} />
         </div>
-        <div className="next btn" onClick={nextBtnClick}>
+        <button
+          className="next btn"
+          onClick={nextBtnClick}
+          disabled={run_status != 0}
+        >
           <span>下一步</span>
-        </div>
+        </button>
       </div>
       <div className="cover system">
         <App_cover btnClickHandle={systemCover} width={600}>

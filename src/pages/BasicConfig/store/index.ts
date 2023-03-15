@@ -12,6 +12,15 @@ export type Isystem = {
   default_data_path: string;
 };
 
+interface Iname {
+  //索引签名
+  [key: string]: string;
+  guideName: string;
+  navigateName: string;
+  remoteName: string;
+  voiceName: string;
+}
+
 type Iscene = {
   scene: "" | "guide" | "navigate" | "remote" | "voice";
   sceneNum: number;
@@ -23,9 +32,11 @@ type Iscene = {
   system: Isystem;
   commit_status: number;
   commit_info: string;
-  isAsure: boolean;
+  //   isAsure: boolean;
   inputRun: string;
   algolist: string[];
+  currentModule: string;
+  modelNames: Iname;
 };
 const initialState: Iscene = {
   scene: "",
@@ -38,16 +49,23 @@ const initialState: Iscene = {
   system: {
     status: -1,
     default_cmd: "",
-    model_name: "我的项目名称",
+    model_name: "",
     scene: -1,
     default_data_path: ""
+  },
+  modelNames: {
+    guideName: "",
+    navigateName: "",
+    remoteName: "",
+    voiceName: ""
   },
   commit_status: -1,
   commit_info: "",
   //0代表RGB 1代表近红外 2代表雷达
-  isAsure: false,
+  //   isAsure: false,
   inputRun: "",
-  algolist: [""]
+  algolist: [""],
+  currentModule: ""
 };
 
 export const getSystemAction = createAsyncThunk(
@@ -56,7 +74,6 @@ export const getSystemAction = createAsyncThunk(
     dispatch(changeDataNameAction(par));
     try {
       const res = await getSystemOverview(par);
-      console.log(res);
       dispatch(changeSystemAction(res));
       dispatch(changeInputPlaceAction(res.default_cmd));
       console.log("拿到系统简况！");
@@ -64,7 +81,6 @@ export const getSystemAction = createAsyncThunk(
       dispatch(changeSceneNumAction(res.scene));
       const scene = subs[res.scene].link.slice(1);
       dispatch(changeSceneAction(scene));
-      console.log("洒洒水啦");
     } catch (err) {
       message.open({
         type: "error",
@@ -86,24 +102,48 @@ export const commitDataAction = createAsyncThunk<
   {
     state: IrootState;
   }
->("effectResult", async (par, { dispatch, getState }) => {
-  const run_placeholder = getState().basicConfig.inputPlace;
-  const run_command = getState().basicConfig.inputRun;
-  const real_run_cmd = run_command ? run_command : run_placeholder;
+>("affirmConfig", async (par, { dispatch, getState }) => {
+  try {
+    const run_placeholder = getState().basicConfig.inputPlace;
+    const run_command = getState().basicConfig.inputRun;
+    // const scene = getState().basicConfig.scene;
+    const sceneNum = getState().basicConfig.sceneNum;
+    const model_name = getState().basicConfig.system.model_name;
+    const data_type = getState().basicConfig.dataSet;
+    const real_run_cmd = run_command ? run_command : run_placeholder;
 
-  const scene = getState().basicConfig.sceneNum;
-  const data_type = getState().basicConfig.dataSet;
-
-  const res = await commitData(real_run_cmd, scene, data_type);
-  dispatch(changeStatusCommAction(res.status));
-  dispatch(changeInfoCommAction(res.info));
-  dispatch(changeInputRunAction(real_run_cmd));
-  console.log("数据配置成功");
-  //这个回调函数返回一个promise
-  return {
-    isAsure: res.status,
-    info: res.info
-  };
+    const res = await commitData(real_run_cmd, sceneNum, data_type);
+    dispatch(changeStatusCommAction(res.status));
+    dispatch(changeInfoCommAction(res.info));
+    dispatch(changeInputRunAction(real_run_cmd));
+    switch (sceneNum) {
+      case 0:
+        dispatch(changeGuideModelNameAction(model_name));
+        break;
+      case 1:
+        dispatch(changeNavModelNameAction(model_name));
+        break;
+      case 2:
+        dispatch(changeRemoteModelNameAction(model_name));
+        break;
+      case 3:
+        dispatch(changeVoiceModelNameAction(model_name));
+        break;
+      default:
+        break;
+    }
+    console.log("数据配置成功");
+    //这个回调函数返回一个promise
+    return {
+      isAsure: res.status,
+      info: res.info
+    };
+  } catch (err) {
+    return {
+      isAsure: 1,
+      info: "网络错误"
+    };
+  }
 });
 
 export const getAlogListAction = createAsyncThunk(
@@ -112,10 +152,14 @@ export const getAlogListAction = createAsyncThunk(
     try {
       getAlogrithmName().then((res) => {
         dispatch(changeAlgoListAction(res.model_name));
-        console.log(res);
       });
     } catch (err) {
-      alert("网络连接错误");
+      //   alert(`网络连接错误,请检查网络设置:${err}`);
+      message.open({
+        type: "error",
+        content: "网络错误",
+        duration: 2
+      });
     }
   }
 );
@@ -157,11 +201,26 @@ const sceneSlice = createSlice({
     changeInfoCommAction(state, { payload }) {
       state.commit_info = payload;
     },
-    changeIsAsureAction(state, { payload }) {
-      state.isAsure = payload;
-    },
+    // changeIsAsureAction(state, { payload }) {
+    //   state.isAsure = payload;
+    // },
     changeAlgoListAction(state, { payload }) {
       state.algolist = payload;
+    },
+    changeCurModuleAction(state, { payload }) {
+      state.currentModule = payload;
+    },
+    changeNavModelNameAction(state, { payload }) {
+      state.modelNames.navigateName = payload;
+    },
+    changeRemoteModelNameAction(state, { payload }) {
+      state.modelNames.remoteName = payload;
+    },
+    changeGuideModelNameAction(state, { payload }) {
+      state.modelNames.guideName = payload;
+    },
+    changeVoiceModelNameAction(state, { payload }) {
+      state.modelNames.voiceName = payload;
     }
   }
 });
@@ -178,8 +237,12 @@ export const {
   changeSystemAction,
   changeInfoCommAction,
   changeStatusCommAction,
-  changeIsAsureAction,
-  changeAlgoListAction
+  changeAlgoListAction,
+  changeCurModuleAction,
+  changeGuideModelNameAction,
+  changeNavModelNameAction,
+  changeRemoteModelNameAction,
+  changeVoiceModelNameAction
 } = sceneSlice.actions;
 
 export default sceneSlice.reducer;

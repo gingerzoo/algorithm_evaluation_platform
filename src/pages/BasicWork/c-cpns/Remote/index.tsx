@@ -23,7 +23,7 @@ const WorkRemote: FC<Iprops> = (props) => {
         },
         {
           name: "mAP",
-          assess: "",
+          assess: "错误率预计为5%以下",
           weight: 9,
           score: basicEffect.map_score,
           result: basicEffect.map_result
