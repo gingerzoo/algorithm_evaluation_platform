@@ -5,6 +5,11 @@ import type { FC, ReactNode } from "react";
 import { Input, Menu, message, Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 
+import Picture_show from "@/components/picture_show";
+import Algorithm_upload from "./c-cpns/algorithm_upload";
+import Dataset_upload from "./c-cpns/dataset_upload";
+import { changeStatusBeAction, getBasicEffectAction } from "../BasicWork/store";
+
 import Order from "./c-cpns/order";
 import { subs } from "@/assets/data/local_data";
 import { ConfigWrap } from "./style";
@@ -20,10 +25,6 @@ import {
   changeStatusCommAction,
   commitDataAction
 } from "./store";
-import Picture_show from "@/components/picture_show";
-import Dataset_upload from "./c-cpns/dataset_upload";
-import { changeStatusBeAction, getBasicEffectAction } from "../BasicWork/store";
-import Algorithm_upload from "./c-cpns/algorithm_upload";
 
 interface Iprops {
   children?: ReactNode;
