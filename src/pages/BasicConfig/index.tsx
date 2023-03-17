@@ -12,7 +12,6 @@ import System_overview from "@/components/system_overview";
 import App_cover from "@/components/app_cover";
 import { useAppDispatch, useAppSelector } from "@/store";
 import {
-  changeInputPlaceAction,
   changeInputRunAction,
   changeNextPathAction,
   changeNowProcessAction,
@@ -22,7 +21,6 @@ import {
   commitDataAction
 } from "./store";
 import Picture_show from "@/components/picture_show";
-import Docker_upload from "./c-cpns/docker_upload";
 import Dataset_upload from "./c-cpns/dataset_upload";
 import { changeStatusBeAction, getBasicEffectAction } from "../BasicWork/store";
 import Algorithm_upload from "./c-cpns/algorithm_upload";

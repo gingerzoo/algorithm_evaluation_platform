@@ -15,9 +15,11 @@ const HeaderProcess: FC<Iprops> = (props) => {
   }));
   return (
     <ProcessWrap>
-      <MenuOutlined style={{ fontSize: "22px", color: "white" }} />
+      <MenuOutlined style={{ fontSize: "22px ", color: "white" }} />
 
-      <h3 className="title">{system ? `${system.model_name}` : "项目名称"}</h3>
+      <h3 className="title">
+        {system.model_name ? `${system.model_name}` : "我的项目名称"}
+      </h3>
       <div className="process">
         {nowProcess.map((item, index) => {
           return (
