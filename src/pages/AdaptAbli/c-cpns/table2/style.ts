@@ -17,7 +17,8 @@ export const Table2Wrapper = styled.div`
   table {
     /* width: 900px; */
     td {
-      .intensity {
+      .intensity,
+      .weight {
         margin: 0 15px 0 8px;
       }
       &.evaluation {

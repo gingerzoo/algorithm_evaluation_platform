@@ -140,7 +140,27 @@ export const workCondition2 = {
   白噪音: "whitenoise"
 };
 
-export type imageCondition =
+export type guideConditionType =
+  | "occlusion"
+  | "illumination"
+  | "noise"
+  | "clouds"
+  | "dropout"
+  | "deformation"
+  | "ambiguity"
+  | "whitenoise"
+  | "explosion";
+export type navigateConditionType =
+  | "occlusion"
+  | "illumination"
+  | "noise"
+  | "clouds"
+  | "dropout"
+  | "deformation"
+  | "ambiguity"
+  | "whitenoise"
+  | "explosion";
+export type remoteConditionType =
   | "occlusion"
   | "illumination"
   | "noise"
@@ -151,7 +171,7 @@ export type imageCondition =
   | "whitenoise"
   | "explosion";
 
-export type picConditionType =
+export type voiceConditionType =
   | "occlusion"
   | "illumination"
   | "deformation"

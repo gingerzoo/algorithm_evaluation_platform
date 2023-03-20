@@ -36,7 +36,7 @@ export function runBasicEffect() {
 
 export function getAlogrithmName() {
   return lxrequest.request({
-    url: "/loadmodel",
+    url: "/baseConfig/retModels",
     method: "get"
   });
 }

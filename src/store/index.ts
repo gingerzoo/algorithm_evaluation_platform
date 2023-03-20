@@ -2,10 +2,12 @@ import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch, useSelector, TypedUseSelectorHook } from "react-redux";
 import sceneReducer from "@/pages/BasicConfig/store";
 import effectReducer from "@/pages/BasicWork/store";
+import adaptReducer from "@/pages/AdaptAbli/store";
 const store = configureStore({
   reducer: {
     basicConfig: sceneReducer,
-    basicEffect: effectReducer
+    basicEffect: effectReducer,
+    adaptAbli: adaptReducer
   }
 });
 

@@ -5,9 +5,11 @@ import { Button } from "antd";
 import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
 import { workingconditions } from "@/type";
 import { useAppSelector } from "@/store";
+import { Iwork } from "../../store";
 
 interface Iconditons {
-  condition: workingconditions;
+  //   condition: workingconditions;
+  condition: string;
   intensity: number;
   weight: number;
   label: string;
@@ -15,14 +17,18 @@ interface Iconditons {
 
 interface Iprops {
   children?: ReactNode;
-  workConditions: Iconditons[][];
+  //   workConditions: Iconditons[][];
 }
 
 const MyTable2: FC<Iprops> = (props) => {
-  const { scene } = useAppSelector((state) => ({
-    scene: state.basicConfig.scene
+  const { scene, Conditions } = useAppSelector((state) => ({
+    scene: state.basicConfig.scene,
+    Conditions: state.adaptAbli
   }));
-  const { workConditions } = props;
+  //   const { workConditions } = props;
+  let pageScene = location.hash.split("/").pop();
+  pageScene = pageScene ? pageScene : scene;
+  const workConditions = Conditions[pageScene];
   function createTr(
     workCondition: Iconditons,
     index: number,
@@ -45,8 +51,13 @@ const MyTable2: FC<Iprops> = (props) => {
           <span className="intensity"> {workCondition.intensity}</span>
           <Button type="primary" icon={<PlusOutlined />} size="small" />
         </td>
-        <td>{workCondition.weight}</td>
-        <td>{`工况${index}-${workCondition.condition}`}</td>
+        <td>
+          {" "}
+          <Button type="primary" icon={<MinusOutlined />} size="small" />
+          <span className="weight"> {workCondition.weight}</span>
+          <Button type="primary" icon={<PlusOutlined />} size="small" />
+        </td>
+        <td>{`工况${index}-${workCondition.label}`}</td>
         {isFirst ? <td rowSpan={condiLen}>A</td> : ""}
       </tr>
     );
@@ -58,7 +69,7 @@ const MyTable2: FC<Iprops> = (props) => {
         <tbody>
           <tr>
             <td rowSpan={0} style={{ width: "110px" }}>
-              可始应能力
+              可适应能力
             </td>
             <td>说明</td>
             <td colSpan={5}>
@@ -70,31 +81,42 @@ const MyTable2: FC<Iprops> = (props) => {
             <td></td>
             <td style={{ width: "120px" }}>干扰名称</td>
             <td style={{ width: "120px" }}>作用强度</td>
-            <td style={{ width: "70px" }}>权重</td>
+            <td style={{ width: "120px" }}>权重</td>
             <td>备注</td>
             <td style={{ width: "70px" }}>等级</td>
           </tr>
-          {workConditions.map((scene, sceneIndex) => {
-            const sceneLen = scene.length;
-            return (
-              <Fragment key={sceneIndex}>
-                {scene.map((item, itemIndex) => {
-                  if (itemIndex == 0)
-                    return (
-                      <Fragment key={item.condition}>
-                        {createTr(item, sceneIndex + 1, true, sceneLen)}
-                      </Fragment>
-                    );
-                  else
-                    return (
-                      <Fragment key={item.condition}>
-                        {createTr(item, sceneIndex + 1, false, sceneLen)}
-                      </Fragment>
-                    );
-                })}
-              </Fragment>
-            );
-          })}
+          {workConditions &&
+            workConditions.map((works, workIndex) => {
+              const worksLen = works.length;
+              console.log(worksLen);
+              const itemValues = Object.values(works);
+              console.log(itemValues);
+              const itemKeys = Object.keys(works);
+              console.log(itemKeys);
+              return (
+                <Fragment key={workIndex}>
+                  {itemValues.map((item, itemIndex) => {
+                    if (itemIndex == 0)
+                      return (
+                        <Fragment key={item.condition}>
+                          {createTr(item, itemIndex + 1, true, itemKeys.length)}
+                        </Fragment>
+                      );
+                    else
+                      return (
+                        <Fragment key={item.condition}>
+                          {createTr(
+                            item,
+                            itemIndex + 1,
+                            false,
+                            itemKeys.length
+                          )}
+                        </Fragment>
+                      );
+                  })}
+                </Fragment>
+              );
+            })}
 
           <tr>
             <td colSpan={6}>
