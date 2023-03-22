@@ -34,10 +34,14 @@ const Order: FC<Iprops> = (props) => {
 
       {isSecene ? (
         scene ? (
-          <CheckCircleOutlined style={{ fontSize: "22px", color: "#79CC86" }} />
+          <CheckCircleOutlined
+            style={{ fontSize: "22px", color: "#79CC86" }}
+            className="finish-icon"
+          />
         ) : (
           <QuestionCircleOutlined
             style={{ fontSize: "22px", color: "#B3B3B3" }}
+            className="finish-icon"
           />
         )
       ) : (
@@ -46,10 +50,14 @@ const Order: FC<Iprops> = (props) => {
 
       {isCommand ? (
         inputRun ? (
-          <CheckCircleOutlined style={{ fontSize: "22px", color: "#79CC86" }} />
+          <CheckCircleOutlined
+            style={{ fontSize: "22px", color: "#79CC86" }}
+            className="finish-icon"
+          />
         ) : (
           <QuestionCircleOutlined
             style={{ fontSize: "22px", color: "#B3B3B3" }}
+            className="finish-icon"
           />
         )
       ) : (

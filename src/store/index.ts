@@ -2,16 +2,27 @@ import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch, useSelector, TypedUseSelectorHook } from "react-redux";
 import sceneReducer from "@/pages/BasicConfig/store";
 import effectReducer from "@/pages/BasicWork/store";
-import adaptReducer from "@/pages/AdaptAbli/store";
+import adaptReducer from "@/pages/AdaptAbli//store";
+// import {
+//   guideAdaptReducer,
+//   navigateAdaptReducer,
+//   remoteAdaptReducer,
+//   voiceAdaptReducer
+// } from "@/pages/AdaptAbli/store";
+
 const store = configureStore({
   reducer: {
     basicConfig: sceneReducer,
     basicEffect: effectReducer,
-    adaptAbli: adaptReducer
+    // guideAdapt: guideAdaptReducer,
+    // navigateAdapt: navigateAdaptReducer,
+    // remoteAdapt: remoteAdaptReducer,
+    // voiceAdapt: voiceAdaptReducer
+    adaptAbili: adaptReducer
   }
 });
 
-type Istate = typeof store.getState;
+export type Istate = typeof store.getState;
 
 export type IrootState = ReturnType<Istate>;
 export type DispatchType = typeof store.dispatch;

@@ -33,7 +33,7 @@ const AppSide: FC<Iprops> = (props) => {
   }
   return (
     <SideWrap>
-      <Sider width={"250px"}>
+      <Sider width={"100%"}>
         <Menu
           mode="inline"
           defaultSelectedKeys={["/config"]}

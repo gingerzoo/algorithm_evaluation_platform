@@ -116,66 +116,74 @@ export const mockPic: string[] = [
   `https://pic.3gbizhi.com/2020/0722/20200722081817153.jpg`
 ];
 
-export const workCondition1 = {
+interface Iworkwork {
+  [index: string]: string;
+}
+
+export const tranEntoCh: Iworkwork = {
   occlusion: "遮挡",
   noise: "图像噪声",
   deformation: "形变",
-  dropout: "丢码",
+  signalLoss: "丢码",
   illumination: "光照",
-  ambiguity: "模糊",
-  clouds: "云雾",
-  explosion: "爆炸音",
-  whitenoise: "白噪音"
+  blur: "模糊",
+  cloud: "云雾",
+  explosion: "爆炸音"
 };
 
-export const workCondition2 = {
+export const tranChtoEn: Iworkwork = {
   遮挡: "occlusion",
   图像噪声: "noise",
   形变: "deformation",
-  丢码: "dropout",
+  丢码: "signalLoss",
   光照: "illumination",
-  模糊: "ambiguity",
-  云雾: "clouds",
-  爆炸音: "explosion",
-  白噪音: "whitenoise"
+  模糊: "blur",
+  云雾: "cloud",
+  爆炸音: "explosion"
+};
+
+export const getNote: Iworkwork = {
+  occlusion: "目标被其他物体遮挡",
+  noise: "传感器噪声",
+  deformation: "相机倾角及畸变影响",
+  signalLoss: "信号传输过程的丢码",
+  illumination: "环境光强度",
+  blur: "离焦和运动等因素造成的图像模糊",
+  cloud: "云朵及雾霾等影响",
+  explosion: "枪炮等爆炸音"
 };
 
 export type guideConditionType =
   | "occlusion"
   | "illumination"
   | "noise"
-  | "clouds"
-  | "dropout"
+  | "cloud"
   | "deformation"
-  | "ambiguity"
-  | "whitenoise"
-  | "explosion";
+  | "blur";
+
 export type navigateConditionType =
   | "occlusion"
   | "illumination"
   | "noise"
-  | "clouds"
-  | "dropout"
+  | "cloud"
   | "deformation"
-  | "ambiguity"
-  | "whitenoise"
-  | "explosion";
+  | "blur";
+
 export type remoteConditionType =
   | "occlusion"
   | "illumination"
   | "noise"
-  | "clouds"
-  | "dropout"
+  | "cloud"
   | "deformation"
-  | "ambiguity"
-  | "whitenoise"
-  | "explosion";
+  | "blur";
 
-export type voiceConditionType =
-  | "occlusion"
-  | "illumination"
-  | "deformation"
-  | "nosie"
-  | "clouds"
-  | "dropout"
-  | "ambiguity";
+export type voiceConditionType = "explosion" | "signalLoss";
+
+export const picWorkCondition = [
+  "occlusion",
+  "illumination",
+  "noise",
+  "cloud",
+  "deformation",
+  "blur"
+];

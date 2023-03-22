@@ -1,3 +1,5 @@
+import { getNote } from "@/assets/data/local_data";
+import { Iwork } from "@/pages/AdaptAbli/store";
 import { MenuProps } from "antd";
 
 type MenuItem = Required<MenuProps>["items"][number];
@@ -26,3 +28,25 @@ export function getItem(
 //   }
 //   return newObj;
 // }
+
+export function createOneWork(
+  newCondition: string[],
+  newIntensity: number[],
+  newWeight: number[],
+  newWork: Iwork
+) {
+  newCondition.map((item: string, index: number) => {
+    const condition = {
+      note: getNote[item],
+      intensity: newIntensity[index],
+      weight: newWeight[index]
+    };
+
+    Object.defineProperty(newWork, `${item}`, {
+      value: condition,
+      writable: true,
+      configurable: true,
+      enumerable: true
+    });
+  });
+}

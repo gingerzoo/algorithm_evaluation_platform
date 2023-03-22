@@ -5,8 +5,8 @@ export const HeaderWrap = styled.div`
   justify-content: space-between;
   align-items: center;
 
-  height: 60px;
-  padding: 0 60px;
+  height: 4.8vw;
+  padding: 0 4.8vw;
 
   .btn:hover {
     cursor: pointer;
@@ -17,14 +17,14 @@ export const HeaderWrap = styled.div`
     display: flex;
     align-items: center;
     .divider {
-      margin: 0 20px;
+      margin: 0 1.6vw;
     }
   }
 
   .left .logo {
-    height: 24px;
-    line-height: 24px;
-    width: 60px;
+    height: 1.9vw;
+    line-height: 1.9vw;
+    width: 4.5vw;
     text-align: center;
     font-size: 16px;
     color: white;

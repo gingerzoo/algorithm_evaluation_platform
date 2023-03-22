@@ -3,81 +3,92 @@ import { Iwork } from "../..";
 
 interface Iprop {
   //   work: "image" | "voice";
-  guide: Iwork[];
+  [index: string]: Iwork;
+  tranEntoCh: Iwork;
+  tranChtoEn: Iwork;
 }
 
 const initialState: Iprop = {
-  guide: [
-    {
-      occlusion: {
-        label: "遮挡",
-        condition: "occlusion",
-        intensity: 6,
-        weight: 9
-      },
-      illumination: {
-        label: "光照",
-        intensity: 5,
-        condition: " illumination",
-        weight: 9
-      },
-      deformation: {
-        label: "形变",
-        intensity: 2,
-        condition: " deformation",
-        weight: 7
-      },
-      noise: {
-        label: "图像噪声",
-        intensity: 3,
-        condition: "noise",
-        weight: 8
-      }
+  tranEntoCh: {
+    occlusion: {
+      intensity: 0,
+      weight: 9,
+      note: ""
+    },
+    illumination: {
+      intensity: 0,
+      weight: 0,
+      note: ""
+    },
+    deformation: {
+      intensity: 0,
+      note: "",
+      weight: 0
+    },
+    noise: {
+      intensity: 0,
+      note: "",
+      weight: 0
+    }
+  },
+
+  tranChtoEn: {
+    cloud: {
+      intensity: 0,
+      note: "",
+      weight: 0
+    },
+    illumination: {
+      intensity: 0,
+      note: "",
+      weight: 0
     },
 
-    {
-      clouds: {
-        label: "云雾",
-        intensity: 5,
-        condition: "clouds",
-        weight: 7
-      },
-      illumination: {
-        label: "光照",
-        intensity: 6,
-        condition: "illumination",
-        weight: 6
-      },
-      deformation: {
-        label: "形变",
-        intensity: 4,
-        condition: "deformation",
-        weight: 9
-      },
-      ambiguty: {
-        label: "模糊",
-        intensity: 3,
-        condition: " ambiguty",
-        weight: 9
-      },
-      dropout: {
-        label: "丢码",
-        intensity: 3,
-        condition: "dropout",
-        weight: 8
-      }
+    blur: {
+      note: "",
+      intensity: 0,
+
+      weight: 0
     }
-  ]
+  }
 };
 
 const guideAdaptSlice = createSlice({
   name: "guideAdapt",
   initialState,
   reducers: {
-    changeWorkIntensityAction(state, { payload }) {
-      state.guide[0].occlusion.intensity = payload;
+    changeWk1occlusionAction(state, { payload }) {
+      state.tranEntoCh.occlusion.intensity = payload;
+    },
+    changeWk1illuminationAction(state, { payload }) {
+      state.tranEntoCh.illumination.intensity = payload;
+    },
+    changeWk1deformationAction(state, { payload }) {
+      state.tranEntoCh.deformation.intensity = payload;
+    },
+    changeWk1noiseAction(state, { payload }) {
+      state.tranEntoCh.noise.intensity = payload;
+    },
+    changeWk2cloudAction(state, { payload }) {
+      state.tranChtoEn.cloud.intensity = payload;
+    },
+    changeWk2illuminationAction(state, { payload }) {
+      state.tranChtoEn.illumination.intensity = payload;
+    },
+    changeWk2blurAction(state, { payload }) {
+      state.tranChtoEn.blur.intensity = payload;
     }
   }
 });
+
+export const {
+  changeWk1occlusionAction,
+  changeWk1deformationAction,
+  changeWk1illuminationAction,
+  changeWk1noiseAction,
+  changeWk2blurAction,
+  changeWk2cloudAction,
+  changeWk2illuminationAction
+} = guideAdaptSlice.actions;
 
 export default guideAdaptSlice.reducer;

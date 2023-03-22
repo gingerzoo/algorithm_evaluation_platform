@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const ProcessWrap = styled.div`
   display: flex;
   align-items: center;
-  height: 50px;
+  height: 4vw;
   color: white;
 
   /* text-align: center; */
@@ -12,9 +12,9 @@ export const ProcessWrap = styled.div`
 
   .title {
     box-sizing: border-box;
-    width: 225px;
+    width: 18vw;
     /* font-size: 18px; */
-    padding: 0 15px;
+    padding: 0 1vw;
     text-align: center;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -22,7 +22,7 @@ export const ProcessWrap = styled.div`
   }
   .process {
     .anticon {
-      margin: 0 10px;
+      margin: 0 0.8vw;
     }
   }
 `;

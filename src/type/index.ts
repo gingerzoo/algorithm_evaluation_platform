@@ -1,12 +1,13 @@
+import { Iwork } from "@/pages/AdaptAbli/store";
+
 export type workingconditions =
   | "occlusion"
   | "illumination"
   | "noise"
-  | "clouds"
-  | "dropout"
+  | "cloud"
+  | "signalLoss"
   | "deformation"
-  | "ambiguity"
-  | "whitenoise"
+  | "blur"
   | "explosion";
 
 export type picConditionType =
@@ -14,11 +15,10 @@ export type picConditionType =
   | "illumination"
   | "deformation"
   | "nosie"
-  | "clouds"
-  | "dropout"
-  | "ambiguity";
+  | "cloud"
+  | "blur";
 
-export type voiConditionType = "explosion" | "whitenoise" | "noise" | "dropout";
+export type voiConditionType = "explosion" | "signalLoss";
 
 export interface Iguid {
   status: number;
@@ -70,3 +70,17 @@ export interface Ivoice {
   population_score: number;
   population_result: number;
 }
+
+export interface Iconditon {
+  // label: string;
+  // condition: string;
+  intensity: number;
+  weight: number;
+  note: string;
+}
+
+// export interface Iconditons {
+//   tranEntoCh: Iwork;
+//   tranChtoEn?: Iwork;
+//   workCondition3?: Iwork;
+// }

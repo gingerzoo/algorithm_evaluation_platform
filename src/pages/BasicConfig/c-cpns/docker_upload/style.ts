@@ -7,9 +7,9 @@ export const UploadWrap = styled.div`
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 290px;
-    /* height: 142px; */
-    padding-bottom: 25px;
+    width: 24vw;
+    height: 12vw;
+    padding-bottom: 1.5vw;
 
     background-color: #e6f3ff;
     border: 2px dashed #0077fa;
@@ -55,14 +55,14 @@ export const UploadWrap = styled.div`
 
     p.datasets {
       /* background-color: green; */
-      margin-top: 28px;
+      margin-top: 2.2vw;
     }
   }
 
   .command {
     display: inline-block;
-    margin-top: 15px;
-    padding: 10px 20px;
+    margin-top: 1.2vw;
+    padding: 0.8vw 1.6vw;
     color: white;
     border-radius: 8px;
 

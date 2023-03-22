@@ -6,16 +6,16 @@ interface Iprops {
 
 export const TableWrap = styled.div<Iprops>`
   table {
-    /* width: 900px; */
+    /* width: 100%; */
 
     .no-pad {
       padding: 0;
     }
     .row-header {
-      width: 110px;
+      width: 8.7vw;
     }
     .row-sub-header {
-      width: 100px;
+      width: 8vw;
     }
   }
 
@@ -24,7 +24,7 @@ export const TableWrap = styled.div<Iprops>`
   }
 
   .smalltable {
-    width: 790px;
+    width: 62.5vw;
     /* border: none; */
     border-width: 0px;
     border-style: hidden;

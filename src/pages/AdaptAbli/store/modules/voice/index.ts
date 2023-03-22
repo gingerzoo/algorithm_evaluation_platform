@@ -1,61 +1,41 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { Iwork } from "../..";
-
 interface Iprop {
   //   work: "image" | "voice";
-  voice: Iwork[];
+
+  tranEntoCh: Iwork;
+  tranChtoEn?: Iwork;
+  workCondition3?: Iwork;
 }
 
 const initialState: Iprop = {
-  voice: [
-    {
-      dropout: {
-        label: "丢码",
-        intensity: 5,
-        condition: "dropout",
-        weight: 9
-      },
-      explosion: {
-        label: "爆炸音",
-        intensity: 2,
-        condition: "explosion",
-        weight: 7
-      },
-      noise: {
-        label: "图像噪声",
-        intensity: 3,
-        condition: "noise",
-        weight: 8
-      }
-    },
+  tranEntoCh: {
+    explosion: {
+      note: "爆炸音",
+      intensity: 2,
 
-    {
-      whitenoise: {
-        label: "白噪声",
-        intensity: 5,
-        condition: "whitenoise",
-        weight: 7
-      },
-      deformation: {
-        label: "形变",
-        intensity: 4,
-        condition: "deformation",
-        weight: 9
-      },
-      ambiguty: {
-        label: "模糊",
-        intensity: 3,
-        condition: "ambiguty",
-        weight: 9
-      },
-      dropout: {
-        label: "丢码",
-        condition: "dropout",
-        intensity: 3,
-        weight: 8
-      }
+      weight: 7
+    },
+    signalLoss: {
+      note: "丢码",
+      intensity: 5,
+      weight: 9
     }
-  ]
+  },
+
+  tranChtoEn: {
+    explosion: {
+      note: "爆炸音",
+      intensity: 2,
+
+      weight: 7
+    },
+    signalLoss: {
+      note: "丢码",
+      intensity: 5,
+      weight: 9
+    }
+  }
 };
 
 const voiceAdaptSlice = createSlice({

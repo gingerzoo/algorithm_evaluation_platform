@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React, { memo, useEffect } from "react";
 import type { FC, ReactNode } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { WorkWrap } from "./style";
@@ -29,12 +29,13 @@ const BasicWork: FC<Iprops> = () => {
   }
 
   const dispatch = useAppDispatch();
+
   return (
     <WorkWrap>
       <Outlet />
-      <span className="next" onClick={next}>
-        进行可适应性评估
-      </span>
+      <div className="next">
+        <span onClick={next}>进行可适应性评估</span>
+      </div>
     </WorkWrap>
   );
 };

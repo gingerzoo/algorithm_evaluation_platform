@@ -1,10 +1,7 @@
-import { commitData, runBasicEffect } from "@/pages/BasicConfig/service";
+import { runBasicEffect } from "@/pages/BasicConfig/service";
 import { IrootState } from "@/store";
 import { Iguid, Inav, Iremo, Ivoice } from "@/type";
 import { createAsyncThunk, createSlice, Slice } from "@reduxjs/toolkit";
-import { message } from "antd";
-import { AxiosError } from "axios";
-import { resolve } from "path";
 
 interface Iprops {
   run_status: number;

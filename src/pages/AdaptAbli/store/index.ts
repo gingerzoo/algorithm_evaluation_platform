@@ -1,255 +1,280 @@
-import { workCondition1, workCondition2 } from "@/assets/data/local_data";
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+
+import navigateAdaptReducer from "./modules/navigate";
+import remoteAdaptReducer from "./modules/remote";
+import voiceAdaptReducer from "./modules/voice";
+import guideAdaptReducer from "./modules/guide";
+import { getWorkCondition, getWorkDefault } from "../services";
+import { workingconditions } from "@/type";
+import { getNote } from "@/assets/data/local_data";
 
 export interface Iwork {
   [index: string]: {
-    label: string;
-    condition: string;
+    // label: string;
+    // note: string;
     intensity: number;
     weight: number;
+    note: string;
   };
 }
-interface Iprop {
+
+//这是干啥的？？？
+type Icondition = {
+  [index: string]: string[];
+};
+export interface Iprop {
   //   work: "image" | "voice";
-  [workCondition: string]: Iwork[];
+  [index: string]: Iwork[] | string[] | number[] | Icondition | boolean;
+  guide: Iwork[];
+  navigate: Iwork[];
+  remote: Iwork[];
+  voice: Iwork[];
+  workCondition: Icondition;
+  conditionList: string[];
+  intensityList: number[];
+  weightList: number[];
+  genIsPending: boolean;
+  testIsPending: boolean;
 }
+
+export const getWorkCondiAction = createAsyncThunk(
+  "workCondition",
+  (par, { dispatch }) => {
+    getWorkCondition().then((res) => {
+      dispatch(changeWorkConditionAction(res));
+    });
+  }
+);
+
+export const getWorkDefaultAction = createAsyncThunk(
+  "workCondition",
+  (par, { dispatch }) => {
+    getWorkDefault().then((res) => {
+      dispatch(changeGuideNewCondiAction(res["0"]));
+      dispatch(changeNavigateNewCondiAction(res["1"]));
+      dispatch(changeRemoteNewCondiAction(res["2"]));
+      dispatch(changeVoiceNewCondiAction(res["3"]));
+    });
+  }
+);
 
 const initialState: Iprop = {
   guide: [
     {
       occlusion: {
-        label: "遮挡",
-        condition: "occlusion",
-        intensity: 6,
-        weight: 9
+        note: getNote["occlusion"],
+        intensity: 1,
+        weight: 1
       },
       illumination: {
-        label: "光照",
-        intensity: 5,
-        condition: " illumination",
-        weight: 9
+        intensity: 2,
+        note: getNote["illumination"],
+        weight: 1
       },
       deformation: {
-        label: "形变",
-        intensity: 2,
-        condition: " deformation",
-        weight: 7
+        intensity: 3,
+        note: getNote["deformation"],
+        weight: 1
       },
       noise: {
-        label: "图像噪声",
-        intensity: 3,
-        condition: "noise",
-        weight: 8
+        intensity: 4,
+        note: getNote["noise"],
+        weight: 1
       }
     },
-
     {
-      clouds: {
-        label: "云雾",
-        intensity: 5,
-        condition: "clouds",
-        weight: 7
+      cloud: {
+        intensity: 6,
+        note: getNote["cloud"],
+        weight: 1
       },
       illumination: {
-        label: "光照",
-        intensity: 6,
-        condition: "illumination",
-        weight: 6
+        intensity: 8,
+        note: getNote["illumination"],
+        weight: 1
       },
-      deformation: {
-        label: "形变",
-        intensity: 4,
-        condition: "deformation",
-        weight: 9
-      },
-      ambiguty: {
-        label: "模糊",
+
+      blur: {
+        note: getNote["blur"],
         intensity: 3,
-        condition: " ambiguty",
-        weight: 9
-      },
-      dropout: {
-        label: "丢码",
-        intensity: 3,
-        condition: "dropout",
-        weight: 8
+        weight: 1
       }
     }
   ],
   navigate: [
     {
       occlusion: {
-        label: "遮挡",
-        condition: "occlusion",
-        intensity: 6,
-        weight: 9
+        intensity: 0,
+        weight: 0,
+        note: ""
       },
       illumination: {
-        label: "光照",
-        intensity: 5,
-        condition: " illumination",
-        weight: 9
+        intensity: 0,
+        weight: 0,
+        note: ""
       },
       deformation: {
-        label: "形变",
-        intensity: 2,
-        condition: " deformation",
-        weight: 7
+        intensity: 0,
+        note: "",
+        weight: 0
       },
       noise: {
-        label: "图像噪声",
-        intensity: 3,
-        condition: "noise",
-        weight: 8
+        intensity: 0,
+        note: "",
+        weight: 0
       }
     },
-
     {
-      clouds: {
-        label: "云雾",
-        intensity: 5,
-        condition: "clouds",
-        weight: 7
+      cloud: {
+        intensity: 0,
+        note: "",
+        weight: 0
       },
       illumination: {
-        label: "光照",
-        intensity: 6,
-        condition: "illumination",
-        weight: 6
+        intensity: 0,
+        note: "",
+        weight: 0
       },
-      deformation: {
-        label: "形变",
-        intensity: 4,
-        condition: "deformation",
-        weight: 9
-      },
-      ambiguty: {
-        label: "模糊",
-        intensity: 3,
-        condition: " ambiguty",
-        weight: 9
-      },
-      dropout: {
-        label: "丢码",
-        intensity: 3,
-        condition: "dropout",
-        weight: 8
+
+      blur: {
+        note: "",
+        intensity: 0,
+
+        weight: 0
       }
     }
   ],
   remote: [
     {
       occlusion: {
-        label: "遮挡",
-        condition: "occlusion",
-        intensity: 6,
-        weight: 9
+        intensity: 0,
+        weight: 0,
+        note: ""
       },
       illumination: {
-        label: "光照",
-        intensity: 5,
-        condition: " illumination",
-        weight: 9
+        intensity: 0,
+        weight: 0,
+        note: ""
       },
       deformation: {
-        label: "形变",
-        intensity: 2,
-        condition: " deformation",
-        weight: 7
+        intensity: 0,
+        note: "",
+        weight: 0
       },
       noise: {
-        label: "图像噪声",
-        intensity: 3,
-        condition: "noise",
-        weight: 8
+        intensity: 0,
+        note: "",
+        weight: 0
       }
     },
+
     {
-      clouds: {
-        label: "云雾",
-        intensity: 5,
-        condition: "clouds",
-        weight: 7
+      cloud: {
+        intensity: 0,
+        note: "",
+        weight: 0
       },
       illumination: {
-        label: "光照",
-        intensity: 6,
-        condition: "illumination",
-        weight: 6
+        intensity: 0,
+        note: "",
+        weight: 0
       },
-      deformation: {
-        label: "形变",
-        intensity: 4,
-        condition: "deformation",
-        weight: 9
-      },
-      ambiguty: {
-        label: "模糊",
-        intensity: 3,
-        condition: " ambiguty",
-        weight: 9
-      },
-      dropout: {
-        label: "丢码",
-        intensity: 3,
-        condition: "dropout",
-        weight: 8
+
+      blur: {
+        note: "",
+        intensity: 0,
+        weight: 0
       }
     }
   ],
   voice: [
     {
-      dropout: {
-        label: "丢码",
-        intensity: 5,
-        condition: "dropout",
-        weight: 9
-      },
       explosion: {
-        label: "爆炸音",
-        intensity: 2,
-        condition: "explosion",
-        weight: 7
+        note: "爆炸音",
+        intensity: 1,
+
+        weight: 1
       },
-      noise: {
-        label: "图像噪声",
-        intensity: 3,
-        condition: "noise",
-        weight: 8
+      signalLoss: {
+        note: "丢码",
+        intensity: 1,
+        weight: 1
       }
     },
+
     {
-      whitenoise: {
-        label: "白噪声",
-        intensity: 5,
-        condition: "whitenoise",
-        weight: 7
+      explosion: {
+        note: "爆炸音",
+        intensity: 1,
+
+        weight: 1
       },
-      deformation: {
-        label: "形变",
-        intensity: 4,
-        condition: "deformation",
-        weight: 9
-      },
-      ambiguty: {
-        label: "模糊",
-        intensity: 3,
-        condition: "ambiguty",
-        weight: 9
-      },
-      dropout: {
-        label: "丢码",
-        condition: "dropout",
-        intensity: 3,
-        weight: 8
+      signalLoss: {
+        note: "丢码",
+        intensity: 1,
+        weight: 1
       }
     }
-  ]
+  ],
+  workCondition: {
+    0: [""],
+    1: [""],
+    2: [""],
+    3: [""]
+  },
+  conditionList: [""],
+  intensityList: [],
+  weightList: [],
+  genIsPending: true,
+  testIsPending: false
 };
 const adaptSlice = createSlice({
   name: "adaptSlice",
   initialState: initialState,
-  reducers: {}
+  reducers: {
+    changeWorkConditionAction(state, { payload }) {
+      state.workCondition = payload;
+    },
+    changeIntensityListAction(state, { payload }) {
+      state.intensityList = payload;
+    },
+    changeWeightListAction(state, { payload }) {
+      state.weightList = payload;
+    },
+    changeConditionList(state, { payload }) {
+      state.conditionList = payload;
+    },
+    changeGuideNewCondiAction(state, { payload }) {
+      state.guide = payload;
+    },
+    changeNavigateNewCondiAction(state, { payload }) {
+      state.navigate = payload;
+    },
+    changeRemoteNewCondiAction(state, { payload }) {
+      state.remote = payload;
+    },
+    changeVoiceNewCondiAction(state, { payload }) {
+      state.voice = payload;
+    }
+  }
 });
 
 export default adaptSlice.reducer;
+
+// export {
+//   navigateAdaptReducer,
+//   remoteAdaptReducer,
+//   voiceAdaptReducer,
+//   guideAdaptReducer
+// };
+
+export const {
+  changeWorkConditionAction,
+  changeIntensityListAction,
+  changeWeightListAction,
+  changeConditionList,
+  changeGuideNewCondiAction,
+  changeNavigateNewCondiAction,
+  changeRemoteNewCondiAction,
+  changeVoiceNewCondiAction
+} = adaptSlice.actions;

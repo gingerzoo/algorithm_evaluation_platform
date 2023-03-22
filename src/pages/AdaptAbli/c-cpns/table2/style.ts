@@ -10,19 +10,32 @@ export const Table2Wrapper = styled.div`
     background-color: #65b3fa;
     border: none;
 
-    padding: 0 50px;
-    font-size: 16px;
+    padding: 0 4vw;
+    font-size: 1.3vw;
     color: white;
   }
   table {
     /* width: 900px; */
+    /* min-width: 850px; */
+    /* width: 70vw; */
     td {
       .intensity,
       .weight {
-        margin: 0 15px 0 8px;
+        margin: 0 1.2vw 0 1vw;
       }
       &.evaluation {
         background-color: #79cc86;
+      }
+
+      .preWork {
+        margin-right: 0.5vw;
+      }
+      .viewPic {
+        margin-top: 0.4vw;
+      }
+
+      .ant-modal .ant-modal-content .ant-modal-header .ant-modal-title {
+        text-align: center;
       }
     }
   }

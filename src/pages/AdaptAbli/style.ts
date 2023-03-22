@@ -1,20 +1,21 @@
 import styled from "styled-components";
 
 export const AdaptWraper = styled.div`
-  .next {
-    display: inline-block;
-    position: relative;
+  .operate {
+    display: flex;
+    justify-content: flex-end;
+    /* padding-right: 1.5vw; */
+    margin-top: 1.5vw;
 
-    left: 800px;
-    top: 20px;
-    /* margin-bottom: 30px; */
-    color: white;
-    border-radius: 4px;
-
-    padding: 10px 20px;
-    background-color: #1890ff;
-    &:hover {
-      cursor: pointer;
+    .btn {
+      padding: 1vw 1.6vw;
+      border-radius: 8px;
+      background-color: #1890ff;
+      color: white;
+      &:hover {
+        cursor: pointer;
+        background-color: #447ed9;
+      }
     }
   }
 `;

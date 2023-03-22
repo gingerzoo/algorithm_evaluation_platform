@@ -9,22 +9,23 @@ interface Iprops {
 
 export const ConfigWrap = styled.div<Iprops>`
   /* position: relative; */
-  margin: 0 140px;
+  margin: 0 6vw;
 
   .top {
     display: flex;
     justify-content: space-between;
-    padding: 0 10px;
+    padding: 0 0.8vw;
   }
 
   .confi {
-    margin-top: 30px;
+    margin-top: 2vw;
+    /* padding: 0 7vw; */
 
     .ant-input,
     .ant-menu {
-      height: 38px;
-      line-height: 38px;
-      width: 600px;
+      height: 3vw;
+      line-height: 3vw;
+      width: 50vw;
       /* margin: 0 15px; */
     }
     .ant-input {
@@ -35,7 +36,7 @@ export const ConfigWrap = styled.div<Iprops>`
     }
     .ant-menu-item {
       border: 1px solid #d9d9d9;
-      padding: 0 30px;
+      padding: 0 2.4vw;
     }
     .ant-menu-horizontal .ant-menu-item-selected {
       background-color: plum;
@@ -44,19 +45,20 @@ export const ConfigWrap = styled.div<Iprops>`
 
   .oper {
     display: flex;
+    padding-top: 0.5vw;
     .spinning {
       /* display: ${(props) => (props.run_status == 0 ? "block" : "none")}; */
-      height: 50px;
+      height: 3.8vw;
       /* margin: 0 30px; */
-      margin: 0 50px 0 -30px;
-      line-height: 55px;
+      margin: 0 4vw 0 -2.7vw;
+      line-height: 4.3vw;
     }
     .btn {
-      height: 50px;
-      line-height: 50px;
+      height: 3.8vw;
+      line-height: 3.8vw;
       border-radius: 8px;
-      margin-right: 60px;
-      padding: 0 30px;
+      margin-right: 4.8vw;
+      padding: 0 2.2vw;
       background-color: #1890ff;
       color: white;
       &:hover {

@@ -43,11 +43,11 @@ const MyTable: FC<Iprops> = (props) => {
           <td rowSpan={props.secIndex.length + 1} className="row-sub-header">
             二级指标
           </td>
-          <td style={{ width: "150px" }}>名称</td>
+          <td style={{ width: "11.8vw" }}>名称</td>
           <td>评估工作</td>
-          <td style={{ width: "70px" }}>权重</td>
-          <td style={{ width: "100px" }}>得分</td>
-          <td style={{ width: "70px" }}>结果</td>
+          <td style={{ width: "5.6vw" }}>权重</td>
+          <td style={{ width: "7vw" }}>得分</td>
+          <td style={{ width: "5.6vw" }}>结果</td>
         </tr>
         {secIndex.map((item, index) => {
           return (

@@ -10,7 +10,7 @@ export const AppWrap = styled.div<Iprops>`
   /* 随意的测试 */
   .main {
     display: flex;
-    min-height: calc(100vh - 8.7vw);
+    min-height: calc(100vh - 8.8vw);
     position: relative;
     .green-hand {
       display: ${(props) => (props.isGreen ? "block" : "none")};
@@ -18,8 +18,10 @@ export const AppWrap = styled.div<Iprops>`
   }
 
   .content {
-    width: calc(100vw - 252px);
-    min-width: 990px;
-    margin: 40px 0;
+    /* position: relative; */
+    width: calc(80vw - 2px);
+    /* min-width: 990px; */
+    min-width: 900px;
+    padding: 3.2vw;
   }
 `;
