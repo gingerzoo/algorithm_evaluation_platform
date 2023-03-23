@@ -145,6 +145,7 @@ export const getWorkResultAction = createAsyncThunk<
   checkList.forEach((item, index) => {
     if (item) newInter.push(interference[index]);
   });
+  console.log("newInter", newInter);
 
   try {
     const res = await getWorkResult(sceneNum, date_type, newInter);
@@ -344,7 +345,7 @@ const initialState: Iadapt = {
   intensityList: [],
   weightList: [],
   genIsPending: false,
-  testIsPending: true,
+  testIsPending: false,
   genData_status: -1,
   workResult: [],
   needGenData: false,
@@ -397,7 +398,9 @@ const adaptSlice = createSlice({
     changeNeedGenDataAction(state, { payload }) {
       state.needGenData = payload;
     },
-    changeRunResult(state, { payload }) {},
+    changeRunResult(state, { payload }) {
+      state.runResult = payload;
+    },
     changeGuideResAction(state, { payload }) {
       state.guideResult = payload;
     },

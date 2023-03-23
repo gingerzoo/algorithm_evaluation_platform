@@ -27,8 +27,6 @@ const AddWork: FC<Iprops> = (props) => {
 
   const conditionList = workConditions[sceneNum.toString()];
 
-  const [addCondition, setAddCondis] = useState([""]);
-
   const disptach = useAppDispatch();
 
   //   const options: SelectProps["options"] = conditionList?.map((item) => {
@@ -38,16 +36,18 @@ const AddWork: FC<Iprops> = (props) => {
   //     };
   //   });
 
+  const [addCondition, setAddCondis] = useState([""]);
+
+  const [intenList, setIntenList] = useState([0]);
+
+  const [weightList, setWeightList] = useState([0]);
+
   const options: SelectProps["options"] = picWorkCondition?.map((item) => {
     return {
       value: item,
       label: tranEntoCh[item]
     };
   });
-
-  const [intenList, setIntenList] = useState([0]);
-
-  const [weightList, setWeightList] = useState([0]);
 
   const handleChange = (value: string[]) => {
     console.log(value);

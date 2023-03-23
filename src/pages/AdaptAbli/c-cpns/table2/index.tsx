@@ -47,14 +47,14 @@ const MyTable2: FC<Iprops> = (props) => {
     newIntensity,
     newWeight,
     newCondition,
-    needIntenChange
+    needCenDataChange
   } = useAppSelector((state) => ({
     scene: state.basicConfig.scene,
     adapt: state.adaptAbili,
     newIntensity: state.adaptAbili.intensityList,
     newWeight: state.adaptAbili.weightList,
     newCondition: state.adaptAbili.conditionList,
-    needIntenChange: state.adaptAbili.needGenData
+    needCenDataChange: state.adaptAbili.needGenData
   }));
   const { workConditions } = props;
   const pageScene = location.hash.split("/").pop();
@@ -83,8 +83,6 @@ const MyTable2: FC<Iprops> = (props) => {
 
   useEffect(() => {
     console.log("我是useEffect");
-
-    console.log("我是adaptstate1", adaptState);
     //分别给存储intensity和weight的两个二维数组初始化初始化
     adaptState?.map((work, workIndex) => {
       intenArray.push([]);
@@ -100,11 +98,12 @@ const MyTable2: FC<Iprops> = (props) => {
         //   noteArray[workIndex].push(condition.note);
       });
     });
-  }, [adaptState]);
+  });
   //  某一场景所有工况的是否被勾选的状态
   const [checkList, setCheckList] = useState(checkArray);
 
-  const [intenList, setIntenList] = useState(intenArray);
+  /*  这里用state不太好使用，因为新建工况中新添加的强度它没办法知道 */
+  //   const [intenList, setIntenList] = useState(intenArray);
 
   const [weightList, setWeightList] = useState(weightArray);
 
@@ -154,28 +153,28 @@ const MyTable2: FC<Iprops> = (props) => {
     nowInten: number
   ) => {
     const newAllwork: Iwork[] = [];
+    /* 改变后的强度值 */
     const addNum = isAdd ? nowInten + 1 : nowInten - 1;
 
-    /* 改变后的干扰名称数组 */
+    // console.log("intenArray", intenArray);
 
     /* 改变后的强度数组 */
     const newSceneInten = [...intenArray];
 
     newSceneInten[workIndex][condiIndex] = addNum;
 
-    setIntenList(newSceneInten);
-    console.log("newSceneInten", newSceneInten);
-    console.log("intenArray", intenArray);
+    // setIntenList(newSceneInten);
     /* 改变后的权重数组 */
+    console.log("newSceneInten", newSceneInten);
 
-    if (!needIntenChange) {
+    if (!needCenDataChange) {
       dispatch(changeNeedGenDataAction(true));
     }
     condiArray.map((work, workIndex) => {
       const newWork: Iwork = {};
       createOneWork(
         work,
-        intenArray[workIndex],
+        newSceneInten[workIndex],
         weightArray[workIndex],
         newWork
       );
@@ -189,7 +188,7 @@ const MyTable2: FC<Iprops> = (props) => {
   function addNewWork() {
     // if(newIntensity.includes())
 
-    if (!needIntenChange) {
+    if (!needCenDataChange) {
       dispatch(changeNeedGenDataAction(true));
     }
 

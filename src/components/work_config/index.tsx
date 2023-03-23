@@ -19,24 +19,29 @@ interface Iprops {
 
 const WorkConfig: FC<Iprops> = (props) => {
   const { workCondition, intenList, weightList } = props;
-  console.log(workCondition);
 
   const dispatch = useAppDispatch();
 
+  const [chaIntenList, setIntenList] = useState(intenList);
+
+  const [chaWeigList, setWeigList] = useState(weightList);
+
   const onIntensityChange = (value: number, index: number) => {
-    const newIntenWork = [...intenList];
+    const newIntenWork = [...chaIntenList];
 
     newIntenWork[index] = value;
     // setIntenList(newIntenWork);
+    setIntenList(newIntenWork);
     console.log("intentChange", newIntenWork);
     dispatch(changeIntensityListAction(newIntenWork));
   };
 
   const onWeightChange = (value: number, index: number) => {
-    const newWeightWork = [...weightList];
+    const newWeightWork = [...chaWeigList];
 
     newWeightWork[index] = value;
     // setWeightList(newWeightWork);
+    setWeigList(newWeightWork);
 
     console.log("weightChange", newWeightWork);
     dispatch(changeWeightListAction(newWeightWork));
