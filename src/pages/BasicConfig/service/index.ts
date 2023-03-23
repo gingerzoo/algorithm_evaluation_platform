@@ -1,11 +1,6 @@
 import lxrequest from "@/services/index";
-import { Iguid, Inav, Iremo, Ivoice } from "@/type";
+import { Iguid, Inav, Iremo, Iresult, Ivoice } from "@/type";
 import type { Isystem } from "../store/index";
-
-interface Istatus {
-  status: number;
-  info: string;
-}
 
 export function getSystemOverview(docker_name: string) {
   // /baseConfig/loadDocker
@@ -16,7 +11,7 @@ export function getSystemOverview(docker_name: string) {
 
 export function commitData(run_cmd: string, scene: number, data_type: number) {
   // /baseConfig/retConfig
-  return lxrequest.request<Istatus>({
+  return lxrequest.request<Iresult>({
     url: "/baseConfig/retConfig",
     method: "post",
     data: {

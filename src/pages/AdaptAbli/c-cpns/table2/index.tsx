@@ -1,4 +1,4 @@
-import React, { Fragment, memo, useState } from "react";
+import React, { Fragment, memo, useEffect, useState } from "react";
 import type { FC, ReactNode } from "react";
 import { Table2Wrapper } from "./style";
 import { Button, Drawer, Modal, Space } from "antd";
@@ -7,7 +7,7 @@ import { Iconditon } from "@/type";
 import { useAppDispatch, useAppSelector } from "@/store";
 
 import Checkbox, { CheckboxChangeEvent } from "antd/es/checkbox/Checkbox";
-import { tranEntoCh } from "@/assets/data/local_data";
+import { getNote, tranEntoCh } from "@/assets/data/local_data";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 // import {
 //   changeWk1deformationAction,
@@ -20,8 +20,10 @@ import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 // } from "../../store/modules/guide";
 import Add_work from "@/components/add_work";
 import {
+  changeCheckListAction,
   changeGuideNewCondiAction,
   changeNavigateNewCondiAction,
+  changeNeedGenDataAction,
   changeRemoteNewCondiAction,
   changeVoiceNewCondiAction,
   Iwork
@@ -39,23 +41,33 @@ interface Iaction {
 }
 
 const MyTable2: FC<Iprops> = (props) => {
-  const { scene, adapt, newIntensity, newWeight, newCondition } =
-    useAppSelector((state) => ({
-      scene: state.basicConfig.scene,
-      adapt: state.adaptAbili,
-      newIntensity: state.adaptAbili.intensityList,
-      newWeight: state.adaptAbili.weightList,
-      newCondition: state.adaptAbili.conditionList
-    }));
+  const {
+    scene,
+    adapt,
+    newIntensity,
+    newWeight,
+    newCondition,
+    needIntenChange
+  } = useAppSelector((state) => ({
+    scene: state.basicConfig.scene,
+    adapt: state.adaptAbili,
+    newIntensity: state.adaptAbili.intensityList,
+    newWeight: state.adaptAbili.weightList,
+    newCondition: state.adaptAbili.conditionList,
+    needIntenChange: state.adaptAbili.needGenData
+  }));
   const { workConditions } = props;
   const pageScene = location.hash.split("/").pop();
 
+  /* 获得该场景的工况数据 */
   const adaptState = adapt[scene] as Iwork[];
+
+  /* 获得该场景的运行结果 */
+  const sceneResult = adapt[`${scene}Result`] as string[];
   //控制新建工况对话框开关状态
   const [modal2Open, setModal2Open] = useState(false);
   //控制抽屉组件开关的状态
   const [drawerOpen, setDrawOpen] = useState(false);
-
   //点击图片预览时所在工况号
   const [workNum, setWorkNum] = useState(0);
 
@@ -63,24 +75,34 @@ const MyTable2: FC<Iprops> = (props) => {
   const intenArray: number[][] = [];
   //存放某一场景所有工况的权重的二维数组
   const weightArray: number[][] = [];
-  //存放某一场景所有工况的权重的二维数组
-  const noteArray: string[][] = [];
+
   //存放某一场景所有工况的干扰名称的二维数组
   const condiArray: string[][] = [];
+  //存放某一场景所有工况的是否被勾选的一维数组
+  const checkArray: boolean[] = [];
 
-  //分别给存储intensity和weight的两个二维数组初始化初始化
-  adaptState.map((work, workIndex) => {
-    intenArray.push([]);
-    weightArray.push([]);
-    noteArray.push([]);
-    condiArray.push([]);
-    Object.values(work).map((condition, condiIndex) => {
-      condiArray[workIndex].push(Object.keys(work)[condiIndex]);
-      intenArray[workIndex].push(condition.intensity);
-      weightArray[workIndex].push(condition.weight);
-      noteArray[workIndex].push(condition.note);
+  useEffect(() => {
+    console.log("我是useEffect");
+
+    console.log("我是adaptstate1", adaptState);
+    //分别给存储intensity和weight的两个二维数组初始化初始化
+    adaptState?.map((work, workIndex) => {
+      intenArray.push([]);
+      weightArray.push([]);
+      checkArray.push(true);
+      // setCheckList(checkArray);
+      // console.log(checkArray);
+      condiArray.push([]);
+      Object.values(work).map((condition, condiIndex) => {
+        condiArray[workIndex].push(Object.keys(work)[condiIndex]);
+        intenArray[workIndex].push(condition.intensity);
+        weightArray[workIndex].push(condition.weight);
+        //   noteArray[workIndex].push(condition.note);
+      });
     });
-  });
+  }, [adaptState]);
+  //  某一场景所有工况的是否被勾选的状态
+  const [checkList, setCheckList] = useState(checkArray);
 
   const [intenList, setIntenList] = useState(intenArray);
 
@@ -91,10 +113,6 @@ const MyTable2: FC<Iprops> = (props) => {
   const dispatch = useAppDispatch();
 
   const new3Work: Iwork = {};
-
-  const onChange = (e: CheckboxChangeEvent) => {
-    console.log(`checked = ${e.target.checked}`);
-  };
 
   function chooseDispatch(scene: string | undefined, newWorks: Iwork[]) {
     if (typeof scene == "string") {
@@ -117,6 +135,16 @@ const MyTable2: FC<Iprops> = (props) => {
     }
   }
 
+  const checkChangeHandle = (e: CheckboxChangeEvent, workIndex: number) => {
+    console.log(`checked = ${e.target.checked}`);
+    const newCheckList = [...checkList];
+    newCheckList[workIndex] = e.target.checked;
+    setCheckList(newCheckList);
+    // setCheckArray(newCheckList);
+    dispatch(changeCheckListAction(newCheckList));
+    console.log(newCheckList);
+  };
+
   /* 强度/权重值改变时的处理函数 */
   const intensityChange = (
     isAdd: boolean,
@@ -134,8 +162,15 @@ const MyTable2: FC<Iprops> = (props) => {
     const newSceneInten = [...intenArray];
 
     newSceneInten[workIndex][condiIndex] = addNum;
+
     setIntenList(newSceneInten);
+    console.log("newSceneInten", newSceneInten);
+    console.log("intenArray", intenArray);
     /* 改变后的权重数组 */
+
+    if (!needIntenChange) {
+      dispatch(changeNeedGenDataAction(true));
+    }
     condiArray.map((work, workIndex) => {
       const newWork: Iwork = {};
       createOneWork(
@@ -153,8 +188,14 @@ const MyTable2: FC<Iprops> = (props) => {
   /* 点击新建工况按钮的处理函数 */
   function addNewWork() {
     // if(newIntensity.includes())
-    console.log(newIntensity);
-    console.log(newWeight);
+
+    if (!needIntenChange) {
+      dispatch(changeNeedGenDataAction(true));
+    }
+
+    checkList.push(true);
+    setCheckList(checkList);
+    console.log(checkList);
     setModal2Open(false);
     createOneWork(newCondition, newIntensity, newWeight, new3Work);
 
@@ -192,7 +233,13 @@ const MyTable2: FC<Iprops> = (props) => {
                 ? `预设工况${workIndex + 1}`
                 : `自建工况${workIndex + 1}`}
             </span>
-            <Checkbox onChange={onChange} defaultChecked />
+            <Checkbox
+              onChange={(e) => {
+                checkChangeHandle(e, workIndex);
+              }}
+              defaultChecked
+              value={workIndex}
+            />
             <Button
               type="primary"
               size="small"
@@ -254,8 +301,8 @@ const MyTable2: FC<Iprops> = (props) => {
           {" "}
           <span> {workCondition.weight}</span>
         </td>
-        <td>{workCondition.note}</td>
-        {isFirst ? <td rowSpan={condiLen}>A</td> : ""}
+        <td>{getNote[condition]}</td>
+        {isFirst ? <td rowSpan={condiLen}>{sceneResult[workIndex]}</td> : ""}
       </tr>
     );
   }

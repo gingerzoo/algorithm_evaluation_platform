@@ -37,7 +37,6 @@ export function createOneWork(
 ) {
   newCondition.map((item: string, index: number) => {
     const condition = {
-      note: getNote[item],
       intensity: newIntensity[index],
       weight: newWeight[index]
     };

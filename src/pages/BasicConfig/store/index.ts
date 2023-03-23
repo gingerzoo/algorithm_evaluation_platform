@@ -22,7 +22,7 @@ interface Iname {
 }
 
 type Iscene = {
-  scene: "guide" | "navigate" | "remote" | "voice";
+  scene: "" | "guide" | "navigate" | "remote" | "voice";
   sceneNum: number;
   nextPath: string;
   nowProcess: string[];
@@ -40,7 +40,7 @@ type Iscene = {
 };
 const initialState: Iscene = {
   scene: "guide",
-  sceneNum: -1,
+  sceneNum: 0,
   nextPath: "",
   nowProcess: ["基础配置"],
   inputPlace: ``,

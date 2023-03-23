@@ -7,6 +7,7 @@ import {
   changeNextPathAction,
   changeNowProcessAction
 } from "../BasicConfig/store";
+import { Button } from "antd";
 
 interface Iprops {
   children?: ReactNode;
@@ -18,6 +19,7 @@ const BasicWork: FC<Iprops> = () => {
     scene: state.basicConfig.scene,
     nowProcess: state.basicConfig.nowProcess
   }));
+  const pageScene = location.hash.split("/").pop();
 
   function next() {
     const nextPath = `/adapt/${scene}`;
@@ -34,7 +36,14 @@ const BasicWork: FC<Iprops> = () => {
     <WorkWrap>
       <Outlet />
       <div className="next">
-        <span onClick={next}>进行可适应性评估</span>
+        <Button
+          onClick={next}
+          type="primary"
+          disabled={pageScene != scene}
+          className="btn"
+        >
+          进行可适应性评估
+        </Button>
       </div>
     </WorkWrap>
   );

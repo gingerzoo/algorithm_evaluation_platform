@@ -1,12 +1,15 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import navigateAdaptReducer from "./modules/navigate";
-import remoteAdaptReducer from "./modules/remote";
-import voiceAdaptReducer from "./modules/voice";
-import guideAdaptReducer from "./modules/guide";
-import { getWorkCondition, getWorkDefault } from "../services";
+import {
+  getWorkCondition,
+  getWorkDataset,
+  getWorkDefault,
+  getWorkResult
+} from "../services";
 import { workingconditions } from "@/type";
 import { getNote } from "@/assets/data/local_data";
+import { IrootState } from "@/store";
+import { message } from "antd";
 
 export interface Iwork {
   [index: string]: {
@@ -14,17 +17,33 @@ export interface Iwork {
     // note: string;
     intensity: number;
     weight: number;
-    note: string;
   };
 }
 
-//这是干啥的？？？
+//这是干啥的？？？返回的不同场景下condition的列表
 type Icondition = {
   [index: string]: string[];
 };
-export interface Iprop {
+
+export type Iresult = {
+  condition_result: string[];
+  overall: string;
+  status: number;
+  info: string;
+};
+
+export interface Iadapt {
   //   work: "image" | "voice";
-  [index: string]: Iwork[] | string[] | number[] | Icondition | boolean;
+  [index: string]:
+    | Iwork[]
+    | string[]
+    | number[]
+    | Icondition
+    | boolean
+    | number
+    | string
+    | Iresult
+    | boolean[];
   guide: Iwork[];
   navigate: Iwork[];
   remote: Iwork[];
@@ -35,6 +54,15 @@ export interface Iprop {
   weightList: number[];
   genIsPending: boolean;
   testIsPending: boolean;
+  genData_status: number;
+  workResult: string[];
+  needGenData: boolean;
+  guideResult: string[];
+  navigateResult: string[];
+  remoteResult: string[];
+  voiceResult: string[];
+  checkList: boolean[];
+  runResult: Iresult;
 }
 
 export const getWorkCondiAction = createAsyncThunk(
@@ -46,56 +74,156 @@ export const getWorkCondiAction = createAsyncThunk(
   }
 );
 
+/* 拿到默认工况数据 */
 export const getWorkDefaultAction = createAsyncThunk(
-  "workCondition",
+  "defaultData",
   (par, { dispatch }) => {
-    getWorkDefault().then((res) => {
-      dispatch(changeGuideNewCondiAction(res["0"]));
-      dispatch(changeNavigateNewCondiAction(res["1"]));
-      dispatch(changeRemoteNewCondiAction(res["2"]));
-      dispatch(changeVoiceNewCondiAction(res["3"]));
-    });
+    try {
+      getWorkDefault().then((res) => {
+        dispatch(changeGuideNewCondiAction(res["0"]));
+        dispatch(changeNavigateNewCondiAction(res["1"]));
+        dispatch(changeRemoteNewCondiAction(res["2"]));
+        dispatch(changeVoiceNewCondiAction(res["3"]));
+      });
+    } catch (err) {
+      message.open({
+        type: "error",
+        content: "网络请求发生错误",
+        duration: 2
+      });
+    }
   }
 );
 
-const initialState: Iprop = {
+/* 生成对应工况的数据集 */
+export const getWorkDataAction = createAsyncThunk<
+  {
+    status: number;
+    info: string;
+  },
+  void,
+  { state: IrootState }
+>("genDataset", async (par, { dispatch, getState }) => {
+  const scene = getState().basicConfig.scene;
+  const sceneNum = getState().basicConfig.sceneNum;
+  const date_type = getState().basicConfig.dataSet;
+  const interference = getState().adaptAbili[scene] as Iwork[];
+
+  try {
+    const res = await getWorkDataset(sceneNum, date_type, interference);
+    dispatch(changeGenDataStatAction(res.status));
+    return {
+      status: res.status,
+      info: res.info
+    };
+  } catch (err) {
+    return {
+      status: 1,
+      info: "网络请求错误"
+    };
+  }
+});
+
+/*执行工况拿到结果*/
+export const getWorkResultAction = createAsyncThunk<
+  {
+    status: number;
+    info: string;
+  },
+  void,
+  { state: IrootState }
+>("workResult", async (par, { dispatch, getState }) => {
+  const scene = getState().basicConfig.scene;
+  const sceneNum = getState().basicConfig.sceneNum;
+  const date_type = getState().basicConfig.dataSet;
+  const checkList = getState().adaptAbili.checkList;
+  const run_result = getState().adaptAbili.runResult;
+  const newInter: Iwork[] = [];
+  const realResult: string[] = [];
+
+  const interference = getState().adaptAbili[scene] as Iwork[];
+  checkList.forEach((item, index) => {
+    if (item) newInter.push(interference[index]);
+  });
+
+  try {
+    const res = await getWorkResult(sceneNum, date_type, newInter);
+    dispatch(changeRunResult(res));
+    if (res.status == 0) {
+      let count = 0;
+      checkList.forEach((item, index) => {
+        if (item) {
+          realResult.push(run_result.condition_result[count]);
+          count++;
+        } else {
+          realResult.push("");
+        }
+      });
+      switch (scene) {
+        case "guide":
+          dispatch(changeGuideResAction(realResult));
+          break;
+        case "navigate":
+          dispatch(changeNaviResAction(realResult));
+          break;
+        case "remote":
+          dispatch(changeRemoResAction(realResult));
+          break;
+        case "voice":
+          dispatch(changeVoiResAction(realResult));
+          break;
+        default:
+          break;
+      }
+    }
+    return {
+      status: res.status,
+      info: res.info
+    };
+  } catch (err) {
+    return {
+      status: 1,
+      info: "网络请求错误"
+    };
+  }
+});
+
+const initialState: Iadapt = {
   guide: [
     {
       occlusion: {
-        note: getNote["occlusion"],
         intensity: 1,
         weight: 1
       },
       illumination: {
         intensity: 2,
-        note: getNote["illumination"],
+
         weight: 1
       },
       deformation: {
         intensity: 3,
-        note: getNote["deformation"],
+
         weight: 1
       },
       noise: {
         intensity: 4,
-        note: getNote["noise"],
+
         weight: 1
       }
     },
     {
       cloud: {
         intensity: 6,
-        note: getNote["cloud"],
+
         weight: 1
       },
       illumination: {
         intensity: 8,
-        note: getNote["illumination"],
+
         weight: 1
       },
 
       blur: {
-        note: getNote["blur"],
         intensity: 3,
         weight: 1
       }
@@ -105,39 +233,36 @@ const initialState: Iprop = {
     {
       occlusion: {
         intensity: 0,
-        weight: 0,
-        note: ""
+        weight: 0
       },
       illumination: {
         intensity: 0,
-        weight: 0,
-        note: ""
+        weight: 0
       },
       deformation: {
         intensity: 0,
-        note: "",
+
         weight: 0
       },
       noise: {
         intensity: 0,
-        note: "",
+
         weight: 0
       }
     },
     {
       cloud: {
         intensity: 0,
-        note: "",
+
         weight: 0
       },
       illumination: {
         intensity: 0,
-        note: "",
+
         weight: 0
       },
 
       blur: {
-        note: "",
         intensity: 0,
 
         weight: 0
@@ -148,22 +273,20 @@ const initialState: Iprop = {
     {
       occlusion: {
         intensity: 0,
-        weight: 0,
-        note: ""
+        weight: 0
       },
       illumination: {
         intensity: 0,
-        weight: 0,
-        note: ""
+        weight: 0
       },
       deformation: {
         intensity: 0,
-        note: "",
+
         weight: 0
       },
       noise: {
         intensity: 0,
-        note: "",
+
         weight: 0
       }
     },
@@ -171,17 +294,16 @@ const initialState: Iprop = {
     {
       cloud: {
         intensity: 0,
-        note: "",
+
         weight: 0
       },
       illumination: {
         intensity: 0,
-        note: "",
+
         weight: 0
       },
 
       blur: {
-        note: "",
         intensity: 0,
         weight: 0
       }
@@ -190,13 +312,11 @@ const initialState: Iprop = {
   voice: [
     {
       explosion: {
-        note: "爆炸音",
         intensity: 1,
 
         weight: 1
       },
       signalLoss: {
-        note: "丢码",
         intensity: 1,
         weight: 1
       }
@@ -204,13 +324,11 @@ const initialState: Iprop = {
 
     {
       explosion: {
-        note: "爆炸音",
         intensity: 1,
 
         weight: 1
       },
       signalLoss: {
-        note: "丢码",
         intensity: 1,
         weight: 1
       }
@@ -225,8 +343,22 @@ const initialState: Iprop = {
   conditionList: [""],
   intensityList: [],
   weightList: [],
-  genIsPending: true,
-  testIsPending: false
+  genIsPending: false,
+  testIsPending: true,
+  genData_status: -1,
+  workResult: [],
+  needGenData: false,
+  guideResult: [],
+  navigateResult: [],
+  remoteResult: [],
+  voiceResult: [],
+  checkList: [],
+  runResult: {
+    condition_result: [],
+    overall: "",
+    status: -1,
+    info: ""
+  }
 };
 const adaptSlice = createSlice({
   name: "adaptSlice",
@@ -255,7 +387,54 @@ const adaptSlice = createSlice({
     },
     changeVoiceNewCondiAction(state, { payload }) {
       state.voice = payload;
+    },
+    changeGenDataStatAction(state, { payload }) {
+      state.genData_status = payload;
+    },
+    changeWorkResultAction(state, { payload }) {
+      state.workResult = payload;
+    },
+    changeNeedGenDataAction(state, { payload }) {
+      state.needGenData = payload;
+    },
+    changeRunResult(state, { payload }) {},
+    changeGuideResAction(state, { payload }) {
+      state.guideResult = payload;
+    },
+    changeNaviResAction(state, { payload }) {
+      state.navigateResult = payload;
+    },
+    changeRemoResAction(state, { payload }) {
+      state.remoteResult = payload;
+    },
+    changeVoiResAction(state, { payload }) {
+      state.voiceResult = payload;
+    },
+    changeCheckListAction(state, { payload }) {
+      state.checkList = payload;
     }
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getWorkDataAction.pending, (state) => {
+        state.genIsPending = true;
+      })
+      .addCase(getWorkDataAction.fulfilled, (state) => {
+        state.genIsPending = false;
+      })
+      .addCase(getWorkDataAction.rejected, (state) => {
+        state.genIsPending = false;
+      });
+    builder
+      .addCase(getWorkResultAction.pending, (state) => {
+        state.testIsPending = true;
+      })
+      .addCase(getWorkResultAction.fulfilled, (state) => {
+        state.testIsPending = false;
+      })
+      .addCase(getWorkResultAction.rejected, (state) => {
+        state.testIsPending = false;
+      });
   }
 });
 
@@ -276,5 +455,14 @@ export const {
   changeGuideNewCondiAction,
   changeNavigateNewCondiAction,
   changeRemoteNewCondiAction,
-  changeVoiceNewCondiAction
+  changeVoiceNewCondiAction,
+  changeGenDataStatAction,
+  changeWorkResultAction,
+  changeNeedGenDataAction,
+  changeGuideResAction,
+  changeNaviResAction,
+  changeRemoResAction,
+  changeVoiResAction,
+  changeCheckListAction,
+  changeRunResult
 } = adaptSlice.actions;

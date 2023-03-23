@@ -1,21 +1,25 @@
 import styled from "styled-components";
 
-export const AdaptWraper = styled.div`
+type Istate = {
+  canTest: boolean;
+};
+
+export const AdaptWraper = styled.div<Istate>`
   .operate {
     display: flex;
-    justify-content: flex-end;
-    /* padding-right: 1.5vw; */
-    margin-top: 1.5vw;
+    /* justify-content: flex-end; */
+    padding-left: 3.2vw;
+    margin-top: 2vw;
 
-    .btn {
-      padding: 1vw 1.6vw;
+    .spinning {
+      margin: 0 3vw 0 2vw;
+    }
+
+    .ant-btn.btn {
+      height: auto;
+      font-size: 1.3vw;
+      padding: 0.6vw 1.6vw;
       border-radius: 8px;
-      background-color: #1890ff;
-      color: white;
-      &:hover {
-        cursor: pointer;
-        background-color: #447ed9;
-      }
     }
   }
 `;

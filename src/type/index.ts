@@ -76,7 +76,6 @@ export interface Iconditon {
   // condition: string;
   intensity: number;
   weight: number;
-  note: string;
 }
 
 // export interface Iconditons {
@@ -84,3 +83,8 @@ export interface Iconditon {
 //   tranChtoEn?: Iwork;
 //   workCondition3?: Iwork;
 // }
+
+export interface Iresult {
+  status: number;
+  info: string;
+}
