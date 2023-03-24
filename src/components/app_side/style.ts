@@ -5,6 +5,9 @@ export const SideWrap = styled.div`
   width: 20vw;
   min-width: 200px;
   /* max-width: 12.63px; */
+  ul.ant-menu {
+    font-size: 1.15vw;
+  }
 
   li.ant-menu-item,
   div.ant-menu-submenu-title {

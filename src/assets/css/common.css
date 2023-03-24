@@ -7,7 +7,6 @@
   margin: 0 auto;
 }
 .table_v1 {
-  width: 880px;
   margin: 0 auto;
   border-collapse: collapse;
   text-align: center;
@@ -16,7 +15,7 @@
 .table_v1 td,
 .table_v1 th {
   border: 1px solid #dbdbdb;
-  padding: 2vh 0;
+  padding: 0.7vw 0;
 }
 .table_color tbody tr:nth-child(2n + 1) {
   background-color: #f2f2f2;

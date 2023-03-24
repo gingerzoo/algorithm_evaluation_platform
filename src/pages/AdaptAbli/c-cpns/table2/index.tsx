@@ -9,6 +9,7 @@ import { useAppDispatch, useAppSelector } from "@/store";
 import Checkbox, { CheckboxChangeEvent } from "antd/es/checkbox/Checkbox";
 import { getNote, tranEntoCh } from "@/assets/data/local_data";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
+import MyCarousel from "@/components/carousel";
 // import {
 //   changeWk1deformationAction,
 //   changeWk1illuminationAction,
@@ -22,10 +23,12 @@ import Add_work from "@/components/add_work";
 import {
   changeCheckListAction,
   changeGuideNewCondiAction,
+  changeImgUrlAction,
   changeNavigateNewCondiAction,
   changeNeedGenDataAction,
   changeRemoteNewCondiAction,
   changeVoiceNewCondiAction,
+  getImgAction,
   Iwork
 } from "../../store";
 import { createOneWork } from "@/utils/getItem";
@@ -210,6 +213,7 @@ const MyTable2: FC<Iprops> = (props) => {
   function viewImage(workIndex: number) {
     setDrawOpen(true);
     setWorkNum(workIndex + 1);
+    dispatch(getImgAction({ workIndex, picIndex: 0 }));
     console.log(workIndex + 1);
   }
 
@@ -225,30 +229,34 @@ const MyTable2: FC<Iprops> = (props) => {
     return (
       <tr key={`${workIndex}-${condition}`}>
         {isFirst ? (
-          <td rowSpan={condiLen} style={{ width: "9vw" }}>
-            <span className="preWork">
-              {" "}
-              {workIndex <= 1
-                ? `预设工况${workIndex + 1}`
-                : `自建工况${workIndex + 1}`}
-            </span>
-            <Checkbox
-              onChange={(e) => {
-                checkChangeHandle(e, workIndex);
-              }}
-              defaultChecked
-              value={workIndex}
-            />
-            <Button
-              type="primary"
-              size="small"
-              className="viewPic"
-              onClick={() => {
-                viewImage(workIndex);
-              }}
-            >
-              图片预览
-            </Button>
+          <td rowSpan={condiLen} style={{ width: "9vw" }} className="title-pic">
+            <div className="box-box">
+              <div className="preWork">
+                <span className="title">
+                  {workIndex <= 1
+                    ? `预设工况${workIndex + 1}`
+                    : `自建工况${workIndex + 1}`}
+                  <Checkbox
+                    onChange={(e) => {
+                      checkChangeHandle(e, workIndex);
+                    }}
+                    defaultChecked
+                    value={workIndex}
+                  />
+                </span>
+              </div>
+
+              <Button
+                type="primary"
+                // size="small"
+                className="viewPic"
+                onClick={() => {
+                  viewImage(workIndex);
+                }}
+              >
+                图片预览
+              </Button>
+            </div>
           </td>
         ) : (
           ""
@@ -375,7 +383,7 @@ const MyTable2: FC<Iprops> = (props) => {
             })}
 
           <tr>
-            <td colSpan={6}>
+            <td colSpan={6} className="add-work">
               {
                 <>
                   <Button
@@ -390,7 +398,7 @@ const MyTable2: FC<Iprops> = (props) => {
                   <Modal
                     title="新建工况"
                     centered
-                    width={"40%"}
+                    width={"30%"}
                     open={modal2Open}
                     onOk={() => addNewWork()}
                     onCancel={() => setModal2Open(false)}
@@ -435,7 +443,9 @@ const MyTable2: FC<Iprops> = (props) => {
           </Space>
         }
       >
-        <p>工况{workNum}</p>
+        <div className="drawer-content">
+          <MyCarousel />
+        </div>
       </Drawer>
     </Table2Wrapper>
   );

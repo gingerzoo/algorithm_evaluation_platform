@@ -18,7 +18,7 @@ export const AdaptWraper = styled.div<Istate>`
     .ant-btn.btn {
       height: auto;
       font-size: 1.3vw;
-      padding: 0.6vw 1.6vw;
+      padding: 0.5vw 1.5vw;
       border-radius: 8px;
     }
   }

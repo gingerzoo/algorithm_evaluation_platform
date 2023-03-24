@@ -40,14 +40,12 @@ const MyTable: FC<Iprops> = (props) => {
           <td colSpan={5}>算法功能实现的准确性</td>
         </tr>
         <tr>
-          <td rowSpan={props.secIndex.length + 1} className="row-sub-header">
-            二级指标
-          </td>
+          <td rowSpan={props.secIndex.length + 1}>二级指标</td>
           <td style={{ width: "11.8vw" }}>名称</td>
           <td>评估工作</td>
-          <td style={{ width: "5.6vw" }}>权重</td>
-          <td style={{ width: "7vw" }}>得分</td>
-          <td style={{ width: "5.6vw" }}>结果</td>
+          <td style={{ width: "6vw" }}>权重</td>
+          <td style={{ width: "7.2vw" }}>得分</td>
+          <td style={{ width: "6vw" }}>结果</td>
         </tr>
         {secIndex.map((item, index) => {
           return (
@@ -103,19 +101,19 @@ const MyTable: FC<Iprops> = (props) => {
             <td>{nowModelName}算法</td>
           </tr>
           <tr>
-            <td className="row-header">算法说明</td>
+            <td>算法说明</td>
             <td>
               {nowModelName}算法采用xxx方案,实现{pageScene}效果
             </td>
           </tr>
           <tr>
-            <td className="row-header">输入说明</td>
+            <td>输入说明</td>
             <td>
               数据集为{subs[sceneNum]?.title}的{datasets[dataset]}样本
             </td>
           </tr>
           <tr>
-            <td className="row-header">主要活动</td>
+            <td>主要活动</td>
             <td className="no-pad nest">{secondIndex}</td>
           </tr>
         </tbody>

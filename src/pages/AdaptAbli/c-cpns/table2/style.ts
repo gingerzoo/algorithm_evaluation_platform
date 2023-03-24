@@ -16,8 +16,8 @@ export const Table2Wrapper = styled.div`
   }
   table {
     /* width: 900px; */
-    /* min-width: 850px; */
-    /* width: 70vw; */
+
+    min-width: 70vw;
     td {
       .intensity,
       .weight {
@@ -28,10 +28,47 @@ export const Table2Wrapper = styled.div`
       }
 
       .preWork {
-        margin-right: 0.5vw;
+        display: flex;
+        justify-content: center;
+        .title {
+          position: relative;
+          span.ant-checkbox {
+            position: absolute;
+            right: -15px;
+            top: -7px;
+            span.ant-checkbox-inner {
+              height: 15px;
+              width: 15px;
+            }
+          }
+        }
+
+        /* justify-content: center; */
+        /* margin: 0 0.5vw; */
+        /* margin-right: 0.5vw; */
+        /* span {
+          padding: 0 0.3vw 0 0.2vw;
+        } */
       }
+
       .viewPic {
         margin-top: 0.4vw;
+      }
+
+      &.add-work {
+        line-height: 2.9vw;
+      }
+      .box-box {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 0 0.5vw;
+        .viewPic {
+          margin-top: 0.5vw;
+        }
+        button.ant-btn {
+          padding: 0;
+        }
       }
 
       .ant-modal .ant-modal-content .ant-modal-header .ant-modal-title {

@@ -76,6 +76,7 @@ export function getWorkResult(
 export function getViewPic(
   scene: number,
   data_type: number,
+  index_img: number,
   interference: Ipic
 ) {
   return lxrequset.request<Iresult>({
@@ -84,6 +85,7 @@ export function getViewPic(
     data: {
       scene,
       data_type,
+      index_img,
       interference
     }
   });

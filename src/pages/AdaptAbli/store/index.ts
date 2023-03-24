@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 import {
+  getViewPic,
   getWorkCondition,
   getWorkDataset,
   getWorkDefault,
@@ -63,6 +64,7 @@ export interface Iadapt {
   voiceResult: string[];
   checkList: boolean[];
   runResult: Iresult;
+  imgUrl: string;
 }
 
 export const getWorkCondiAction = createAsyncThunk(
@@ -142,7 +144,7 @@ export const getWorkResultAction = createAsyncThunk<
   const realResult: string[] = [];
 
   const interference = getState().adaptAbili[scene] as Iwork[];
-  checkList.forEach((item, index) => {
+  checkList.forEach((item: boolean, index: number) => {
     if (item) newInter.push(interference[index]);
   });
   console.log("newInter", newInter);
@@ -186,6 +188,47 @@ export const getWorkResultAction = createAsyncThunk<
       status: 1,
       info: "网络请求错误"
     };
+  }
+});
+
+/* 请求发送图片 */
+export const getImgAction = createAsyncThunk<
+  void,
+  {
+    workIndex: number;
+    picIndex: number;
+  },
+  { state: IrootState }
+>("getImage", async (par, { dispatch, getState }) => {
+  console.log("hi");
+  const scene = getState().basicConfig.scene;
+  const sceneNum = getState().basicConfig.sceneNum;
+  const date_type = getState().basicConfig.dataSet;
+  const interference = getState().adaptAbili[scene] as Iwork[];
+  const nowWork = interference[par.workIndex];
+  const sendCondition = {};
+  Object.values(nowWork).map((item, index) => {
+    Object.defineProperty(sendCondition, Object.keys(nowWork)[index], {
+      value: item.intensity,
+      writable: true,
+      //一定要把enumerable设为true,否则新添加的属性是打印不出来的（不可枚举）
+      enumerable: true
+    });
+  });
+
+  console.log("发送了请求图片的网络请求");
+
+  try {
+    const res = await getViewPic(
+      sceneNum,
+      date_type,
+      par.picIndex,
+      sendCondition
+    );
+    console.log("服务器返回的图片数据:", res);
+    console.log("图片数据类型:", typeof res);
+  } catch (err) {
+    console.log("发送图片的请求网络错误！");
   }
 });
 
@@ -359,7 +402,8 @@ const initialState: Iadapt = {
     overall: "",
     status: -1,
     info: ""
-  }
+  },
+  imgUrl: ""
 };
 const adaptSlice = createSlice({
   name: "adaptSlice",
@@ -415,6 +459,9 @@ const adaptSlice = createSlice({
     },
     changeCheckListAction(state, { payload }) {
       state.checkList = payload;
+    },
+    changeImgUrlAction(state, { payload }) {
+      state.imgUrl = payload;
     }
   },
   extraReducers: (builder) => {
@@ -467,5 +514,6 @@ export const {
   changeRemoResAction,
   changeVoiResAction,
   changeCheckListAction,
-  changeRunResult
+  changeRunResult,
+  changeImgUrlAction
 } = adaptSlice.actions;

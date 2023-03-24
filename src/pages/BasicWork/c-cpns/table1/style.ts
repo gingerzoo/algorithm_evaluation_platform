@@ -7,6 +7,7 @@ interface Iprops {
 export const TableWrap = styled.div<Iprops>`
   table {
     /* width: 100%; */
+    min-width: 70vw;
 
     .no-pad {
       padding: 0;
@@ -24,7 +25,8 @@ export const TableWrap = styled.div<Iprops>`
   }
 
   .smalltable {
-    width: 62.5vw;
+    max-width: 63vw;
+    min-width: 62vw;
     /* border: none; */
     border-width: 0px;
     border-style: hidden;
