@@ -79,7 +79,7 @@ export function getViewPic(
   index_img: number,
   interference: Ipic
 ) {
-  return lxrequset.request<Iresult>({
+  return lxrequset.request({
     url: "/adaptability/imgDemo",
     method: "post",
     data: {

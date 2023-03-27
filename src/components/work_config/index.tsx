@@ -4,47 +4,45 @@ import { WorkConfigWrap } from "./style";
 import { InputNumber } from "antd";
 import { tranEntoCh } from "@/assets/data/local_data";
 import { useAppDispatch } from "@/store";
-import {
-  changeIntensityListAction,
-  changeWeightListAction
-} from "@/pages/AdaptAbli/store";
-import userEvent from "@testing-library/user-event";
+import { changeNewWorkObjAction, Iwork } from "@/pages/AdaptAbli/store";
 
 interface Iprops {
   children?: ReactNode;
   workCondition: string[];
   intenList: number[];
   weightList: number[];
+  newWork: Iwork;
 }
 
 const WorkConfig: FC<Iprops> = (props) => {
-  const { workCondition, intenList, weightList } = props;
+  const { workCondition, newWork, intenList, weightList } = props;
 
   const dispatch = useAppDispatch();
 
-  const [chaIntenList, setIntenList] = useState(intenList);
-
-  const [chaWeigList, setWeigList] = useState(weightList);
-
   const onIntensityChange = (value: number, index: number) => {
-    const newIntenWork = [...chaIntenList];
-
-    newIntenWork[index] = value;
-    // setIntenList(newIntenWork);
-    setIntenList(newIntenWork);
-    console.log("intentChange", newIntenWork);
-    dispatch(changeIntensityListAction(newIntenWork));
+    // console.log("weigtList", weightList);
+    dispatch(
+      changeNewWorkObjAction({
+        ...newWork,
+        [workCondition[index]]: {
+          intensity: value,
+          weight: weightList[index]
+        }
+      })
+    );
   };
 
   const onWeightChange = (value: number, index: number) => {
-    const newWeightWork = [...chaWeigList];
-
-    newWeightWork[index] = value;
-    // setWeightList(newWeightWork);
-    setWeigList(newWeightWork);
-
-    console.log("weightChange", newWeightWork);
-    dispatch(changeWeightListAction(newWeightWork));
+    // console.log("intentList", intenList);
+    dispatch(
+      changeNewWorkObjAction({
+        ...newWork,
+        [workCondition[index]]: {
+          intensity: intenList[index],
+          weight: value
+        }
+      })
+    );
   };
 
   return (

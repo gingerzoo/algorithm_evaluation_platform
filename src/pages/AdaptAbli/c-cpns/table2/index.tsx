@@ -10,15 +10,6 @@ import Checkbox, { CheckboxChangeEvent } from "antd/es/checkbox/Checkbox";
 import { getNote, tranEntoCh } from "@/assets/data/local_data";
 import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
 import MyCarousel from "@/components/carousel";
-// import {
-//   changeWk1deformationAction,
-//   changeWk1illuminationAction,
-//   changeWk1noiseAction,
-//   changeWk1occlusionAction,
-//   changeWk2blurAction,
-//   changeWk2cloudAction,
-//   changeWk2illuminationAction
-// } from "../../store/modules/guide";
 import Add_work from "@/components/add_work";
 import {
   changeCheckListAction,
@@ -44,23 +35,16 @@ interface Iaction {
 }
 
 const MyTable2: FC<Iprops> = (props) => {
-  const {
-    scene,
-    adapt,
-    newIntensity,
-    newWeight,
-    newCondition,
-    needCenDataChange
-  } = useAppSelector((state) => ({
-    scene: state.basicConfig.scene,
-    adapt: state.adaptAbili,
-    newIntensity: state.adaptAbili.intensityList,
-    newWeight: state.adaptAbili.weightList,
-    newCondition: state.adaptAbili.conditionList,
-    needCenDataChange: state.adaptAbili.needGenData
-  }));
+  const { scene, adapt, needCenDataChange, newWork, picIndex } = useAppSelector(
+    (state) => ({
+      scene: state.basicConfig.scene,
+      adapt: state.adaptAbili,
+      needCenDataChange: state.adaptAbili.needGenData,
+      newWork: state.adaptAbili.newWorkObj,
+      picIndex: state.adaptAbili.picIndex
+    })
+  );
   const { workConditions } = props;
-  const pageScene = location.hash.split("/").pop();
 
   /* 获得该场景的工况数据 */
   const adaptState = adapt[scene] as Iwork[];
@@ -101,20 +85,21 @@ const MyTable2: FC<Iprops> = (props) => {
         //   noteArray[workIndex].push(condition.note);
       });
     });
-  });
+    // dispatch(getImgAction({ workIndex: workNum, picIndex }));
+  }, [adapt]);
+
+  useEffect(() => {
+    console.log("useEffect中发送了图片的网络请求");
+    dispatch(getImgAction({ workIndex: workNum, picIndex }));
+  }, [workNum]);
   //  某一场景所有工况的是否被勾选的状态
   const [checkList, setCheckList] = useState(checkArray);
 
   /*  这里用state不太好使用，因为新建工况中新添加的强度它没办法知道 */
   //   const [intenList, setIntenList] = useState(intenArray);
-
-  const [weightList, setWeightList] = useState(weightArray);
-
-  //   const [condiList, setCondiList] = useState(condiArray);
+  //   const [weightList, setWeightList] = useState(weightArray);
 
   const dispatch = useAppDispatch();
-
-  const new3Work: Iwork = {};
 
   function chooseDispatch(scene: string | undefined, newWorks: Iwork[]) {
     if (typeof scene == "string") {
@@ -160,7 +145,6 @@ const MyTable2: FC<Iprops> = (props) => {
     const addNum = isAdd ? nowInten + 1 : nowInten - 1;
 
     // console.log("intenArray", intenArray);
-
     /* 改变后的强度数组 */
     const newSceneInten = [...intenArray];
 
@@ -185,6 +169,10 @@ const MyTable2: FC<Iprops> = (props) => {
     });
     // console.log(newAllwork);
     chooseDispatch(scene, newAllwork);
+    if (drawerOpen) {
+      dispatch(getImgAction({ workIndex: workNum, picIndex }));
+      console.log("应该获得新图片，因为改变了强度");
+    }
   };
 
   /* 点击新建工况按钮的处理函数 */
@@ -197,23 +185,23 @@ const MyTable2: FC<Iprops> = (props) => {
 
     checkList.push(true);
     setCheckList(checkList);
-    console.log(checkList);
     setModal2Open(false);
-    createOneWork(newCondition, newIntensity, newWeight, new3Work);
+    // createOneWork(newCondition as string[], newIntensity, newWeight, new3Work);
 
     //push方法返回的是新数组的长度！！！！！！！！！！！
     //pop() 方法移除数组的最后一个元素，并返回该元素。
     //shift()删除数组的第一个元素，并返回该元素。
-    const newWork = [...adaptState];
-    newWork.push(new3Work);
-    chooseDispatch(scene, newWork);
+    const newWorks = [...adaptState];
+    newWorks.push(newWork);
+    chooseDispatch(scene, newWorks);
   }
 
   /* 点击图片预览按钮的处理函数 */
   function viewImage(workIndex: number) {
     setDrawOpen(true);
+    // dispatch(getImgAction({ workIndex, picIndex }));
     setWorkNum(workIndex + 1);
-    dispatch(getImgAction({ workIndex, picIndex: 0 }));
+
     console.log(workIndex + 1);
   }
 
@@ -339,8 +327,6 @@ const MyTable2: FC<Iprops> = (props) => {
           {workConditions &&
             workConditions.map((works, workIndex) => {
               const itemworkValue = Object.values(works);
-              //   console.log("works", works);
-              //   console.log("itemworkValue", itemworkValue);
               const itemKeys = Object.keys(works);
               //   console.log(itemKeys);
 
@@ -421,7 +407,7 @@ const MyTable2: FC<Iprops> = (props) => {
         </tbody>
       </table>
       <Drawer
-        title={`图片预览 - 工况${workNum}`}
+        title={`图片预览 - 工况${workNum} - 图片${picIndex + 1}`}
         // placement={placn
         width={"38vw"}
         maskClosable={false}
@@ -444,7 +430,7 @@ const MyTable2: FC<Iprops> = (props) => {
         }
       >
         <div className="drawer-content">
-          <MyCarousel />
+          <MyCarousel workNum={workNum} />
         </div>
       </Drawer>
     </Table2Wrapper>

@@ -7,9 +7,7 @@ import { useAppDispatch, useAppSelector } from "@/store";
 import Work_config from "../work_config";
 import {
   changeConditionList,
-  changeIntensityListAction,
-  changeWeightListAction,
-  changeWorkConditionAction,
+  changeNewWorkObjAction,
   getWorkCondiAction
 } from "@/pages/AdaptAbli/store";
 
@@ -18,29 +16,13 @@ interface Iprops {
 }
 
 const AddWork: FC<Iprops> = (props) => {
-  const { workConditions, scene, sceneNum } = useAppSelector((state) => ({
-    workConditions: state.adaptAbili.workCondition,
+  const { scene, WorkObj } = useAppSelector((state) => ({
     scene: state.basicConfig.scene,
-    sceneNum: state.basicConfig.sceneNum,
-    conditionList: state.adaptAbili.conditionList
+    WorkObj: state.adaptAbili.newWorkObj
   }));
 
-  const conditionList = workConditions[sceneNum.toString()];
-
   const disptach = useAppDispatch();
-
-  //   const options: SelectProps["options"] = conditionList?.map((item) => {
-  //     return {
-  //       value: item,
-  //       label: tranEntoCh[item]
-  //     };
-  //   });
-
   const [addCondition, setAddCondis] = useState([""]);
-
-  const [intenList, setIntenList] = useState([0]);
-
-  const [weightList, setWeightList] = useState([0]);
 
   const options: SelectProps["options"] = picWorkCondition?.map((item) => {
     return {
@@ -50,14 +32,29 @@ const AddWork: FC<Iprops> = (props) => {
   });
 
   const handleChange = (value: string[]) => {
-    console.log(value);
+    // console.log(value);
     setAddCondis(value);
-    disptach(changeConditionList(value));
-    setIntenList(new Array(value.length).fill(0));
-    setWeightList(new Array(value.length).fill(0));
-    disptach(changeIntensityListAction(new Array(value.length).fill(0)));
 
-    disptach(changeWeightListAction(new Array(value.length).fill(0)));
+    const newWorkObj = { ...WorkObj };
+    if (value.length >= addCondition.length) {
+      Object.defineProperty(newWorkObj, value[value.length - 1], {
+        value: {
+          intensity: 0,
+          weight: 0
+        },
+        enumerable: true,
+        configurable: true,
+        writable: true
+      });
+    } else {
+      const myCondition = addCondition.filter((item) => !value.includes(item));
+      //   console.log(myCondition);
+      delete newWorkObj[myCondition[0]];
+    }
+
+    disptach(changeConditionList(value));
+    disptach(changeNewWorkObjAction(newWorkObj));
+    console.log("newWorkObj", newWorkObj);
   };
 
   useEffect(() => {
@@ -79,8 +76,9 @@ const AddWork: FC<Iprops> = (props) => {
       <div className="disturb-config">
         <Work_config
           workCondition={addCondition}
-          intenList={intenList}
-          weightList={weightList}
+          intenList={Object.values(WorkObj).map((item) => item.intensity)}
+          weightList={Object.values(WorkObj).map((item) => item.weight)}
+          newWork={WorkObj}
         />
       </div>
     </AddworkWrapper>

@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Base64 } from "js-base64";
 
 import {
   getViewPic,
@@ -7,8 +8,6 @@ import {
   getWorkDefault,
   getWorkResult
 } from "../services";
-import { workingconditions } from "@/type";
-import { getNote } from "@/assets/data/local_data";
 import { IrootState } from "@/store";
 import { message } from "antd";
 
@@ -44,15 +43,15 @@ export interface Iadapt {
     | number
     | string
     | Iresult
-    | boolean[];
+    | boolean[]
+    | Iwork;
   guide: Iwork[];
   navigate: Iwork[];
   remote: Iwork[];
   voice: Iwork[];
   workCondition: Icondition;
   conditionList: string[];
-  intensityList: number[];
-  weightList: number[];
+  newWorkObj: Iwork;
   genIsPending: boolean;
   testIsPending: boolean;
   genData_status: number;
@@ -65,6 +64,7 @@ export interface Iadapt {
   checkList: boolean[];
   runResult: Iresult;
   imgUrl: string;
+  picIndex: number;
 }
 
 export const getWorkCondiAction = createAsyncThunk(
@@ -193,7 +193,9 @@ export const getWorkResultAction = createAsyncThunk<
 
 /* 请求发送图片 */
 export const getImgAction = createAsyncThunk<
-  void,
+  {
+    baseUrl: string;
+  },
   {
     workIndex: number;
     picIndex: number;
@@ -216,7 +218,7 @@ export const getImgAction = createAsyncThunk<
     });
   });
 
-  console.log("发送了请求图片的网络请求");
+  //   console.log("发送了请求图片的网络请求");
 
   try {
     const res = await getViewPic(
@@ -225,10 +227,15 @@ export const getImgAction = createAsyncThunk<
       par.picIndex,
       sendCondition
     );
-    console.log("服务器返回的图片数据:", res);
-    console.log("图片数据类型:", typeof res);
+    dispatch(changeImgUrlAction(res));
+    // console.log("服务器返回的图片数据:", res);
+    // console.log("图片数据类型:", typeof res);
+    return { baseUrl: res };
   } catch (err) {
     console.log("发送图片的请求网络错误！");
+    return {
+      baseUrl: ""
+    };
   }
 });
 
@@ -384,9 +391,7 @@ const initialState: Iadapt = {
     2: [""],
     3: [""]
   },
-  conditionList: [""],
-  intensityList: [],
-  weightList: [],
+  conditionList: [],
   genIsPending: false,
   testIsPending: false,
   genData_status: -1,
@@ -403,7 +408,9 @@ const initialState: Iadapt = {
     status: -1,
     info: ""
   },
-  imgUrl: ""
+  imgUrl: "",
+  newWorkObj: {},
+  picIndex: 0
 };
 const adaptSlice = createSlice({
   name: "adaptSlice",
@@ -462,6 +469,12 @@ const adaptSlice = createSlice({
     },
     changeImgUrlAction(state, { payload }) {
       state.imgUrl = payload;
+    },
+    changeNewWorkObjAction(state, { payload }) {
+      state.newWorkObj = payload;
+    },
+    changePicIndexAction(state, { payload }) {
+      state.picIndex = payload;
     }
   },
   extraReducers: (builder) => {
@@ -499,8 +512,6 @@ export default adaptSlice.reducer;
 
 export const {
   changeWorkConditionAction,
-  changeIntensityListAction,
-  changeWeightListAction,
   changeConditionList,
   changeGuideNewCondiAction,
   changeNavigateNewCondiAction,
@@ -515,5 +526,7 @@ export const {
   changeVoiResAction,
   changeCheckListAction,
   changeRunResult,
-  changeImgUrlAction
+  changeImgUrlAction,
+  changeNewWorkObjAction,
+  changePicIndexAction
 } = adaptSlice.actions;
