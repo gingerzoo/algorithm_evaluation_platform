@@ -35,15 +35,15 @@ interface Iaction {
 }
 
 const MyTable2: FC<Iprops> = (props) => {
-  const { scene, adapt, needCenDataChange, newWork, picIndex } = useAppSelector(
-    (state) => ({
+  const { scene, adapt, needCenDataChange, newWork, picIndex, imgUrl } =
+    useAppSelector((state) => ({
       scene: state.basicConfig.scene,
       adapt: state.adaptAbili,
       needCenDataChange: state.adaptAbili.needGenData,
       newWork: state.adaptAbili.newWorkObj,
-      picIndex: state.adaptAbili.picIndex
-    })
-  );
+      picIndex: state.adaptAbili.picIndex,
+      imgUrl: state.adaptAbili.imgUrl
+    }));
   const { workConditions } = props;
 
   /* 获得该场景的工况数据 */
@@ -86,7 +86,7 @@ const MyTable2: FC<Iprops> = (props) => {
       });
     });
     // dispatch(getImgAction({ workIndex: workNum, picIndex }));
-  }, [adapt]);
+  });
 
   useEffect(() => {
     console.log("useEffect中发送了图片的网络请求");
@@ -144,7 +144,7 @@ const MyTable2: FC<Iprops> = (props) => {
     /* 改变后的强度值 */
     const addNum = isAdd ? nowInten + 1 : nowInten - 1;
 
-    // console.log("intenArray", intenArray);
+    console.log("intenArray", intenArray);
     /* 改变后的强度数组 */
     const newSceneInten = [...intenArray];
 
@@ -198,7 +198,7 @@ const MyTable2: FC<Iprops> = (props) => {
 
   /* 点击图片预览按钮的处理函数 */
   function viewImage(workIndex: number) {
-    setDrawOpen(true);
+    setDrawOpen((drawerOpen) => !drawerOpen);
     // dispatch(getImgAction({ workIndex, picIndex }));
     setWorkNum(workIndex + 1);
 

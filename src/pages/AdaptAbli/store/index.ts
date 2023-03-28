@@ -202,7 +202,6 @@ export const getImgAction = createAsyncThunk<
   },
   { state: IrootState }
 >("getImage", async (par, { dispatch, getState }) => {
-  console.log("hi");
   const scene = getState().basicConfig.scene;
   const sceneNum = getState().basicConfig.sceneNum;
   const date_type = getState().basicConfig.dataSet;
