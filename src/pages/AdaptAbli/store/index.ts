@@ -222,6 +222,8 @@ export const getImgAction = createAsyncThunk<
       enumerable: true
     });
   });
+  console.log("工况", par.workIndex);
+  console.log("干扰字典", sendCondition);
 
   //   console.log("发送了请求图片的网络请求");
 
@@ -233,7 +235,7 @@ export const getImgAction = createAsyncThunk<
       sendCondition
     );
     dispatch(changeImgUrlAction(res));
-    // console.log("服务器返回的图片数据:", res);
+    console.log("服务器返回的图片数据:", res);
     // console.log("图片数据类型:", typeof res);
     return { baseUrl: res };
   } catch (err) {

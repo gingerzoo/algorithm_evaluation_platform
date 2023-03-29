@@ -23,6 +23,7 @@ import {
   Iwork
 } from "../../store";
 import { createOneWork } from "@/utils/getItem";
+import { shallowEqual } from "react-redux";
 
 interface Iprops {
   children?: ReactNode;
@@ -39,14 +40,17 @@ const condiArray: string[][] = [];
 
 const MyTable2: FC<Iprops> = (props) => {
   const { scene, adapt, needCenDataChange, newWork, picIndex, imgUrl } =
-    useAppSelector((state) => ({
-      scene: state.basicConfig.scene,
-      adapt: state.adaptAbili,
-      needCenDataChange: state.adaptAbili.needGenData,
-      newWork: state.adaptAbili.newWorkObj,
-      picIndex: state.adaptAbili.picIndex,
-      imgUrl: state.adaptAbili.imgUrl
-    }));
+    useAppSelector(
+      (state) => ({
+        scene: state.basicConfig.scene,
+        adapt: state.adaptAbili,
+        needCenDataChange: state.adaptAbili.needGenData,
+        newWork: state.adaptAbili.newWorkObj,
+        picIndex: state.adaptAbili.picIndex,
+        imgUrl: state.adaptAbili.imgUrl
+      }),
+      shallowEqual
+    );
   const { workConditions } = props;
 
   /* 获得该场景的工况数据 */
@@ -68,7 +72,6 @@ const MyTable2: FC<Iprops> = (props) => {
   const condiRef = useRef(condiArray);
 
   useEffect(() => {
-    console.log("我是useEffect");
     //分别给存储intensity和weight的两个二维数组初始化初始化
     intenRef.current = [];
     weightRef.current = [];
@@ -143,7 +146,6 @@ const MyTable2: FC<Iprops> = (props) => {
     /* 改变后的强度值 */
     const addNum = isAdd ? nowInten + 1 : nowInten - 1;
 
-    console.log("intenArray", intenRef.current);
     /* 改变后的强度数组 */
     const newSceneInten = [...intenRef.current];
 
@@ -199,9 +201,7 @@ const MyTable2: FC<Iprops> = (props) => {
   function viewImage(workIndex: number) {
     setDrawOpen((drawerOpen) => !drawerOpen);
     // dispatch(getImgAction({ workIndex, picIndex }));
-    setWorkNum(workIndex + 1);
-
-    console.log(workIndex + 1);
+    setWorkNum(workIndex);
   }
 
   function createTr(
@@ -266,7 +266,7 @@ const MyTable2: FC<Iprops> = (props) => {
             }}
             disabled={
               workCondition.intensity <= 0 ||
-              (drawerOpen && workIndex + 1 != workNum)
+              (drawerOpen && workIndex != workNum)
             }
           />
           <span className={`intensity ${workIndex}${condition}`}>
@@ -278,7 +278,7 @@ const MyTable2: FC<Iprops> = (props) => {
             size="small"
             disabled={
               workCondition.intensity >= 10 ||
-              (drawerOpen && workIndex + 1 != workNum)
+              (drawerOpen && workIndex != workNum)
             }
             onClick={() => {
               intensityChange(
@@ -406,7 +406,7 @@ const MyTable2: FC<Iprops> = (props) => {
         </tbody>
       </table>
       <Drawer
-        title={`图片预览 - 工况${workNum} - 图片${picIndex + 1}`}
+        title={`图片预览 - 工况${workNum + 1} - 图片${picIndex + 1}`}
         // placement={placn
         width={"38vw"}
         maskClosable={false}

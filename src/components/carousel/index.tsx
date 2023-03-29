@@ -30,41 +30,43 @@ const MyCarousel: FC<Iprops> = (props) => {
   const dispatch = useAppDispatch();
 
   const [currentSlide, setCurSlide] = useState(0);
-  const [pic1Url, setPic1] = useState(imgUrl);
-  const [pic1Ur2, setPic2] = useState("");
-  const [pic1Ur3, setPic3] = useState("");
-  const [pic1Ur4, setPic4] = useState("");
-  const [pic1Ur5, setPic5] = useState("");
+
+  //   console.log("imgUrl1", pic1Url);
   const carouselRef = useRef<CarouselRef>(null);
   const onChange = (currentSlide: number) => {
     console.log("currentSlide", currentSlide);
     setCurSlide(currentSlide);
+
     dispatch(changePicIndexAction(currentSlide));
-    dispatch(getImgAction({ workIndex: workNum, picIndex: currentSlide })).then(
-      (res) => {
-        if (getImgAction.fulfilled.match(res)) {
-          switch (currentSlide) {
-            case 0:
-              setPic1(res.payload.baseUrl);
-              break;
-            case 1:
-              setPic2(res.payload.baseUrl);
-              break;
-            case 2:
-              setPic3(res.payload.baseUrl);
-              break;
-            case 3:
-              setPic4(res.payload.baseUrl);
-              break;
-            case 4:
-              setPic5(res.payload.baseUrl);
-              break;
-            default:
-              break;
-          }
-        }
-      }
-    );
+
+    // dispatch(getImgAction({ workIndex: workNum, picIndex: currentSlide })).then(
+    //   (res) => {
+    //     if (getImgAction.fulfilled.match(res)) {
+    //       console.log("我有回音了！");
+    //       console.log(res);
+    //       switch (currentSlide) {
+    //         case 0:
+    //           setPic1((res.payload as any).baseUrl);
+    //           break;
+    //         case 1:
+    //           setPic2((res.payload as any).baseUrl);
+    //           break;
+    //         case 2:
+    //           setPic3((res.payload as any).baseUrl);
+    //           break;
+    //         case 3:
+    //           setPic4((res.payload as any).baseUrl);
+    //           break;
+    //         case 4:
+    //           setPic5((res.payload as any).baseUrl);
+    //           break;
+    //         default:
+    //           break;
+    //       }
+    //     }
+    //   }
+    // );
+    dispatch(getImgAction({ workIndex: workNum, picIndex: currentSlide }));
   };
 
   return (
@@ -101,31 +103,31 @@ const MyCarousel: FC<Iprops> = (props) => {
         })} */}
         <div>
           <img
-            src={`data:image/png;base64,${pic1Url}`}
+            src={`data:image/jpeg;base64,${imgUrl}`}
             alt={`图片${currentSlide + 1}`}
           ></img>
         </div>
         <div>
           <img
-            src={`data:image/png;base64,${pic1Ur2}`}
+            src={`data:image/jpeg;base64,${imgUrl}`}
             alt={`图片${currentSlide + 1}`}
           ></img>
         </div>
         <div>
           <img
-            src={`data:image/png;base64,${pic1Ur3}`}
+            src={`data:image/jpeg;base64,${imgUrl}`}
             alt={`图片${currentSlide + 1}`}
           ></img>
         </div>
         <div>
           <img
-            src={`data:image/png;base64,${pic1Ur4}`}
+            src={`data:image/jpeg;base64,${imgUrl}`}
             alt={`图片${currentSlide + 1}`}
           ></img>
         </div>
         <div>
           <img
-            src={`data:image/png;base64,${pic1Ur5}`}
+            src={`data:image/jpeg;base64,${imgUrl}`}
             alt={`图片${currentSlide + 1}`}
           ></img>
         </div>
