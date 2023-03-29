@@ -1,4 +1,4 @@
-import React, { Fragment, memo, useEffect, useState } from "react";
+import React, { Fragment, memo, useEffect, useRef, useState } from "react";
 import type { FC, ReactNode } from "react";
 import { Table2Wrapper } from "./style";
 import { Button, Drawer, Modal, Space } from "antd";
@@ -29,10 +29,13 @@ interface Iprops {
   workConditions: Iwork[];
 }
 
-interface Iaction {
-  //   actionName: string;
-  (action: string): ActionCreatorWithPayload<any>;
-}
+//存放某一场景所有工况的强度的二维数组
+const intenArray: number[][] = [];
+//存放某一场景所有工况的权重的二维数组
+const weightArray: number[][] = [];
+
+//存放某一场景所有工况的干扰名称的二维数组
+const condiArray: string[][] = [];
 
 const MyTable2: FC<Iprops> = (props) => {
   const { scene, adapt, needCenDataChange, newWork, picIndex, imgUrl } =
@@ -58,30 +61,27 @@ const MyTable2: FC<Iprops> = (props) => {
   //点击图片预览时所在工况号
   const [workNum, setWorkNum] = useState(0);
 
-  //存放某一场景所有工况的强度的二维数组
-  const intenArray: number[][] = [];
-  //存放某一场景所有工况的权重的二维数组
-  const weightArray: number[][] = [];
+  /* 这里有什么办法优化吗，每次重新渲染组件都很重新定义这三个遍历这三个变量 */
 
-  //存放某一场景所有工况的干扰名称的二维数组
-  const condiArray: string[][] = [];
-  //存放某一场景所有工况的是否被勾选的一维数组
-  const checkArray: boolean[] = [];
+  const intenRef = useRef(intenArray);
+  const weightRef = useRef(weightArray);
+  const condiRef = useRef(condiArray);
 
   useEffect(() => {
     console.log("我是useEffect");
     //分别给存储intensity和weight的两个二维数组初始化初始化
+    intenRef.current = [];
+    weightRef.current = [];
+    condiRef.current = [];
+
     adaptState?.map((work, workIndex) => {
-      intenArray.push([]);
-      weightArray.push([]);
-      checkArray.push(true);
-      // setCheckList(checkArray);
-      // console.log(checkArray);
-      condiArray.push([]);
+      intenRef.current.push([]);
+      weightRef.current.push([]);
+      condiRef.current.push([]);
       Object.values(work).map((condition, condiIndex) => {
-        condiArray[workIndex].push(Object.keys(work)[condiIndex]);
-        intenArray[workIndex].push(condition.intensity);
-        weightArray[workIndex].push(condition.weight);
+        condiRef.current[workIndex].push(Object.keys(work)[condiIndex]);
+        intenRef.current[workIndex].push(condition.intensity);
+        weightRef.current[workIndex].push(condition.weight);
         //   noteArray[workIndex].push(condition.note);
       });
     });
@@ -92,8 +92,8 @@ const MyTable2: FC<Iprops> = (props) => {
     console.log("useEffect中发送了图片的网络请求");
     dispatch(getImgAction({ workIndex: workNum, picIndex }));
   }, [workNum]);
-  //  某一场景所有工况的是否被勾选的状态
-  const [checkList, setCheckList] = useState(checkArray);
+  /* 某一场景所有工况的是否被勾选的状态 */
+  const [checkList, setCheckList] = useState([true, true]);
 
   /*  这里用state不太好使用，因为新建工况中新添加的强度它没办法知道 */
   //   const [intenList, setIntenList] = useState(intenArray);
@@ -123,11 +123,10 @@ const MyTable2: FC<Iprops> = (props) => {
   }
 
   const checkChangeHandle = (e: CheckboxChangeEvent, workIndex: number) => {
-    console.log(`checked = ${e.target.checked}`);
+    // console.log(`checked = ${e.target.checked}`);
     const newCheckList = [...checkList];
     newCheckList[workIndex] = e.target.checked;
     setCheckList(newCheckList);
-    // setCheckArray(newCheckList);
     dispatch(changeCheckListAction(newCheckList));
     console.log(newCheckList);
   };
@@ -144,9 +143,9 @@ const MyTable2: FC<Iprops> = (props) => {
     /* 改变后的强度值 */
     const addNum = isAdd ? nowInten + 1 : nowInten - 1;
 
-    console.log("intenArray", intenArray);
+    console.log("intenArray", intenRef.current);
     /* 改变后的强度数组 */
-    const newSceneInten = [...intenArray];
+    const newSceneInten = [...intenRef.current];
 
     newSceneInten[workIndex][condiIndex] = addNum;
 
@@ -157,12 +156,12 @@ const MyTable2: FC<Iprops> = (props) => {
     if (!needCenDataChange) {
       dispatch(changeNeedGenDataAction(true));
     }
-    condiArray.map((work, workIndex) => {
+    condiRef.current.map((work, workIndex) => {
       const newWork: Iwork = {};
       createOneWork(
         work,
         newSceneInten[workIndex],
-        weightArray[workIndex],
+        weightRef.current[workIndex],
         newWork
       );
       newAllwork.push(newWork);
@@ -177,14 +176,14 @@ const MyTable2: FC<Iprops> = (props) => {
 
   /* 点击新建工况按钮的处理函数 */
   function addNewWork() {
-    // if(newIntensity.includes())
-
     if (!needCenDataChange) {
       dispatch(changeNeedGenDataAction(true));
     }
+    const newCheckList = [...checkList];
+    newCheckList.push(true);
 
-    checkList.push(true);
-    setCheckList(checkList);
+    setCheckList(newCheckList);
+    dispatch(changeCheckListAction(newCheckList));
     setModal2Open(false);
     // createOneWork(newCondition as string[], newIntensity, newWeight, new3Work);
 

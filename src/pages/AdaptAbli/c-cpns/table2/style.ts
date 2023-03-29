@@ -19,9 +19,12 @@ export const Table2Wrapper = styled.div`
 
     min-width: 70vw;
     td {
-      .intensity,
       .weight {
         margin: 0 1.2vw 0 1vw;
+      }
+      .intensity {
+        display: inline-block;
+        width: 3vw;
       }
       &.evaluation {
         background-color: #79cc86;
@@ -62,7 +65,7 @@ export const Table2Wrapper = styled.div`
         display: flex;
         flex-direction: column;
         justify-content: center;
-        padding: 0 0.5vw;
+        padding: 0 1vw;
         .viewPic {
           margin-top: 0.5vw;
         }

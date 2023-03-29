@@ -1,5 +1,6 @@
 import React, { memo } from "react";
 import type { FC, ReactNode } from "react";
+import { AbstractWrap } from "./style";
 
 interface Iprops {
   children?: ReactNode;
@@ -7,11 +8,13 @@ interface Iprops {
 
 const AbstrAware: FC<Iprops> = (props) => {
   return (
-    <div>
+    <AbstractWrap>
       <table className="table_color table_v1">
         <tbody>
           <tr>
+            {/* style={{ width: "10.1vw" }} */}
             <td rowSpan={0}>抽象感知能力</td>
+            {/* style={{ width: "13.8vw" }} */}
             <td>算法名称</td>
           </tr>
           {/* 重点部位检测定位 */}
@@ -92,7 +95,7 @@ const AbstrAware: FC<Iprops> = (props) => {
           </tr>
         </tbody>
       </table>
-    </div>
+    </AbstractWrap>
   );
 };
 

@@ -7,7 +7,6 @@ interface Iprops {
 }
 
 const CollaAware: FC<Iprops> = (props) => {
-  const la = <td>多口标融合(导引)</td>;
   return (
     <CooperWrap>
       <table className="table_v1 table_color">

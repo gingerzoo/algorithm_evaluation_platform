@@ -103,13 +103,14 @@ const AdaptAbil: FC<Iprops> = () => {
         <div className="spinning">
           <Spin spinning={scene == pageScene && isGenPending} size={"large"} />
         </div>
+        {/* disabled={scene != pageScene || (needGenState && genData_status != 0)} */}
         <Button
           className="run_test btn"
           type="primary"
-          disabled={scene != pageScene || (needGenState && genData_status != 0)}
           onClick={() => {
             runWorkTest();
           }}
+          disabled={scene != pageScene || (needGenState && genData_status != 0)}
         >
           进行工况测试
         </Button>

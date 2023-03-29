@@ -10,8 +10,9 @@ export const TrustWrap = styled.div`
     .start {
       height: auto;
       background-color: #1890ff;
-      font-size: 22px;
-      padding: 4px 20px;
+      font-size: 20px;
+      /* padding: 4px 20px; */
+      margin: 0 15px;
       color: white;
       &:hover {
         background-color: #65b3fa;

@@ -147,46 +147,52 @@ export const getWorkResultAction = createAsyncThunk<
   checkList.forEach((item: boolean, index: number) => {
     if (item) newInter.push(interference[index]);
   });
-  console.log("newInter", newInter);
-
-  try {
-    const res = await getWorkResult(sceneNum, date_type, newInter);
-    dispatch(changeRunResult(res));
-    if (res.status == 0) {
-      let count = 0;
-      checkList.forEach((item, index) => {
-        if (item) {
-          realResult.push(run_result.condition_result[count]);
-          count++;
-        } else {
-          realResult.push("");
+  console.log("要被执行的工况", newInter);
+  if (newInter.length > 0) {
+    try {
+      const res = await getWorkResult(sceneNum, date_type, newInter);
+      dispatch(changeRunResult(res));
+      if (res.status == 0) {
+        let count = 0;
+        checkList.forEach((item, index) => {
+          if (item) {
+            realResult.push(run_result.condition_result[count]);
+            count++;
+          } else {
+            realResult.push(" ");
+          }
+        });
+        switch (scene) {
+          case "guide":
+            dispatch(changeGuideResAction(realResult));
+            break;
+          case "navigate":
+            dispatch(changeNaviResAction(realResult));
+            break;
+          case "remote":
+            dispatch(changeRemoResAction(realResult));
+            break;
+          case "voice":
+            dispatch(changeVoiResAction(realResult));
+            break;
+          default:
+            break;
         }
-      });
-      switch (scene) {
-        case "guide":
-          dispatch(changeGuideResAction(realResult));
-          break;
-        case "navigate":
-          dispatch(changeNaviResAction(realResult));
-          break;
-        case "remote":
-          dispatch(changeRemoResAction(realResult));
-          break;
-        case "voice":
-          dispatch(changeVoiResAction(realResult));
-          break;
-        default:
-          break;
       }
+      return {
+        status: res.status,
+        info: res.info
+      };
+    } catch (err) {
+      return {
+        status: 1,
+        info: "网络请求错误"
+      };
     }
-    return {
-      status: res.status,
-      info: res.info
-    };
-  } catch (err) {
+  } else {
     return {
       status: 1,
-      info: "网络请求错误"
+      info: "请至少选择一个工况进行测试"
     };
   }
 });
@@ -400,7 +406,7 @@ const initialState: Iadapt = {
   navigateResult: [],
   remoteResult: [],
   voiceResult: [],
-  checkList: [],
+  checkList: [true, true],
   runResult: {
     condition_result: [],
     overall: "",
