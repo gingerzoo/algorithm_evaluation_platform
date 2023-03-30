@@ -63,7 +63,7 @@ export interface Iadapt {
   voiceResult: string[];
   checkList: boolean[];
   runResult: Iresult;
-  imgUrl: string;
+  imgUrl: string[];
   picIndex: number;
 }
 
@@ -200,11 +200,11 @@ export const getWorkResultAction = createAsyncThunk<
 /* 请求发送图片 */
 export const getImgAction = createAsyncThunk<
   {
-    baseUrl: string;
+    baseUrl: string[];
   },
   {
     workIndex: number;
-    picIndex: number;
+    picIndex?: number;
   },
   { state: IrootState }
 >("getImage", async (par, { dispatch, getState }) => {
@@ -212,7 +212,10 @@ export const getImgAction = createAsyncThunk<
   const sceneNum = getState().basicConfig.sceneNum;
   const date_type = getState().basicConfig.dataSet;
   const interference = getState().adaptAbili[scene] as Iwork[];
+  const preImgUrlList = getState().adaptAbili.imgUrl;
   const nowWork = interference[par.workIndex];
+  /* 用来存放5个url */
+  let imgUrlList = [];
   const sendCondition = {};
   Object.values(nowWork).map((item, index) => {
     Object.defineProperty(sendCondition, Object.keys(nowWork)[index], {
@@ -222,26 +225,37 @@ export const getImgAction = createAsyncThunk<
       enumerable: true
     });
   });
-  console.log("工况", par.workIndex);
-  console.log("干扰字典", sendCondition);
+  //   console.log("工况", par.workIndex);
+  //   console.log("干扰字典", sendCondition);
 
   //   console.log("发送了请求图片的网络请求");
 
   try {
-    const res = await getViewPic(
-      sceneNum,
-      date_type,
-      par.picIndex,
-      sendCondition
-    );
-    dispatch(changeImgUrlAction(res));
-    console.log("服务器返回的图片数据:", res);
+    if (par.picIndex) {
+      const res = await getViewPic(
+        sceneNum,
+        date_type,
+        par.picIndex,
+        sendCondition
+      );
+      imgUrlList = [...preImgUrlList];
+      imgUrlList[par.picIndex] = res;
+      console.log("发送一张图片的网络请求！");
+    } else {
+      for (let i = 0; i < 5; i++) {
+        const res = await getViewPic(sceneNum, date_type, i, sendCondition);
+        imgUrlList.push(res);
+      }
+      console.log("发送五张图片的网络请求！");
+    }
+    dispatch(changeImgUrlAction(imgUrlList));
+
     // console.log("图片数据类型:", typeof res);
-    return { baseUrl: res };
+    return { baseUrl: imgUrlList };
   } catch (err) {
     console.log("发送图片的请求网络错误！");
     return {
-      baseUrl: ""
+      baseUrl: [""]
     };
   }
 });
@@ -415,7 +429,7 @@ const initialState: Iadapt = {
     status: -1,
     info: ""
   },
-  imgUrl: "",
+  imgUrl: [],
   newWorkObj: {},
   picIndex: 0
 };

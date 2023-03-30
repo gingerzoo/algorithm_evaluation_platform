@@ -23,8 +23,8 @@ const contentStyle: React.CSSProperties = {
 
 const MyCarousel: FC<Iprops> = (props) => {
   const { workNum } = props;
-  const { imgUrl } = useAppSelector((state) => ({
-    imgUrl: state.adaptAbili.imgUrl
+  const { imgUrls } = useAppSelector((state) => ({
+    imgUrls: state.adaptAbili.imgUrl
   }));
 
   const dispatch = useAppDispatch();
@@ -33,11 +33,11 @@ const MyCarousel: FC<Iprops> = (props) => {
 
   //   console.log("imgUrl1", pic1Url);
   const carouselRef = useRef<CarouselRef>(null);
-  const onChange = (currentSlide: number) => {
-    console.log("currentSlide", currentSlide);
-    setCurSlide(currentSlide);
-
-    dispatch(changePicIndexAction(currentSlide));
+  const onChange = (from: number, to: number) => {
+    // dispatch(getImgAction({ workIndex: workNum, picIndex: to }));
+    dispatch(changePicIndexAction(to));
+    console.log("currentSlide", to);
+    // setCurSlide(to);
 
     // dispatch(getImgAction({ workIndex: workNum, picIndex: currentSlide })).then(
     //   (res) => {
@@ -66,7 +66,6 @@ const MyCarousel: FC<Iprops> = (props) => {
     //     }
     //   }
     // );
-    dispatch(getImgAction({ workIndex: workNum, picIndex: currentSlide }));
   };
 
   return (
@@ -90,47 +89,47 @@ const MyCarousel: FC<Iprops> = (props) => {
         </button>
       </div>
 
-      <Carousel afterChange={onChange} dots={false} ref={carouselRef}>
-        {/* {new Array(5).map((item, index) => {
+      <Carousel beforeChange={onChange} dots={false} ref={carouselRef}>
+        {imgUrls?.map((item, index) => {
           return (
-            <div>
+            <div key={index}>
               <img
-                src={`data:image/png;base64,${pic1Url}`}
+                src={`data:image/png;base64,${item}`}
                 alt={`图片${currentSlide + 1}`}
               ></img>
             </div>
           );
-        })} */}
-        <div>
+        })}
+        {/* <div>
           <img
-            src={`data:image/jpeg;base64,${imgUrl}`}
+            src={`data:image/png;base64,${imgUrl}`}
             alt={`图片${currentSlide + 1}`}
           ></img>
         </div>
         <div>
           <img
-            src={`data:image/jpeg;base64,${imgUrl}`}
+            src={`data:image/png;base64,${imgUrl}`}
             alt={`图片${currentSlide + 1}`}
           ></img>
         </div>
         <div>
           <img
-            src={`data:image/jpeg;base64,${imgUrl}`}
+            src={`data:image/png;base64,${imgUrl}`}
             alt={`图片${currentSlide + 1}`}
           ></img>
         </div>
         <div>
           <img
-            src={`data:image/jpeg;base64,${imgUrl}`}
+            src={`data:image/png;base64,${imgUrl}`}
             alt={`图片${currentSlide + 1}`}
           ></img>
         </div>
         <div>
           <img
-            src={`data:image/jpeg;base64,${imgUrl}`}
+            src={`data:image/png;base64,${imgUrl}`}
             alt={`图片${currentSlide + 1}`}
           ></img>
-        </div>
+        </div> */}
       </Carousel>
     </MyCarouselWrap>
   );

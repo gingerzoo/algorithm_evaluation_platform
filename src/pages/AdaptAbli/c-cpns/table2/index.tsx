@@ -93,7 +93,7 @@ const MyTable2: FC<Iprops> = (props) => {
 
   useEffect(() => {
     console.log("useEffect中发送了图片的网络请求");
-    dispatch(getImgAction({ workIndex: workNum, picIndex }));
+    dispatch(getImgAction({ workIndex: workNum }));
   }, [workNum]);
   /* 某一场景所有工况的是否被勾选的状态 */
   const [checkList, setCheckList] = useState([true, true]);
