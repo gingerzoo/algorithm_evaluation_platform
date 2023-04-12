@@ -10,6 +10,7 @@ import {
 } from "../services";
 import { IrootState } from "@/store";
 import { message } from "antd";
+import { sceneToNum } from "@/assets/data/local_data";
 
 export interface Iwork {
   [index: string]: {
@@ -65,6 +66,7 @@ export interface Iadapt {
   runResult: Iresult;
   imgUrl: string[];
   picIndex: number;
+  pageScene: string;
 }
 
 export const getWorkCondiAction = createAsyncThunk(
@@ -106,14 +108,21 @@ export const getWorkDataAction = createAsyncThunk<
   void,
   { state: IrootState }
 >("genDataset", async (par, { dispatch, getState }) => {
-  const scene = getState().basicConfig.scene;
-  const sceneNum = getState().basicConfig.sceneNum;
+  const scene = getState().adaptAbili.pageScene;
+  const sceneNum = sceneToNum[scene];
   const date_type = getState().basicConfig.dataSet;
   const interference = getState().adaptAbili[scene] as Iwork[];
+  console.log("scene:", scene);
 
   try {
+    console.log(`${scene}请求工况`, interference);
+    const timeStart = performance.now();
     const res = await getWorkDataset(sceneNum, date_type, interference);
+    const timeEnd = performance.now();
+    const timeDur = ((timeEnd - timeStart) / 1000).toFixed(3);
+    console.log(`${scene}场景对应数据集生成时间为：${timeDur}s`);
     dispatch(changeGenDataStatAction(res.status));
+
     return {
       status: res.status,
       info: res.info
@@ -121,7 +130,7 @@ export const getWorkDataAction = createAsyncThunk<
   } catch (err) {
     return {
       status: 1,
-      info: "网络请求错误"
+      info: `网络请求错误,${err}`
     };
   }
 });
@@ -244,16 +253,18 @@ export const getImgAction = createAsyncThunk<
     } else {
       for (let i = 0; i < 5; i++) {
         const res = await getViewPic(sceneNum, date_type, i, sendCondition);
+        // console.log("发送一张图片的网络请求！", i);
         imgUrlList.push(res);
       }
-      console.log("发送五张图片的网络请求！");
+      //   console.log("发送五张图片的网络请求！");
+      //   console.log(imgUrlList);
     }
     dispatch(changeImgUrlAction(imgUrlList));
 
     // console.log("图片数据类型:", typeof res);
     return { baseUrl: imgUrlList };
   } catch (err) {
-    console.log("发送图片的请求网络错误！");
+    // console.log("发送图片的请求网络错误！");
     return {
       baseUrl: [""]
     };
@@ -263,12 +274,8 @@ export const getImgAction = createAsyncThunk<
 const initialState: Iadapt = {
   guide: [
     {
-      occlusion: {
-        intensity: 1,
-        weight: 1
-      },
       illumination: {
-        intensity: 2,
+        intensity: 5,
 
         weight: 1
       },
@@ -278,25 +285,25 @@ const initialState: Iadapt = {
         weight: 1
       },
       noise: {
-        intensity: 4,
+        intensity: 6,
 
         weight: 1
       }
     },
     {
       cloud: {
-        intensity: 6,
+        intensity: 4,
 
         weight: 1
       },
       illumination: {
-        intensity: 8,
+        intensity: 4,
 
         weight: 1
       },
 
       blur: {
-        intensity: 3,
+        intensity: 6,
         weight: 1
       }
     }
@@ -407,10 +414,11 @@ const initialState: Iadapt = {
     }
   ],
   workCondition: {
-    0: [""],
-    1: [""],
-    2: [""],
-    3: [""]
+    0: [],
+    1: [],
+    2: [],
+    3: [],
+    4: []
   },
   conditionList: [],
   genIsPending: false,
@@ -431,7 +439,8 @@ const initialState: Iadapt = {
   },
   imgUrl: [],
   newWorkObj: {},
-  picIndex: 0
+  picIndex: 0,
+  pageScene: ""
 };
 const adaptSlice = createSlice({
   name: "adaptSlice",
@@ -496,6 +505,9 @@ const adaptSlice = createSlice({
     },
     changePicIndexAction(state, { payload }) {
       state.picIndex = payload;
+    },
+    changePageSceneAction(state, { payload }) {
+      state.pageScene = payload;
     }
   },
   extraReducers: (builder) => {
@@ -549,5 +561,6 @@ export const {
   changeRunResult,
   changeImgUrlAction,
   changeNewWorkObjAction,
-  changePicIndexAction
+  changePicIndexAction,
+  changePageSceneAction
 } = adaptSlice.actions;

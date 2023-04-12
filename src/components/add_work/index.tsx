@@ -16,20 +16,27 @@ interface Iprops {
 }
 
 const AddWork: FC<Iprops> = (props) => {
-  const { scene, WorkObj } = useAppSelector((state) => ({
-    scene: state.basicConfig.scene,
-    WorkObj: state.adaptAbili.newWorkObj
-  }));
+  const { scene, sceneNum, WorkObj, workCondition } = useAppSelector(
+    (state) => ({
+      scene: state.basicConfig.scene,
+      sceneNum: state.basicConfig.sceneNum,
+      WorkObj: state.adaptAbili.newWorkObj,
+      workCondition: state.adaptAbili.workCondition
+    })
+  );
 
   const disptach = useAppDispatch();
   const [addCondition, setAddCondis] = useState([""]);
+  //   console.log("workCondition", workCondition);
 
-  const options: SelectProps["options"] = picWorkCondition?.map((item) => {
-    return {
-      value: item,
-      label: tranEntoCh[item]
-    };
-  });
+  const options: SelectProps["options"] = workCondition[sceneNum].map(
+    (item) => {
+      return {
+        value: item,
+        label: tranEntoCh[item]
+      };
+    }
+  );
 
   const handleChange = (value: string[]) => {
     // console.log(value);

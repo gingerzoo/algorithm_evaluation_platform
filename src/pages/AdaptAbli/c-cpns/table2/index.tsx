@@ -17,9 +17,11 @@ import {
   changeImgUrlAction,
   changeNavigateNewCondiAction,
   changeNeedGenDataAction,
+  changePageSceneAction,
   changeRemoteNewCondiAction,
   changeVoiceNewCondiAction,
   getImgAction,
+  getWorkDefaultAction,
   Iwork
 } from "../../store";
 import { createOneWork } from "@/utils/getItem";
@@ -53,6 +55,10 @@ const MyTable2: FC<Iprops> = (props) => {
     );
   const { workConditions } = props;
 
+  /* 获得该页面的场景 */
+  const pageScene = location.hash.split("/").slice(-1)[0];
+  //   console.log("pageScene", pageScene);
+
   /* 获得该场景的工况数据 */
   const adaptState = adapt[scene] as Iwork[];
 
@@ -67,9 +73,20 @@ const MyTable2: FC<Iprops> = (props) => {
 
   /* 这里有什么办法优化吗，每次重新渲染组件都很重新定义这三个遍历这三个变量 */
 
+  const carouselTitle =
+    pageScene == "voice"
+      ? `音频试听- 工况${workNum + 1}- 音频${picIndex + 1}`
+      : `图片预览- 工况${workNum + 1} - 图片${picIndex + 1}`;
+
   const intenRef = useRef(intenArray);
   const weightRef = useRef(weightArray);
   const condiRef = useRef(condiArray);
+
+  useEffect(() => {
+    dispatch(getWorkDefaultAction());
+    console.log("useEffect中的pagesecne", pageScene);
+    dispatch(changePageSceneAction(pageScene));
+  }, [pageScene]);
 
   useEffect(() => {
     //分别给存储intensity和weight的两个二维数组初始化初始化
@@ -171,7 +188,7 @@ const MyTable2: FC<Iprops> = (props) => {
     // console.log(newAllwork);
     chooseDispatch(scene, newAllwork);
     if (drawerOpen) {
-      dispatch(getImgAction({ workIndex: workNum, picIndex }));
+      dispatch(getImgAction({ workIndex: workNum }));
       console.log("应该获得新图片，因为改变了强度");
     }
   };
@@ -241,7 +258,7 @@ const MyTable2: FC<Iprops> = (props) => {
                   viewImage(workIndex);
                 }}
               >
-                图片预览
+                {pageScene == "voice" ? "音频试听" : "图片预览"}
               </Button>
             </div>
           </td>
@@ -406,9 +423,8 @@ const MyTable2: FC<Iprops> = (props) => {
         </tbody>
       </table>
       <Drawer
-        title={`图片预览 - 工况${workNum + 1} - 图片${picIndex + 1}`}
-        // placement={placn
-        width={"38vw"}
+        title={carouselTitle}
+        width={pageScene == "voice" ? "32vw" : "38vw"}
         maskClosable={false}
         mask={false}
         open={drawerOpen}
@@ -429,7 +445,7 @@ const MyTable2: FC<Iprops> = (props) => {
         }
       >
         <div className="drawer-content">
-          <MyCarousel workNum={workNum} />
+          <MyCarousel workNum={workNum} pageScene={pageScene} />
         </div>
       </Drawer>
     </Table2Wrapper>

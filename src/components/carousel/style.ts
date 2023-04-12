@@ -1,6 +1,10 @@
 import styled from "styled-components";
 
-export const MyCarouselWrap = styled.div`
+interface Ivoice {
+  isVoice: boolean;
+}
+
+export const MyCarouselWrap = styled.div<Ivoice>`
   .switch-pic {
     margin-bottom: 20px;
     .slider-control .anticon {
@@ -13,10 +17,18 @@ export const MyCarouselWrap = styled.div`
     }
   }
 
+  .ant-drawer.ant-drawer-right > .ant-drawer-content-wrapper {
+    bottom: auto;
+  }
+
   img {
     width: 35vw;
   }
   /* .slick-slide{
 
   } */
+  audio {
+    width: 28vw;
+    margin: 0 auto;
+  }
 `;

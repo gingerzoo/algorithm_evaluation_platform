@@ -49,6 +49,7 @@ export function getWorkDataset(
   return lxrequset.request<Iresult>({
     url: "/adaptability/generateData",
     method: "post",
+    timeout: 9000000,
     data: {
       scene,
       data_type,

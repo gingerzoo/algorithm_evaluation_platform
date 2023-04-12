@@ -38,9 +38,9 @@ const AdaptAbil: FC<Iprops> = () => {
   const pageScene = location.hash.split("/").pop();
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
-    dispatch(getWorkDefaultAction());
-  }, []);
+  //   useEffect(() => {
+  //     dispatch(getWorkDefaultAction());
+  //   }, []);
 
   const genWorkData = () => {
     dispatch(getWorkDataAction()).then((res) => {
@@ -51,17 +51,27 @@ const AdaptAbil: FC<Iprops> = () => {
             content: "生成工况数据成功",
             duration: 2
           });
+          console.log(`生成工况数据成`);
         } else {
           message.open({
             type: "error",
             content: `${res.payload.info}`,
             duration: 2
           });
+          console.log("生成工况数据失败");
         }
       }
     });
   };
   const runWorkTest = () => {
+    if (pageScene != scene) {
+      message.open({
+        type: "error",
+        content: `生成的数据集与基础配置中的场景不一致`,
+        duration: 3
+      });
+      return;
+    }
     dispatch(getWorkResultAction()).then((res) => {
       if (getWorkResultAction.fulfilled.match(res)) {
         if (res.payload.status == 0) {
@@ -93,7 +103,8 @@ const AdaptAbil: FC<Iprops> = () => {
         <Button
           className="generate-data btn"
           type="primary"
-          disabled={scene != pageScene || !needGenState}
+          //   disabled={scene != pageScene || !needGenState}
+          //   disabled={scene != pageScene}
           onClick={() => {
             genWorkData();
           }}
@@ -110,7 +121,7 @@ const AdaptAbil: FC<Iprops> = () => {
           onClick={() => {
             runWorkTest();
           }}
-          disabled={scene != pageScene || (needGenState && genData_status != 0)}
+          disabled={needGenState && genData_status != 0}
         >
           进行工况测试
         </Button>

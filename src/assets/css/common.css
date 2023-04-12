@@ -57,3 +57,9 @@ body .ant-message .ant-message-notice-error .ant-message-notice-content {
 body .ant-modal .ant-modal-content .ant-modal-header .ant-modal-title {
   text-align: center;
 }
+body .ant-drawer.ant-drawer-right > .ant-drawer-content-wrapper {
+  bottom: auto;
+}
+body .ant-drawer.ant-drawer-right > .ant-drawer-content-wrapper .ant-drawer-content {
+  border: 1px dashed #0a97e8;
+}

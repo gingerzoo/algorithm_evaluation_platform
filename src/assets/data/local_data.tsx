@@ -11,6 +11,10 @@ import {
 } from "@ant-design/icons";
 import { getItem } from "@/utils/getItem";
 
+interface Iscene {
+  [index: string]: number;
+}
+
 export const subs = [
   {
     title: "导引",
@@ -33,6 +37,13 @@ export const subs = [
     num: 3
   }
 ];
+
+export const sceneToNum: Iscene = {
+  guide: 0,
+  navigate: 1,
+  remote: 2,
+  voice: 3
+};
 
 export const sideNav = [
   {

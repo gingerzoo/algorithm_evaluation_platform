@@ -73,10 +73,6 @@ export const Table2Wrapper = styled.div`
           padding: 0;
         }
       }
-
-      .ant-modal .ant-modal-content .ant-modal-header .ant-modal-title {
-        text-align: center;
-      }
     }
   }
 `;
