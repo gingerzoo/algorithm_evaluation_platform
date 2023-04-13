@@ -1,6 +1,5 @@
 import lxrequset from "@/services/index";
-import { Iresult } from "@/type";
-import { Iwork } from "../store";
+import { Iresult, Iwork } from "@/type";
 
 interface Idefault {
   [index: string]: Iwork;

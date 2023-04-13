@@ -1,5 +1,6 @@
 import { getNote } from "@/assets/data/local_data";
-import { Iwork } from "@/pages/AdaptAbli/store";
+import { Iwork } from "@/type";
+
 import { MenuProps } from "antd";
 
 type MenuItem = Required<MenuProps>["items"][number];
@@ -48,4 +49,14 @@ export function createOneWork(
       enumerable: true
     });
   });
+}
+
+export function adaptAsyncState(
+  initialState: boolean[],
+  state: boolean,
+  sceneNum: number
+) {
+  const myState = [...initialState];
+  myState[sceneNum] = true;
+  initialState = myState;
 }

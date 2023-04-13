@@ -3,26 +3,21 @@ import type { FC, ReactNode } from "react";
 import { Table2Wrapper } from "./style";
 import { Button, Drawer, Modal, Space } from "antd";
 import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
-import { Iconditon } from "@/type";
+import { Iconditon, Iwork } from "@/type";
 import { useAppDispatch, useAppSelector } from "@/store";
 
 import Checkbox, { CheckboxChangeEvent } from "antd/es/checkbox/Checkbox";
-import { getNote, tranEntoCh } from "@/assets/data/local_data";
-import { ActionCreatorWithPayload } from "@reduxjs/toolkit";
+import { getNote, sceneToNum, tranEntoCh } from "@/assets/data/local_data";
 import MyCarousel from "@/components/carousel";
 import Add_work from "@/components/add_work";
 import {
   changeCheckListAction,
   changeGuideNewCondiAction,
-  changeImgUrlAction,
   changeNavigateNewCondiAction,
   changeNeedGenDataAction,
-  changePageSceneAction,
   changeRemoteNewCondiAction,
   changeVoiceNewCondiAction,
-  getImgAction,
-  getWorkDefaultAction,
-  Iwork
+  getImgAction
 } from "../../store";
 import { createOneWork } from "@/utils/getItem";
 import { shallowEqual } from "react-redux";
@@ -41,7 +36,7 @@ const weightArray: number[][] = [];
 const condiArray: string[][] = [];
 
 const MyTable2: FC<Iprops> = (props) => {
-  const { scene, adapt, needCenDataChange, newWork, picIndex, imgUrl } =
+  const { scene, adapt, needCenDataChange, newWork, picIndex, iniCheckList } =
     useAppSelector(
       (state) => ({
         scene: state.basicConfig.scene,
@@ -49,7 +44,7 @@ const MyTable2: FC<Iprops> = (props) => {
         needCenDataChange: state.adaptAbili.needGenData,
         newWork: state.adaptAbili.newWorkObj,
         picIndex: state.adaptAbili.picIndex,
-        imgUrl: state.adaptAbili.imgUrl
+        iniCheckList: state.adaptAbili.checkList
       }),
       shallowEqual
     );
@@ -57,10 +52,11 @@ const MyTable2: FC<Iprops> = (props) => {
 
   /* 获得该页面的场景 */
   const pageScene = location.hash.split("/").slice(-1)[0];
+  const sceneNum = sceneToNum[pageScene];
   //   console.log("pageScene", pageScene);
 
   /* 获得该场景的工况数据 */
-  const adaptState = adapt[scene] as Iwork[];
+  const adaptState = adapt[pageScene] as Iwork[];
 
   /* 获得该场景的运行结果 */
   const sceneResult = adapt[`${scene}Result`] as string[];
@@ -83,12 +79,6 @@ const MyTable2: FC<Iprops> = (props) => {
   const condiRef = useRef(condiArray);
 
   useEffect(() => {
-    dispatch(getWorkDefaultAction());
-    console.log("useEffect中的pagesecne", pageScene);
-    dispatch(changePageSceneAction(pageScene));
-  }, [pageScene]);
-
-  useEffect(() => {
     //分别给存储intensity和weight的两个二维数组初始化初始化
     intenRef.current = [];
     weightRef.current = [];
@@ -109,7 +99,7 @@ const MyTable2: FC<Iprops> = (props) => {
   });
 
   useEffect(() => {
-    console.log("useEffect中发送了图片的网络请求");
+    // console.log("useEffect中发送了图片的网络请求");
     dispatch(getImgAction({ workIndex: workNum }));
   }, [workNum]);
   /* 某一场景所有工况的是否被勾选的状态 */
@@ -146,9 +136,11 @@ const MyTable2: FC<Iprops> = (props) => {
     // console.log(`checked = ${e.target.checked}`);
     const newCheckList = [...checkList];
     newCheckList[workIndex] = e.target.checked;
+    const myCheckList = [...iniCheckList];
+    myCheckList[sceneNum] = newCheckList;
     setCheckList(newCheckList);
-    dispatch(changeCheckListAction(newCheckList));
-    console.log(newCheckList);
+    dispatch(changeCheckListAction(myCheckList));
+    console.log("newCheckList", myCheckList);
   };
 
   /* 强度/权重值改变时的处理函数 */
@@ -168,9 +160,8 @@ const MyTable2: FC<Iprops> = (props) => {
 
     newSceneInten[workIndex][condiIndex] = addNum;
 
-    // setIntenList(newSceneInten);
     /* 改变后的权重数组 */
-    console.log("newSceneInten", newSceneInten);
+    // console.log("newSceneInten", newSceneInten);
 
     if (!needCenDataChange) {
       dispatch(changeNeedGenDataAction(true));
@@ -186,7 +177,7 @@ const MyTable2: FC<Iprops> = (props) => {
       newAllwork.push(newWork);
     });
     // console.log(newAllwork);
-    chooseDispatch(scene, newAllwork);
+    chooseDispatch(pageScene, newAllwork);
     if (drawerOpen) {
       dispatch(getImgAction({ workIndex: workNum }));
       console.log("应该获得新图片，因为改变了强度");
@@ -201,8 +192,11 @@ const MyTable2: FC<Iprops> = (props) => {
     const newCheckList = [...checkList];
     newCheckList.push(true);
 
+    const myCheckList = [...iniCheckList];
+    myCheckList[sceneNum] = newCheckList;
+
     setCheckList(newCheckList);
-    dispatch(changeCheckListAction(newCheckList));
+    dispatch(changeCheckListAction(myCheckList));
     setModal2Open(false);
     // createOneWork(newCondition as string[], newIntensity, newWeight, new3Work);
 
@@ -211,7 +205,7 @@ const MyTable2: FC<Iprops> = (props) => {
     //shift()删除数组的第一个元素，并返回该元素。
     const newWorks = [...adaptState];
     newWorks.push(newWork);
-    chooseDispatch(scene, newWorks);
+    chooseDispatch(pageScene, newWorks);
   }
 
   /* 点击图片预览按钮的处理函数 */
@@ -244,7 +238,8 @@ const MyTable2: FC<Iprops> = (props) => {
                     onChange={(e) => {
                       checkChangeHandle(e, workIndex);
                     }}
-                    defaultChecked
+                    // defaultChecked
+                    checked={iniCheckList[sceneNum][workIndex] ?? "false"}
                     value={workIndex}
                   />
                 </span>
@@ -408,7 +403,7 @@ const MyTable2: FC<Iprops> = (props) => {
                     cancelText="取消"
                     className="myModal"
                   >
-                    <Add_work />
+                    <Add_work pageScene={pageScene} />
                   </Modal>
                 </>
               }

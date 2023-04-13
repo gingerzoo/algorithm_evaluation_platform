@@ -1,5 +1,9 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { Base64 } from "js-base64";
+import {
+  AnyAction,
+  createAsyncThunk,
+  createSlice,
+  PayloadAction
+} from "@reduxjs/toolkit";
 
 import {
   getViewPic,
@@ -8,18 +12,11 @@ import {
   getWorkDefault,
   getWorkResult
 } from "../services";
-import { IrootState } from "@/store";
+import store, { IrootState } from "@/store";
 import { message } from "antd";
 import { sceneToNum } from "@/assets/data/local_data";
-
-export interface Iwork {
-  [index: string]: {
-    // label: string;
-    // note: string;
-    intensity: number;
-    weight: number;
-  };
-}
+import { FulfilledAction, Iwork, PendingAction, RejectedAction } from "@/type";
+import { adaptAsyncState } from "@/utils/getItem";
 
 //这是干啥的？？？返回的不同场景下condition的列表
 type Icondition = {
@@ -44,6 +41,7 @@ export interface Iadapt {
     | number
     | string
     | Iresult
+    | boolean[][]
     | boolean[]
     | Iwork;
   guide: Iwork[];
@@ -53,7 +51,7 @@ export interface Iadapt {
   workCondition: Icondition;
   conditionList: string[];
   newWorkObj: Iwork;
-  genIsPending: boolean;
+  genIsPending: boolean[];
   testIsPending: boolean;
   genData_status: number;
   workResult: string[];
@@ -62,7 +60,7 @@ export interface Iadapt {
   navigateResult: string[];
   remoteResult: string[];
   voiceResult: string[];
-  checkList: boolean[];
+  checkList: boolean[][];
   runResult: Iresult;
   imgUrl: string[];
   picIndex: number;
@@ -84,6 +82,7 @@ export const getWorkDefaultAction = createAsyncThunk(
   (par, { dispatch }) => {
     try {
       getWorkDefault().then((res) => {
+        // console.log(res);
         dispatch(changeGuideNewCondiAction(res["0"]));
         dispatch(changeNavigateNewCondiAction(res["1"]));
         dispatch(changeRemoteNewCondiAction(res["2"]));
@@ -105,17 +104,23 @@ export const getWorkDataAction = createAsyncThunk<
     status: number;
     info: string;
   },
-  void,
+  string,
   { state: IrootState }
 >("genDataset", async (par, { dispatch, getState }) => {
-  const scene = getState().adaptAbili.pageScene;
+  const scene = par;
   const sceneNum = sceneToNum[scene];
   const date_type = getState().basicConfig.dataSet;
+  const checkList = getState().adaptAbili.checkList[sceneNum];
   const interference = getState().adaptAbili[scene] as Iwork[];
+  const checkInterfer: Iwork[] = [];
+  checkList.forEach((item: boolean, index: number) => {
+    if (item) checkInterfer.push(interference[index]);
+  });
+  //   console.log("要被执行的工况", newInter);
   console.log("scene:", scene);
 
   try {
-    console.log(`${scene}请求工况`, interference);
+    console.log(`${scene}请求工况`, checkInterfer);
     const timeStart = performance.now();
     const res = await getWorkDataset(sceneNum, date_type, interference);
     const timeEnd = performance.now();
@@ -147,7 +152,7 @@ export const getWorkResultAction = createAsyncThunk<
   const scene = getState().basicConfig.scene;
   const sceneNum = getState().basicConfig.sceneNum;
   const date_type = getState().basicConfig.dataSet;
-  const checkList = getState().adaptAbili.checkList;
+  const checkList = getState().adaptAbili.checkList[sceneNum];
   const run_result = getState().adaptAbili.runResult;
   const newInter: Iwork[] = [];
   const realResult: string[] = [];
@@ -218,7 +223,7 @@ export const getImgAction = createAsyncThunk<
   { state: IrootState }
 >("getImage", async (par, { dispatch, getState }) => {
   const scene = getState().basicConfig.scene;
-  const sceneNum = getState().basicConfig.sceneNum;
+  const sceneNum = getState().basicConfig.sceneNum as number;
   const date_type = getState().basicConfig.dataSet;
   const interference = getState().adaptAbili[scene] as Iwork[];
   const preImgUrlList = getState().adaptAbili.imgUrl;
@@ -270,6 +275,14 @@ export const getImgAction = createAsyncThunk<
     };
   }
 });
+
+function isPendingAction(
+  action: AnyAction
+): action is RejectedAction | FulfilledAction {
+  return (
+    action.type.endsWith("/fulfilled") || action.type.endsWith("/rejected")
+  );
+}
 
 const initialState: Iadapt = {
   guide: [
@@ -360,12 +373,10 @@ const initialState: Iadapt = {
       },
       deformation: {
         intensity: 0,
-
         weight: 0
       },
       noise: {
         intensity: 0,
-
         weight: 0
       }
     },
@@ -373,7 +384,6 @@ const initialState: Iadapt = {
     {
       cloud: {
         intensity: 0,
-
         weight: 0
       },
       illumination: {
@@ -404,7 +414,6 @@ const initialState: Iadapt = {
     {
       explosion: {
         intensity: 1,
-
         weight: 1
       },
       signalLoss: {
@@ -417,11 +426,10 @@ const initialState: Iadapt = {
     0: [],
     1: [],
     2: [],
-    3: [],
-    4: []
+    3: []
   },
   conditionList: [],
-  genIsPending: false,
+  genIsPending: [false, false, false, false],
   testIsPending: false,
   genData_status: -1,
   workResult: [],
@@ -430,7 +438,12 @@ const initialState: Iadapt = {
   navigateResult: [],
   remoteResult: [],
   voiceResult: [],
-  checkList: [true, true],
+  checkList: [
+    [true, true],
+    [true, true],
+    [true, true],
+    [true, true]
+  ],
   runResult: {
     condition_result: [],
     overall: "",
@@ -448,12 +461,6 @@ const adaptSlice = createSlice({
   reducers: {
     changeWorkConditionAction(state, { payload }) {
       state.workCondition = payload;
-    },
-    changeIntensityListAction(state, { payload }) {
-      state.intensityList = payload;
-    },
-    changeWeightListAction(state, { payload }) {
-      state.weightList = payload;
     },
     changeConditionList(state, { payload }) {
       state.conditionList = payload;
@@ -513,24 +520,44 @@ const adaptSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getWorkDataAction.pending, (state) => {
-        state.genIsPending = true;
+        const sceneNum = sceneToNum[state.pageScene];
+        const myState = [...state.genIsPending];
+        myState[sceneNum] = true;
+        console.log("pending状态");
+        state.genIsPending = myState;
       })
       .addCase(getWorkDataAction.fulfilled, (state) => {
-        state.genIsPending = false;
+        const sceneNum = sceneToNum[state.pageScene];
+        const myState = [...state.genIsPending];
+        myState[sceneNum] = false;
+        console.log("fulfilled状态");
+        state.genIsPending = myState;
       })
       .addCase(getWorkDataAction.rejected, (state) => {
-        state.genIsPending = false;
+        const sceneNum = sceneToNum[state.pageScene];
+        const myState = [...state.genIsPending];
+        myState[sceneNum] = false;
+        console.log("rejected状态");
+        state.genIsPending = myState;
       });
-    builder
-      .addCase(getWorkResultAction.pending, (state) => {
-        state.testIsPending = true;
-      })
-      .addCase(getWorkResultAction.fulfilled, (state) => {
-        state.testIsPending = false;
-      })
-      .addCase(getWorkResultAction.rejected, (state) => {
-        state.testIsPending = false;
-      });
+    //   .addMatcher(isPendingAction, (state) => {
+    //     const sceneNum = sceneToNum[state.pageScene];
+    //     const myState = [...state.genIsPending];
+    //     myState[sceneNum] = false;
+    //     console.log("rejected和fullied状态");
+    //     state.genIsPending = myState;
+    //   });
+
+    // builder
+    //   .addCase(getWorkR.esultAction.pending, (state) => {
+    //     state.testIsPending = true;
+    //   })
+    //   .addCase(getWorkResultAction.fulfilled, (state) => {
+    //     state.testIsPending = false;
+    //   })
+    //   .addCase(getWorkResultAction.rejected, (state) => {
+    //     state.testIsPending = false;
+    //   });
   }
 });
 

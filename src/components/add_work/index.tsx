@@ -2,7 +2,11 @@ import React, { memo, useEffect, useState } from "react";
 import type { FC, ReactNode } from "react";
 import { AddworkWrapper } from "./style";
 import { Select, SelectProps } from "antd";
-import { picWorkCondition, tranEntoCh } from "@/assets/data/local_data";
+import {
+  picWorkCondition,
+  sceneToNum,
+  tranEntoCh
+} from "@/assets/data/local_data";
 import { useAppDispatch, useAppSelector } from "@/store";
 import Work_config from "../work_config";
 import {
@@ -13,19 +17,17 @@ import {
 
 interface Iprops {
   children?: ReactNode;
+  pageScene: string;
 }
 
 const AddWork: FC<Iprops> = (props) => {
-  const { scene, sceneNum, WorkObj, workCondition } = useAppSelector(
-    (state) => ({
-      scene: state.basicConfig.scene,
-      sceneNum: state.basicConfig.sceneNum,
-      WorkObj: state.adaptAbili.newWorkObj,
-      workCondition: state.adaptAbili.workCondition
-    })
-  );
+  const { WorkObj, workCondition } = useAppSelector((state) => ({
+    WorkObj: state.adaptAbili.newWorkObj,
+    workCondition: state.adaptAbili.workCondition
+  }));
 
   const disptach = useAppDispatch();
+  const sceneNum = sceneToNum[props.pageScene];
   const [addCondition, setAddCondis] = useState([""]);
   //   console.log("workCondition", workCondition);
 
@@ -66,7 +68,7 @@ const AddWork: FC<Iprops> = (props) => {
 
   useEffect(() => {
     disptach(getWorkCondiAction());
-  }, [scene]);
+  }, [props.pageScene]);
   return (
     <AddworkWrapper>
       {/* <div className="selected">已选干扰项</div> */}

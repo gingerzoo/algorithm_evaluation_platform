@@ -4,7 +4,8 @@ import { WorkConfigWrap } from "./style";
 import { InputNumber } from "antd";
 import { tranEntoCh } from "@/assets/data/local_data";
 import { useAppDispatch } from "@/store";
-import { changeNewWorkObjAction, Iwork } from "@/pages/AdaptAbli/store";
+import { changeNewWorkObjAction } from "@/pages/AdaptAbli/store";
+import { Iwork } from "@/type";
 
 interface Iprops {
   children?: ReactNode;
