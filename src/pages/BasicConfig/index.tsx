@@ -191,11 +191,11 @@ const BasicConfig: FC<Iprops> = () => {
 
     //   navigate(`/basicwork/${scene}`);
     // }
-    const nextPage = `/basicwork/${scene}`;
+    const nextPage = `/profile/basicwork/${scene}`;
     dispatch(changeNextPathAction(nextPage));
     dispatch(changeNowProcessAction(["基础设置", "基础效能"]));
 
-    navigate(`/basicwork/${scene}`);
+    navigate(`/profile/basicwork/${scene}`);
   }
 
   return (

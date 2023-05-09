@@ -7,6 +7,7 @@ import { CarouselRef } from "antd/es/carousel";
 import { useAppDispatch, useAppSelector } from "@/store";
 import { changePicIndexAction, getImgAction } from "@/pages/AdaptAbli/store";
 import { title } from "process";
+import { BASE_URL } from "@/services/config";
 
 interface Iprops {
   children?: ReactNode;
@@ -131,7 +132,7 @@ const MyCarousel: FC<Iprops> = (props) => {
               ) : (
                 <audio
                   controls
-                  src={`http://10.2.35.39:8080/watch/` + item}
+                  src={`${BASE_URL}/watch/` + item}
                   ref={audios[index]}
                 />
               )}

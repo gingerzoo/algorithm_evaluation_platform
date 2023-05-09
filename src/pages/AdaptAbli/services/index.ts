@@ -65,6 +65,7 @@ export function getWorkResult(
   return lxrequset.request<IworkResult>({
     url: "/adaptability/retResult",
     method: "post",
+    timeout: 900000,
     data: {
       scene,
       data_type,

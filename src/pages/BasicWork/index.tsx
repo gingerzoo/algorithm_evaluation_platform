@@ -22,7 +22,7 @@ const BasicWork: FC<Iprops> = () => {
   const pageScene = location.hash.split("/").pop();
 
   function next() {
-    const nextPath = `/adapt/${scene}`;
+    const nextPath = `/profile/adapt/${scene}`;
     dispatch(changeNextPathAction(nextPath));
     navigate(nextPath);
     dispatch(

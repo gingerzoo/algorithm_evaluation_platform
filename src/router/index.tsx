@@ -20,85 +20,100 @@ const AdapVoice = lazy(() => import("@/pages/AdaptAbli/c-cpns/Voice"));
 const SelfLearn = lazy(() => import("@/pages/SelfLearn"));
 const CollaAware = lazy(() => import("@/pages/CollaAware"));
 const AbstrAware = lazy(() => import("@/pages/AbstrAware"));
+const Home = lazy(() => import("@/pages/Home"));
+const Profile = lazy(() => import("@/pages/Profile"));
 
 //路由表映射
 const routes: RouteObject[] = [
   {
     path: "/",
-    element: <Navigate to="./config" />
+    element: <Navigate to="/home" />
   },
   {
-    path: "/config",
-    element: <Basic_Config />
+    path: "/home",
+    element: <Home />
   },
   {
-    path: "/basicwork",
-    element: <Basic_work />,
+    path: "/profile",
+    element: <Profile />,
     children: [
       {
-        path: "/basicwork",
-        element: <Navigate to="/basicwork/intro" />
+        path: "/profile",
+        element: <Navigate to="/profile/config" />
       },
       {
-        path: "guide",
-        element: <WorkIntro />
+        path: "config",
+        element: <Basic_Config />
       },
       {
-        path: "navigate",
-        element: <WorkNav />
+        path: "basicwork",
+        element: <Basic_work />,
+        children: [
+          {
+            path: "basicwork",
+            element: <Navigate to="/profile/basicwork/intro" />
+          },
+          {
+            path: "guide",
+            element: <WorkIntro />
+          },
+          {
+            path: "navigate",
+            element: <WorkNav />
+          },
+          {
+            path: "remote",
+            element: <WorkRemote />
+          },
+          {
+            path: "voice",
+            element: <WorkVoice />
+          }
+        ]
       },
       {
-        path: "remote",
-        element: <WorkRemote />
+        path: "adapt",
+        element: <Adapt_Abil />,
+        children: [
+          {
+            path: "adapt",
+            element: <Navigate to="/profile/adapt/intro" />
+          },
+          {
+            path: "guide",
+            element: <AdapIntro />
+          },
+          {
+            path: "navigate",
+            element: <AdapNav />
+          },
+          {
+            path: "remote",
+            element: <AdapRemote />
+          },
+          {
+            path: "voice",
+            element: <AdapVoice />
+          }
+        ]
       },
       {
-        path: "voice",
-        element: <WorkVoice />
+        path: "trust",
+        element: <Trust_Abil />
+      },
+      {
+        path: "selflearning",
+        element: <SelfLearn />
+      },
+      {
+        path: "colawareness",
+        element: <CollaAware />
+      },
+      {
+        path: "absawareness",
+        element: <AbstrAware />
       }
     ]
-  },
-
-  {
-    path: "/adapt",
-    element: <Adapt_Abil />,
-    children: [
-      {
-        path: "/adapt",
-        element: <Navigate to="/adapt/intro" />
-      },
-      {
-        path: "guide",
-        element: <AdapIntro />
-      },
-      {
-        path: "navigate",
-        element: <AdapNav />
-      },
-      {
-        path: "remote",
-        element: <AdapRemote />
-      },
-      {
-        path: "voice",
-        element: <AdapVoice />
-      }
-    ]
-  },
-  {
-    path: "/trust",
-    element: <Trust_Abil />
-  },
-  {
-    path: "/selflearning",
-    element: <SelfLearn />
-  },
-  {
-    path: "/colawareness",
-    element: <CollaAware />
-  },
-  {
-    path: "/absawareness",
-    element: <AbstrAware />
   }
 ];
 

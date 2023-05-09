@@ -204,6 +204,7 @@ const MyTable2: FC<Iprops> = (props) => {
     //pop() 方法移除数组的最后一个元素，并返回该元素。
     //shift()删除数组的第一个元素，并返回该元素。
     const newWorks = [...adaptState];
+    console.log("newwork", newWork);
     newWorks.push(newWork);
     chooseDispatch(pageScene, newWorks);
   }

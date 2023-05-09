@@ -4,12 +4,18 @@ export const PictureWrap = styled.div`
   position: relative;
   .slider {
     width: 100%;
-    height: calc(100vh - 130px);
+    height: calc(100vh - 150px);
     background-color: #364d79;
     .ant-carousel {
+      .pic {
+        height: calc(100vh - 150px);
+        overflow: hidden;
+      }
       img {
-        height: 420px;
-        object-fit: contain;
+        width: 100%;
+        /* height: 100%; */
+        object-fit: cover;
+        /* object-position: center center; */
       }
     }
     .slider-control {

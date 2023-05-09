@@ -1,5 +1,11 @@
 import React from "react";
 
+import jpg0 from "../images/0.jpg";
+import jpg1 from "../images/1.jpg";
+import jpg2 from "../images/2.jpg";
+import jpg3 from "../images/3.jpg";
+import jpg4 from "../images/4.jpg";
+
 import {
   FundProjectionScreenOutlined,
   LaptopOutlined,
@@ -49,44 +55,44 @@ export const sideNav = [
   {
     icon: <SettingOutlined />,
     title: "基础配置",
-    link: "/config"
+    link: "/profile/config"
   },
   {
     icon: <LaptopOutlined />,
     title: "基础效能",
-    link: "/basicwork",
+    link: "/profile/basicwork",
     sub: subs.map((item) =>
-      getItem(item.title, "/basicwork" + "/" + item.link.slice(1))
+      getItem(item.title, "/profile/basicwork" + "/" + item.link.slice(1))
     )
   },
 
   {
     icon: <PullRequestOutlined />,
     title: "可适应能力评估",
-    link: "/adapt",
+    link: "/profile/adapt",
     sub: subs.map((item) =>
-      getItem(item.title, "/adapt" + "/" + item.link.slice(1))
+      getItem(item.title, "/profile/adapt" + "/" + item.link.slice(1))
     )
   },
   {
     icon: <SendOutlined />,
     title: "可信赖性",
-    link: "/trust"
+    link: "/profile/trust"
   },
   {
     icon: <FundProjectionScreenOutlined />,
     title: "自学习能力",
-    link: "/selflearning"
+    link: "/profile/selflearning"
   },
   {
     icon: <ShareAltOutlined />,
     title: "协同感知能力",
-    link: "/colawareness"
+    link: "/profile/colawareness"
   },
   {
     icon: <NodeIndexOutlined />,
     title: "抽象感知能力",
-    link: "/absawareness"
+    link: "/profile/absawareness"
   }
 ];
 
@@ -97,35 +103,29 @@ export const headerNav = [
   },
   {
     title: "基础配置",
-    link: "/config"
+    link: "/profile/config"
   },
   {
     title: "基础效能",
-    link: "/basicwork"
+    link: "/profile/basicwork"
   },
   {
     title: "自学习能力",
-    link: "/selflearning"
+    link: "/profile/selflearning"
   },
   {
     title: "协同感知能力",
-    link: "/colawareness"
+    link: "/profile/colawareness"
   },
   {
     title: "抽象感知能力",
-    link: "/absawareness"
+    link: "/profile/absawareness"
   }
 ];
 
 export const datasets = ["可见光", "红外", "雷达"];
 
-export const mockPic: string[] = [
-  `    https://ts1.cn.mm.bing.net/th/id/R-C.67dfc143a0d871cecb14f2ddc5a602dc?rik=E02wxizWaCj4MQ&riu=http%3a%2f%2fwww.kutoo8.com%2fupload%2fthumb%2f021594%2fa6c7a45a5ec124e673a5a70906ab3ac7.jpg&ehk=cbe%2f88zJtNPZQdXFx5NXQqzYMRZzLWP%2f7NXgLSK8jXE%3d&risl=&pid=ImgRaw&r=0`,
-  `https://ts1.cn.mm.bing.net/th/id/R-C.3fb196a05953e88a94295eb49df11942?rik=Urz0Fk9q1UAe7g&riu=http%3a%2f%2fwww.appzyw.net%2fupfiles%2fimage%2f202001%2f20200112113023818.jpg&ehk=sP8hw7pizuW6ifpbEjxjjnja3dVzEViLMyBiVgscB1o%3d&risl=&pid=ImgRaw&r=0`,
-  `https://www.mlito.com/wp-content/uploads/2018/03/bf478dbc95.jpg`,
-  `https://ts1.cn.mm.bing.net/th/id/R-C.775f0eeed8f65791a1c75adb2e5f1e2f?rik=BB3NfbqZIFPGYA&riu=http%3a%2f%2fimg.mm4000.com%2ffile%2f6%2f68%2fe2ac965866.jpg&ehk=s9ba62nvyHSFtRAwXpvt5zV3IExEkqKXTc%2b7n1bVgN8%3d&risl=&pid=ImgRaw&r=0`,
-  `https://pic.3gbizhi.com/2020/0722/20200722081817153.jpg`
-];
+export const mockPic: string[] = [jpg0, jpg1, jpg2, jpg3, jpg4];
 
 interface Iworkwork {
   [index: string]: string;
@@ -197,4 +197,27 @@ export const picWorkCondition = [
   "cloud",
   "deformation",
   "blur"
+];
+
+export const resultName = [
+  {
+    ch: "基础效能",
+    en: "basic"
+  },
+  {
+    ch: "可适应性能力",
+    en: "adapt"
+  },
+  {
+    ch: "可信赖性",
+    en: "trust"
+  },
+  {
+    ch: "抽象感知",
+    en: "abstract"
+  },
+  {
+    ch: "协同感知",
+    en: "collaAware"
+  }
 ];

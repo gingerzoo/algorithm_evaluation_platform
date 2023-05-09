@@ -40,9 +40,18 @@ const AddWork: FC<Iprops> = (props) => {
     }
   );
 
+  //   const options: SelectProps["options"] = picWorkCondition.map((item) => {
+  //     return {
+  //       value: item,
+  //       label: tranEntoCh[item]
+  //     };
+  //   });
+
   const handleChange = (value: string[]) => {
-    // console.log(value);
     setAddCondis(value);
+    console.log("value", value);
+    console.log("addCondition", addCondition);
+    console.log("preworkobj", WorkObj);
 
     const newWorkObj = { ...WorkObj };
     if (value.length >= addCondition.length) {
@@ -57,7 +66,7 @@ const AddWork: FC<Iprops> = (props) => {
       });
     } else {
       const myCondition = addCondition.filter((item) => !value.includes(item));
-      //   console.log(myCondition);
+      console.log("myCondition", myCondition);
       delete newWorkObj[myCondition[0]];
     }
 

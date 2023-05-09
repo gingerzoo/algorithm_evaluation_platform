@@ -4,7 +4,7 @@ interface Iprops {
   isGreen: boolean;
 }
 
-export const AppWrap = styled.div<Iprops>`
+export const ProfileWrap = styled.div<Iprops>`
   border-color: #ffffff;
   /* height: 100vh; */
   /* 随意的测试 */

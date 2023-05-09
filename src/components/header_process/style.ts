@@ -25,4 +25,11 @@ export const ProcessWrap = styled.div`
       margin: 0 0.8vw;
     }
   }
+
+  .left {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    padding-right: 2.4vw;
+  }
 `;

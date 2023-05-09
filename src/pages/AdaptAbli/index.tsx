@@ -4,7 +4,9 @@ import { Outlet } from "react-router-dom";
 import { AdaptWraper } from "./style";
 import { useAppDispatch, useAppSelector } from "@/store";
 import {
+  changeConditionList,
   changeGenDataStatAction,
+  changeNewWorkObjAction,
   changePageSceneAction,
   getWorkDataAction,
   getWorkDefaultAction,
@@ -51,6 +53,8 @@ const AdaptAbil: FC<Iprops> = () => {
     // dispatch(changePa)
     // console.log("useEffect中的pagesecne", pageScene);
     console.log("genIs", genIsPending);
+    dispatch(changeNewWorkObjAction({}));
+    dispatch(changeConditionList([]));
   }, [pageScene]);
 
   const genWorkData = () => {

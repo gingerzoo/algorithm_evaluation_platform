@@ -23,7 +23,7 @@ const Picture: FC<Iprops> = (props) => {
           {mockPic.map((item) => {
             return (
               <div key={item} className="pic">
-                <img src={item} width="auto" />;
+                <img src={item} />;
               </div>
             );
           })}
