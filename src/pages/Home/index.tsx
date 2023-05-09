@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { HomeWrapper } from "./style";
 import circle from "@/assets/images/circle.png";
 import Radar from "@/components/radar";
-import ReactEcharts from "echarts-for-react";
 import EChartsReact from "echarts-for-react";
 
 interface Iprops {
@@ -90,15 +89,23 @@ const Home: FC<Iprops> = (props) => {
         <section className="result">
           <h2>六维测试体系</h2>
           <Radar
-            result={{
-              basic: 70,
-              abstract: 50,
-              adapt: 40,
-              trust: 60,
-              collaAware: 80
-            }}
+            results={[
+              {
+                basic: 70,
+                abstract: 50,
+                adapt: 40,
+                trust: 60,
+                collaAware: 80
+              },
+              {
+                basic: 50,
+                abstract: 90,
+                adapt: 60,
+                trust: 20,
+                collaAware: 80
+              }
+            ]}
           />
-          {/* <ReactEcharts ref={chartRef} option={options} /> */}
         </section>
       </main>
     </HomeWrapper>
