@@ -15,7 +15,6 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <ThemeProvider theme={theme}>
-    {" "}
     <Provider store={store}>
       <HashRouter>
         <App />

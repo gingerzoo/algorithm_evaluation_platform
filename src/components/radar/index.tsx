@@ -5,7 +5,6 @@ import echarts from "echarts";
 
 import { RadarWrap } from "./style";
 import { resultName } from "@/assets/data/local_data";
-import EChartsReact from "echarts-for-react";
 
 interface Iitem {
   [key: string]: number;
