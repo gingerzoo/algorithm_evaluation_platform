@@ -61,9 +61,10 @@ export const HomeWrapper = styled.div`
       align-items: center;
       box-sizing: border-box;
       overflow: hidden;
-      /* text-align: center; */
+
       h2 {
         position: relative;
+        color: #666666;
         width: 100%;
         box-sizing: border-box;
 
@@ -73,9 +74,9 @@ export const HomeWrapper = styled.div`
         .icon {
           position: absolute;
           /* margin-right: 2px; */
-          height: 24px;
-          width: 24px;
-          left: -30px;
+          height: 1.9vw;
+          width: 1.9vw;
+          left: -2.38vw;
           top: 0;
           bottom: 0;
           margin: auto;
@@ -90,24 +91,25 @@ export const HomeWrapper = styled.div`
       }
 
       &:nth-of-type(2n + 1) h2 {
-        padding: 0 50px;
+        padding: 0 3.95vw;
         .icon {
-          left: 20px;
+          left: 1.58vw;
         }
       }
 
       img {
-        width: 84%;
+        width: 80%;
         object-fit: contain;
       }
 
       .box {
         box-sizing: border-box;
         margin-bottom: 20px;
-        padding: 0 50px;
+        padding: 0 3.95vw;
         p {
           font-size: 12px;
           line-height: 1.5;
+          color: rgba(0, 0, 0, 0.9);
           /* text-indent: 2em; */
           /* line-height: 16px; */
         }

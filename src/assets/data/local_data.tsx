@@ -201,16 +201,21 @@ export const picWorkCondition = [
 
 export const resultName = [
   {
-    ch: "基础效能",
-    en: "basic"
-  },
-  {
     ch: "可适应性能力",
     en: "adapt"
   },
   {
+    ch: "基础效能",
+    en: "basic"
+  },
+
+  {
     ch: "可信赖性",
     en: "trust"
+  },
+  {
+    ch: "自学习能力",
+    en: "selfLearn"
   },
   {
     ch: "抽象感知",
@@ -219,9 +224,5 @@ export const resultName = [
   {
     ch: "协同感知",
     en: "collaAware"
-  },
-  {
-    ch: "自学习能力",
-    en: "selfLearn"
   }
 ];

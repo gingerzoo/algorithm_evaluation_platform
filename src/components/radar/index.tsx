@@ -8,9 +8,10 @@ import { resultName } from "@/assets/data/local_data";
 
 interface Iitem {
   [key: string]: number;
-  basic: number;
   adapt: number;
+  basic: number;
   trust: number;
+  selfLearn: number;
   abstract: number;
   collaAware: number;
 }
@@ -44,7 +45,7 @@ const Radar: FC<Iprops> = (props) => {
     // }
     return {
       //   backgroundColor: "#161627",
-      color: ["#73C0DE", "#EE6666", "#26C3BE", "#FFE434"], // 这是一个雷达图渲染的线的颜色
+      color: ["#73C0DE", "#FCCA00", "#26C3BE", "#FFE434"], // 这是一个雷达图渲染的线的颜色
       //点击提示标签
       // tooltip: {},
       legend: {
@@ -68,20 +69,20 @@ const Radar: FC<Iprops> = (props) => {
         // shape: "circle",
         indicator: indicator,
         splitNumber: 5,
-        center: ["50%", "55%"],
-        radius: "70%",
+        center: ["50%", "56%"],
+        radius: "72%",
         //指示器名称和指示器轴的距离。[ default: 15 ]
-        axisNameGap: 5,
+        axisNameGap: 6,
         triggerEvent: true,
         // 设置雷达图中间射线的颜色
         axisLine: {
           lineStyle: {
-            color: "rgba(238, 197, 102, 1)"
+            color: "rgba(238, 197, 102, 0.5)"
           }
         },
         splitLine: {
           lineStyle: {
-            color: "rgba(238, 197, 102, 0.3)"
+            color: "rgba(10, 62, 122,0.2)"
           }
         },
         // textStyle: {
@@ -90,7 +91,10 @@ const Radar: FC<Iprops> = (props) => {
         // },
         //这个是设置每根射线的名称的样式
         axisName: {
-          color: "#aaa"
+          color: "rgba(78, 76, 76,0.8)",
+          textStyle: {
+            fontSize: 16 // 设置字体大小
+          }
           //   backgroundColor: "rgba(228, 196, 119,0.7)",
           //   borderRadius: 3,
           //   padding: [4, 4, 2, 4]
@@ -138,7 +142,7 @@ const Radar: FC<Iprops> = (props) => {
       //   lazyUpdate={true}
       //   onEvents={}
       // onChartReady={onChartReady}
-      style={{ width: "100%", height: "320px" }}
+      style={{ width: "100%", height: "25vw" }}
     />
   );
 };
