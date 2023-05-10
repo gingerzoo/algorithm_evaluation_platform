@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import logo from "@/assets/images/logo2.jpg";
 
 export const HeaderWrap = styled.div`
   display: flex;
@@ -22,12 +23,12 @@ export const HeaderWrap = styled.div`
   }
 
   .left .logo {
-    height: 1.9vw;
-    line-height: 1.9vw;
-    width: 4.5vw;
+    height: 3vw;
+    line-height: 3vw;
+    width: 3.2vw;
     text-align: center;
-    font-size: 16px;
+    /* font-size: 16px; */
     color: white;
-    background-color: #5692fc;
+    background: url(${logo}) 0 0 / contain no-repeat;
   }
 `;

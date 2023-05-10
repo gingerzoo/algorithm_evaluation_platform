@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import bg from "@/assets/images/bg.jpg";
+import logo from "@/assets/images/logo2.jpg";
 
 export const HomeWrapper = styled.div`
   header {
@@ -29,12 +30,14 @@ export const HomeWrapper = styled.div`
         }
         &:hover {
           color: black;
-          background-color: #7bc55e;
+          background-color: ${(props) => props.theme.color.greenColor};
         }
       }
 
       .top h1 {
         margin: 0;
+        /* padding-left: 30px; */
+        /* background: white url(${logo}) 0 0 / contain no-repeat; */
       }
 
       .top h5 {
@@ -46,7 +49,8 @@ export const HomeWrapper = styled.div`
   main {
     /* display: flex; */
     display: flex;
-    padding: 20px 50px;
+    min-height: calc(100vh - 16vw);
+    padding: 2.4vw 4vw;
     background-color: #f5f5f5;
     /* box-sizing: border-box; */
 
@@ -59,21 +63,53 @@ export const HomeWrapper = styled.div`
       overflow: hidden;
       /* text-align: center; */
       h2 {
-        margin-bottom: 20px;
+        position: relative;
+        width: 100%;
+        box-sizing: border-box;
+
+        margin-bottom: 1.2vw;
         font-weight: 400;
+
+        .icon {
+          position: absolute;
+          /* margin-right: 2px; */
+          height: 24px;
+          width: 24px;
+          left: -30px;
+          top: 0;
+          bottom: 0;
+          margin: auto;
+        }
+
+        .title {
+          display: block;
+          padding-bottom: 5px;
+          border-bottom: 3px solid #0763ac;
+        }
+        /* text-align: left; */
+      }
+
+      &:nth-of-type(2n + 1) h2 {
+        padding: 0 50px;
+        .icon {
+          left: 20px;
+        }
       }
 
       img {
-        width: 80%;
+        width: 84%;
         object-fit: contain;
       }
 
       .box {
         box-sizing: border-box;
-        margin-bottom: 30px;
+        margin-bottom: 20px;
         padding: 0 50px;
         p {
-          font-size: 14px;
+          font-size: 12px;
+          line-height: 1.5;
+          /* text-indent: 2em; */
+          /* line-height: 16px; */
         }
       }
     }

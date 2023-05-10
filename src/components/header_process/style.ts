@@ -8,7 +8,7 @@ export const ProcessWrap = styled.div`
 
   /* text-align: center; */
   padding-left: 5px;
-  background-color: #447ed9;
+  background-color: ${(props) => props.theme.color.primaryColor};
 
   .title {
     box-sizing: border-box;

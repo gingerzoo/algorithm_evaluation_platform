@@ -18,20 +18,24 @@ interface Iitem {
 
 interface Iprops {
   children?: ReactNode;
-  result: Iitem;
+  result: Iitem[];
 }
 
 const Radar: FC<Iprops> = (props) => {
   const { result } = props;
 
-  const chartRef = useRef<EChartsReact>(null);
+  //   const chartRef = useRef<EChartsReact>(null);
 
-  const echartsInstanceRef = useRef<echarts.ECharts | null>(null);
   // 这是雷达图展示的每个点的数据
   const indicator = resultName.map((item) => ({
     name: item.ch,
-    value: result[item.en],
+    // value: result[item.en],
     max: 100
+  }));
+
+  const data = result.map((item, index) => ({
+    value: Object.values(item),
+    name: `算法${index + 1}`
   }));
 
   function getOption() {
@@ -40,113 +44,103 @@ const Radar: FC<Iprops> = (props) => {
     //   return "";
     // }
     return {
-      title: {
-        text: "你好"
-      },
-      color: "#E4C477", // 这是一个雷达图渲染的线的颜色
+      //   backgroundColor: "#161627",
+      color: ["#73C0DE", "#EE6666", "#26C3BE", "#FFE434"], // 这是一个雷达图渲染的线的颜色
       //点击提示标签
       // tooltip: {},
       legend: {
         //图例显示在顶部
         top: 0,
+        right: 0,
         //图例背景颜色
         backgroundColor: "transparent",
         // 图例标记的图形宽度。[ default: 25 ]
-        itemWidth: 12,
+        itemWidth: 30,
         // 图例标记的图形高度。[ default: 14 ]
-        itemHeight: 9
-        //图例文字样式设置
-        // textStyle: {
-        //   color: "#333", //文字颜色
-        //   fontSize: 12
-        // }
+        itemHeight: 18,
+        //图例之间的间距
+        itemGap: 15
+        // data: ["算法1", "算法2"]
+      },
+      tooltip: {
+        trigger: "item"
       },
       radar: {
-        //雷达图绘制类型，支持 'polygon' 和 'circle' [ default: 'polygon' ]
-        // shape: 'polygon',
+        // shape: "circle",
+        indicator: indicator,
         splitNumber: 5,
-        center: ["50%", "50%"],
-        radius: "65%",
+        center: ["50%", "55%"],
+        radius: "70%",
         //指示器名称和指示器轴的距离。[ default: 15 ]
-        axisNameGap: 3,
+        axisNameGap: 5,
         triggerEvent: true,
         // 设置雷达图中间射线的颜色
         axisLine: {
           lineStyle: {
-            color: "#ddd"
+            color: "rgba(238, 197, 102, 1)"
           }
         },
-        axisName: {
-          //这是一个文字的样式
-          textStyle: {
-            color: "#999",
-            backgroundColor: "transparent"
-            // borderRadius: 3,
-            // padding: [3, 5]
-          },
-          b: {
-            color: "#333",
-            fontSize: 10,
-            align: "center"
+        splitLine: {
+          lineStyle: {
+            color: "rgba(238, 197, 102, 0.3)"
           }
+        },
+        // textStyle: {
+        //   color: "red",
+        //   fontSize: 14
+        // },
+        //这个是设置每根射线的名称的样式
+        axisName: {
+          color: "#aaa"
+          //   backgroundColor: "rgba(228, 196, 119,0.7)",
+          //   borderRadius: 3,
+          //   padding: [4, 4, 2, 4]
         }
       },
       // 这是雷达图展示的每个点的数据
-      indicator: indicator,
+
       // center: ['50%'],
       //雷达图背景的颜色，在这儿随便设置了一个颜色，完全不透明度为0，就实现了透明背景
       splitArea: {
-        show: false,
-        areaStyle: {
-          color: "green" // 图表背景的颜色
-        }
+        show: false
+        // areaStyle: {
+        //   color: ["#77EADF", "#26C3BE", "#64AFE9", "#428BD4", "#E4C477"],
+        //   shadowColor: "rgba(0, 0, 0, 0.2)",
+        //   shadowBlur: 10
+        // }
+      },
+      grid: {
+        top: "60px"
       },
       series: [
         {
+          id: "one",
           type: "radar",
+          areaStyle: { opacity: 0.5 },
           //显示雷达图选中背景
           // data中的对象就是雷达图中的每一组数据，若是只有一组数据默认雷达图的线数据只有一条
-          data: [
-            {
-              value: [
-                result.basic,
-                result.adapt,
-                result.trust,
-                result.abstract,
-                result.collaAware
-              ],
-              areaStyle: { opacity: 0.7, color: "plum", offset: 1 }
-            }
-          ], // 里面的颜色也是传递进来的color
-          id: "one"
+          data: data
         }
       ]
     };
   }
 
-  useEffect(() => {
-    if (chartRef.current) {
-      chartRef.current.getEchartsInstance().setOption(getOption());
-    }
-    // if (chartRef.current && echartsInstanceRef.current) {
-    //   echartsInstanceRef.current.setOption({
-    //     getOption
-    //   });
-    // }
-  }, []);
+  //   useEffect(() => {
+  //     if (chartRef.current) {
+  //       chartRef.current.getEchartsInstance().setOption(getOption());
+  //     }
+  //   }, []);
 
   return (
-    <RadarWrap>
-      <ReactEcharts
-        ref={chartRef}
-        option={getOption}
-        notMerge={true}
-        lazyUpdate={true}
-        // onEvents={}
-        // onChartReady={onChartReady}
-        style={{ width: "300px", height: "600px" }}
-      />
-    </RadarWrap>
+    <ReactEcharts
+      //   ref={chartRef}
+      option={getOption()}
+      notMerge={true}
+      //   lazyUpdate={true}
+      //   onEvents={}
+      // onChartReady={onChartReady}
+      style={{ width: "100%", height: "320px" }}
+    />
   );
 };
 

@@ -219,5 +219,9 @@ export const resultName = [
   {
     ch: "协同感知",
     en: "collaAware"
+  },
+  {
+    ch: "自学习能力",
+    en: "selfLearn"
   }
 ];

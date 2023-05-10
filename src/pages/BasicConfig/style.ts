@@ -39,7 +39,8 @@ export const ConfigWrap = styled.div<Iprops>`
       padding: 0 2.4vw;
     }
     .ant-menu-horizontal .ant-menu-item-selected {
-      background-color: plum;
+      background-color: ${(props) => props.theme.color.orangeColor};
+      color: white;
     }
   }
 
@@ -59,12 +60,8 @@ export const ConfigWrap = styled.div<Iprops>`
       border-radius: 8px;
       margin-right: 4.8vw;
       padding: 0 2.2vw;
-      background-color: #1890ff;
       color: white;
-      &:hover {
-        cursor: pointer;
-        background-color: #447ed9;
-      }
+      ${(props) => props.theme.mixin.btnHover}
     }
     .next {
       background-color: ${(props) =>

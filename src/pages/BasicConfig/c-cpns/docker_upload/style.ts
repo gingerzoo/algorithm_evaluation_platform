@@ -12,7 +12,7 @@ export const UploadWrap = styled.div`
     padding-bottom: 1.5vw;
 
     background-color: #e6f3ff;
-    border: 2px dashed #0077fa;
+    border: 2px dashed ${(props) => props.theme.color.primaryColor};
     border-radius: 8px;
     & > * {
       margin-top: 20px;
@@ -28,7 +28,7 @@ export const UploadWrap = styled.div`
     .dataset-type {
       color: white;
       font-size: 14px;
-      background-color: rgba(72, 125, 184, 1);
+      background-color: ${(props) => props.theme.color.secondColor};
 
       padding: 4px 5px;
       margin: 0 6px;
@@ -36,8 +36,8 @@ export const UploadWrap = styled.div`
         transform: scale(1.1);
       }
       &.selected {
-        color: rgb(22, 119, 255);
-        background-color: plum;
+        color: white;
+        background-color: ${(props) => props.theme.color.orangeColor};
       }
     }
 
@@ -66,11 +66,7 @@ export const UploadWrap = styled.div`
     color: white;
     border-radius: 8px;
 
-    background-color: #1890ff;
-    &:hover {
-      cursor: pointer;
-      background-color: #447ed9;
-    }
+    ${(props) => props.theme.mixin.btnHover}
 
     .ant-select-selector {
       background-color: blue;

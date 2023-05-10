@@ -5,18 +5,23 @@ import App from "@/App";
 import "normalize.css";
 import { HashRouter } from "react-router-dom";
 import { Provider } from "react-redux";
+import { ThemeProvider } from "styled-components";
 import store from "@/store/index";
+import theme from "@/assets/theme";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 
 root.render(
-  <Provider store={store}>
-    <HashRouter>
-      <App />
-    </HashRouter>
-  </Provider>
+  <ThemeProvider theme={theme}>
+    {" "}
+    <Provider store={store}>
+      <HashRouter>
+        <App />
+      </HashRouter>
+    </Provider>
+  </ThemeProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

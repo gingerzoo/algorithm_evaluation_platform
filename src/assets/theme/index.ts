@@ -1,19 +1,25 @@
 const theme = {
   color: {
-    primaryColor: "#447ED9",
-    secondColor: "#plum"
+    primaryColor: "#0965AE",
+    secondColor: "#0781D4",
+    blueColor: "#73C0DE",
+    goldenColor: "#CCA70C",
+    orangeColor: "#F8806E",
+    greenColor: "#7BC55E"
   },
   textColor: {
     primaryColor: "#666666",
-    secondColor: "#ffffff"
+    secondColor: "#ffffff",
+    goldenColor: "#FCCA00"
   },
   mixin: {
-    boxShadow: `
-      transition:box-shadow 200ms ease;
-
-      &:hover{
-          box-shadow:0 2px 4px rgba(0,0,0,.18);
-      }`
+    btnHover: `
+        background-color: #0781D4;
+        &:hover {
+        cursor: pointer;
+          background-color: #0965AE;
+        }
+      `
   }
 };
 

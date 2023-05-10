@@ -16,6 +16,11 @@ export const WorkWrap = styled.div`
       padding: 0.6vw 1.6vw;
       height: auto;
       font-size: 1.3vw;
+      /* background-color: ${(props) => props.theme.color.secondColor};
+      &:hover {
+        background-color: ${(props) => props.theme.color.primaryColor};
+      } */
+      ${(props) => props.theme.mixin.btnHover}
     }
   }
 `;
