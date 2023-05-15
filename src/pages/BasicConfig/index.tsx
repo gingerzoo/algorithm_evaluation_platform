@@ -25,6 +25,7 @@ import {
   changeStatusCommAction,
   commitDataAction
 } from "./store";
+import Docker_upload from "./c-cpns/docker_upload";
 
 interface Iprops {
   children?: ReactNode;

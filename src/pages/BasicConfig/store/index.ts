@@ -2,7 +2,12 @@ import { subs } from "@/assets/data/local_data";
 import { IrootState } from "@/store";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { message } from "antd";
-import { commitData, getAlogrithmName, getSystemOverview } from "../service";
+import {
+  commitData,
+  getAlogrithmName,
+  getDocker,
+  getSystemOverview
+} from "../service";
 
 export type Isystem = {
   status: number;
@@ -81,6 +86,24 @@ export const getSystemAction = createAsyncThunk(
       dispatch(changeSceneNumAction(res.scene));
       const scene = subs[res.scene].link.slice(1);
       dispatch(changeSceneAction(scene));
+    } catch (err) {
+      message.open({
+        type: "error",
+        content: "网络请求发生错误",
+        duration: 2
+      });
+      console.log(err);
+    }
+  }
+);
+
+export const getDockerAction = createAsyncThunk(
+  "push_docker",
+  async (par: FormData, { dispatch }) => {
+    try {
+      const res = await getDocker(par);
+
+      console.log("拿到系统简况！");
     } catch (err) {
       message.open({
         type: "error",

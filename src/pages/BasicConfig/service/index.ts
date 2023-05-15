@@ -2,10 +2,22 @@ import lxrequest from "@/services/index";
 import { Iguid, Inav, Iremo, Iresult, Ivoice } from "@/type";
 import type { Isystem } from "../store/index";
 
-export function getSystemOverview(docker_name: string) {
+export function getDocker(docker: FormData) {
   // /baseConfig/loadDocker
-  return lxrequest.post<Isystem>("/baseConfig/loadDocker", {
-    docker_name
+  return lxrequest.request<Isystem>({
+    url: "/baseConfig/loadDocker",
+    method: "post",
+    headers: { "Content-Type": "multipart/form-data" },
+    data: docker
+  });
+}
+
+export function getSystemOverview(docker: string) {
+  // /baseConfig/loadDocker
+  return lxrequest.request<Isystem>({
+    url: "/baseConfig/loadDocker",
+    method: "post",
+    data: docker
   });
 }
 
