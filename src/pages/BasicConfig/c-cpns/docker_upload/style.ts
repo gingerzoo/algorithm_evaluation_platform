@@ -11,7 +11,7 @@ export const UploadWrap = styled.div`
     height: 12vw;
     padding-bottom: 1.5vw;
 
-    background-color: #e6f3ff;
+    background-color: ${(props) => props.theme.color.thirdColor};
     border: 2px dashed ${(props) => props.theme.color.primaryColor};
     border-radius: 8px;
     & > * {
@@ -67,9 +67,5 @@ export const UploadWrap = styled.div`
     border-radius: 8px;
 
     ${(props) => props.theme.mixin.btnHover}
-
-    .ant-select-selector {
-      background-color: blue;
-    }
   }
 `;

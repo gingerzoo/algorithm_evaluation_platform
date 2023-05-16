@@ -43,6 +43,7 @@ const AlgorithmUpload: FC<Iprops> = (props) => {
   const handleSelect = (value: string) => {
     // console.log(value);
     dispatch(changeCurModuleAction(value));
+    console.log("value--", value);
     dispatch(getSystemAction(value));
     dispatch(changeStatusCommAction(-1));
     dispatch(changeStatusBeAction(-1));
@@ -76,19 +77,21 @@ const AlgorithmUpload: FC<Iprops> = (props) => {
     e.stopPropagation();
     if (inputRef.current?.files) {
       const file = inputRef.current.files[0];
+      console.log("file", file);
       const formData = new FormData();
       formData.append("docker", file);
-
+      console.log("formData", formData);
+      console.log(formData.get("docker"));
       dispatch(getDockerAction(formData));
     }
-    // dispatch(changeSystemAction("hi"));
+    // dispatch(changejSystemAction("hi"));
   }
 
   return (
     <AlgorWrap>
       <div className="big-box">
         <span className="icon">
-          <SwitcherFilled style={{ fontSize: "22px", color: "#0077FA" }} />
+          <SwitcherFilled style={{ fontSize: "22px", color: "teal" }} />
         </span>
         <p className="title">
           {curModule ? `当前模型为：${curModule}` : "选择算法模型"}

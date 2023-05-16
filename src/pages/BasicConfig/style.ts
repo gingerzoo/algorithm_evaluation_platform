@@ -65,11 +65,11 @@ export const ConfigWrap = styled.div<Iprops>`
     }
     .next {
       background-color: ${(props) =>
-        props.run_status == 0 ? " #79cb85" : "#C8C8C8"};
+        props.run_status == 0 ? props.theme.color.primaryColor : "#C8C8C8"};
 
       &:hover {
         background-color: ${(props) =>
-          props.run_status == 0 ? " #97c8a8" : "#C8C8C8"};
+          props.run_status == 0 ? props.theme.color.primaryColor : "#C8C8C8"};
       }
     }
   }

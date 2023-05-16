@@ -7,7 +7,7 @@ export const Table2Wrapper = styled.div`
   }
 
   .newCondi {
-    background-color: #65b3fa;
+    ${(props) => props.theme.mixin.btnHover}
     border: none;
 
     padding: 0 4vw;
@@ -27,7 +27,7 @@ export const Table2Wrapper = styled.div`
         width: 3vw;
       }
       &.evaluation {
-        background-color: #79cc86;
+        background-color: ${(props) => props.theme.color.greenColor};
       }
 
       .preWork {

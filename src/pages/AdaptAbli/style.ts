@@ -20,6 +20,7 @@ export const AdaptWraper = styled.div<Istate>`
       font-size: 1.3vw;
       padding: 0.5vw 1.5vw;
       border-radius: 8px;
+      ${(props) => props.theme.mixin.btnHover}
     }
   }
 `;

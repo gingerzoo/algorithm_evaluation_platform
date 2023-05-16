@@ -3,26 +3,26 @@ import { Iguid, Inav, Iremo, Iresult, Ivoice } from "@/type";
 import type { Isystem } from "../store/index";
 
 export function getDocker(docker: FormData) {
-  // /baseConfig/loadDocker
-  return lxrequest.request<Isystem>({
-    url: "/baseConfig/loadDocker",
+  return lxrequest.request<string>({
+    url: "/baseConfig/uploaddocker",
     method: "post",
     headers: { "Content-Type": "multipart/form-data" },
     data: docker
   });
 }
 
-export function getSystemOverview(docker: string) {
-  // /baseConfig/loadDocker
+export function getSystemOverview(docker_name: string) {
   return lxrequest.request<Isystem>({
-    url: "/baseConfig/loadDocker",
+    url: "/baseConfig/loadModel",
+    headers: { "Content-Type": "application/json" },
     method: "post",
-    data: docker
+    data: {
+      docker_name
+    }
   });
 }
 
 export function commitData(run_cmd: string, scene: number, data_type: number) {
-  // /baseConfig/retConfig
   return lxrequest.request<Iresult>({
     url: "/baseConfig/retConfig",
     method: "post",

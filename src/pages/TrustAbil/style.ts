@@ -9,20 +9,17 @@ export const TrustWrap = styled.div`
     }
     .start {
       height: auto;
-      background-color: #1890ff;
       font-size: 20px;
       /* padding: 4px 20px; */
       margin: 0 15px;
       color: white;
-      &:hover {
-        background-color: #65b3fa;
-      }
+      ${(props) => props.theme.mixin.btnHover}
     }
   }
   .reliable {
     margin-top: 30px;
     td.score {
-      background-color: #79cc86;
+      background-color: ${(props) => props.theme.color.greenColor};
     }
   }
 `;

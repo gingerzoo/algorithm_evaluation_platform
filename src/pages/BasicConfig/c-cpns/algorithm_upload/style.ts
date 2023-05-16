@@ -11,7 +11,7 @@ export const AlgorWrap = styled.div`
     height: 12vw;
     padding-bottom: 1.5vw;
 
-    background-color: #e6f3ff;
+    background-color: ${(props) => props.theme.color.thirdColor};
     border: 2px dashed ${(props) => props.theme.color.primaryColor};
     border-radius: 8px;
     & > * {
@@ -79,7 +79,7 @@ export const AlgorWrap = styled.div`
     ${(props) => props.theme.mixin.btnHover}
 
     .ant-select-selector {
-      background-color: blue;
+      background-color: ${(props) => props.theme.color.greenColor};
     }
   }
 `;

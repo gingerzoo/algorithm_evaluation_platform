@@ -81,4 +81,27 @@ body {
       //   border-radius: 8px;
     }
   }
+
+  .ant-menu-light .ant-menu-item-selected,
+  .ant-spin.ant-spin-lg .ant-spin-dot i {
+    background-color: rgba(49, 156, 171, 0.3);
+    color: rgba(49, 156, 171, 1);
+  }
+
+  .ant-menu-light .ant-menu-submenu-selected > .ant-menu-submenu-title {
+    background-color: rgba(49, 156, 171, 0.8);
+    color: white;
+  }
+
+  .ant-checkbox-checked .ant-checkbox-inner {
+    background-color: rgba(49, 156, 171, 0.8);
+    border: rgba(49, 156, 171, 0.8);
+    color: white;
+  }
+
+  .ant-menu-light.ant-menu-horizontal > .ant-menu-item-selected::after,
+  .ant-menu-light.ant-menu-horizontal
+    > .ant-menu-item.ant-menu-item-active::after {
+    border-bottom-color: rgba(49, 156, 171, 0.9);
+  }
 }

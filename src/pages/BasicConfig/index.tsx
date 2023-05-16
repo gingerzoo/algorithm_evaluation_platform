@@ -23,9 +23,11 @@ import {
   changeSceneAction,
   changeSceneNumAction,
   changeStatusCommAction,
-  commitDataAction
+  commitDataAction,
+  getAlogListAction
 } from "./store";
-import Docker_upload from "./c-cpns/docker_upload";
+
+import Typewriter from "./c-cpns/typewriter";
 
 interface Iprops {
   children?: ReactNode;
@@ -58,6 +60,7 @@ const BasicConfig: FC<Iprops> = () => {
     }),
     shallowEqual
   );
+
   //派发函数
   const dispatch = useAppDispatch();
   //路由跳转函数
@@ -78,8 +81,10 @@ const BasicConfig: FC<Iprops> = () => {
   const [isSystem, setIsSystem] = useState(false);
   //是否点击了浏览数据集样本的按钮
   const [isPicture, setIsPicture] = useState(false);
-  //input命令输入框的值
-  //   const [command,setCommand]=useState("")
+
+  useEffect(() => {
+    dispatch(getAlogListAction());
+  }, []);
 
   //校验成功的提示信息
   const success = (info: string) => {
@@ -177,21 +182,6 @@ const BasicConfig: FC<Iprops> = () => {
 
   //下一步按钮点击处理函数
   function nextBtnClick() {
-    // messageApi.destroy();
-    // if (!commit_status) {
-    //   failed("请确认配置");
-    // } else if (commit_status) {
-    //   console.log(commit_status);
-    //   failed("模型配置错误");
-    // } else if (run_status) {
-    //   failed("算法运行错误");
-    // } else {
-    //   const nextPage = `/basicwork/${scene}`;
-    //   dispatch(changeNextPathAction(nextPage));
-    //   dispatch(changeNowProcessAction(["基础设置", "基础效能"]));
-
-    //   navigate(`/basicwork/${scene}`);
-    // }
     const nextPage = `/profile/basicwork/${scene}`;
     dispatch(changeNextPathAction(nextPage));
     dispatch(changeNowProcessAction(["基础设置", "基础效能"]));
@@ -259,6 +249,7 @@ const BasicConfig: FC<Iprops> = () => {
           <span>下一步</span>
         </button>
       </div>
+      {isPending && <Typewriter />}
       <div className="cover system">
         <App_cover btnClickHandle={systemCover} width={600}>
           <System_overview />
@@ -269,13 +260,6 @@ const BasicConfig: FC<Iprops> = () => {
           <Picture_show />
         </App_cover>
       </div>
-      {/* <button
-        onClick={() => {
-          dispatch(getAlogListAction());
-        }}
-      >
-        点我测试
-      </button> */}
     </ConfigWrap>
   );
 };

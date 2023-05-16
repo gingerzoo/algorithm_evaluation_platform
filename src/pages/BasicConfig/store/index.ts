@@ -77,6 +77,7 @@ export const getSystemAction = createAsyncThunk(
   "system_overview",
   async (par: string, { dispatch }) => {
     dispatch(changeDataNameAction(par));
+
     try {
       const res = await getSystemOverview(par);
       dispatch(changeSystemAction(res));
@@ -103,7 +104,20 @@ export const getDockerAction = createAsyncThunk(
     try {
       const res = await getDocker(par);
 
-      console.log("拿到系统简况！");
+      if (res == "success") {
+        console.log("生成docker成功");
+        message.open({
+          type: "success",
+          content: "加载docker包成功",
+          duration: 2
+        });
+      } else {
+        message.open({
+          type: "error",
+          content: "生成docker包失败",
+          duration: 2
+        });
+      }
     } catch (err) {
       message.open({
         type: "error",

@@ -50,7 +50,7 @@ const DataUpload: FC<Iprops> = (props) => {
     <UploadWrap>
       <div className="big-box">
         <span className="icon">
-          <SwitcherFilled style={{ fontSize: "22px", color: "#0077FA" }} />
+          <SwitcherFilled style={{ fontSize: "22px", color: "teal" }} />
         </span>
         <p className="title">选择数据集路径</p>
         <p className="datasets">{dataset}</p>

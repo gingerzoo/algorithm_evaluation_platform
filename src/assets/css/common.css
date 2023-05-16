@@ -63,3 +63,21 @@ body .ant-drawer.ant-drawer-right > .ant-drawer-content-wrapper {
 body .ant-drawer.ant-drawer-right > .ant-drawer-content-wrapper .ant-drawer-content {
   border: 1px dashed #0a97e8;
 }
+body .ant-menu-light .ant-menu-item-selected,
+body .ant-spin.ant-spin-lg .ant-spin-dot i {
+  background-color: rgba(49, 156, 171, 0.3);
+  color: #319cab;
+}
+body .ant-menu-light .ant-menu-submenu-selected > .ant-menu-submenu-title {
+  background-color: rgba(49, 156, 171, 0.8);
+  color: white;
+}
+body .ant-checkbox-checked .ant-checkbox-inner {
+  background-color: rgba(49, 156, 171, 0.8);
+  border: rgba(49, 156, 171, 0.8);
+  color: white;
+}
+body .ant-menu-light.ant-menu-horizontal > .ant-menu-item-selected::after,
+body .ant-menu-light.ant-menu-horizontal > .ant-menu-item.ant-menu-item-active::after {
+  border-bottom-color: rgba(49, 156, 171, 0.9);
+}

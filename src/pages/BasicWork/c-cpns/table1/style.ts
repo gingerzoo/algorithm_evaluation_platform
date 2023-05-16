@@ -39,14 +39,15 @@ export const TableWrap = styled.div<Iprops>`
     }
 
     .pass {
-      background: #97c8a8;
+      background: ${(props) => props.theme.color.greenColor};
     }
     .noPass {
-      background: #ff6161;
+      background: ${(props) => props.theme.color.orangeColor};
     }
 
     .population {
-      background-color: ${(props) => (props.result ? "#FF6161" : "#97C8A8")};
+      background-color: ${(props) =>
+        props.result ? props.theme.color.orangeColor : "#97C8A8"};
     }
   }
 `;
