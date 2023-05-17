@@ -5,8 +5,10 @@ export const SideWrap = styled.div`
   width: 20vw;
   min-width: 200px;
   /* max-width: 12.63px; */
+  background-color: rgba(245, 245, 245, 0.9);
   ul.ant-menu {
     font-size: 1.15vw;
+    background-color: rgba(245, 245, 245, 0.9);
   }
 
   li.ant-menu-item,

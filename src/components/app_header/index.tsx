@@ -17,7 +17,7 @@ const App_header: FC<Iprops> = (props) => {
         {/* <span className="divider">|</span> */}
         <h3 className="algor">
           {/* <RadarChartOutlined style={{ color: "#5692FC" }} /> */}
-          &nbsp;算法评估平台模型
+          &nbsp; 感知分级算法评估平台
         </h3>
       </div>
       <div className="right">

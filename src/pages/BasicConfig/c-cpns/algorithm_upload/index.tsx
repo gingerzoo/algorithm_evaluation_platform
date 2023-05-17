@@ -1,18 +1,16 @@
-import React, { memo, MouseEventHandler, useRef } from "react";
+import React, { memo, MouseEventHandler, useRef, useState } from "react";
 import type { FC, ReactNode } from "react";
 import { Select } from "antd";
-import { SwitcherFilled } from "@ant-design/icons";
-
 import { useAppDispatch, useAppSelector } from "@/store";
 import {
   changeCurModuleAction,
   changeStatusCommAction,
-  changeSystemAction,
+  getAlogListAction,
   getDockerAction,
   getSystemAction
 } from "../../store";
 import { changeStatusBeAction } from "@/pages/BasicWork/store";
-import { AlgorWrap } from "./style";
+import Upload from "../upload";
 
 interface Iprops {
   children?: ReactNode;
@@ -22,6 +20,7 @@ interface Iprops {
 }
 
 const AlgorithmUpload: FC<Iprops> = (props) => {
+  const { commandClickHandle } = props;
   const { algorithmList, curModule, system_status } = useAppSelector(
     (state) => ({
       algorithmList: state.basicConfig.algolist,
@@ -49,12 +48,8 @@ const AlgorithmUpload: FC<Iprops> = (props) => {
     dispatch(changeStatusBeAction(-1));
   };
 
-  function btnClickHandle(e: React.MouseEvent<HTMLSpanElement, MouseEvent>) {
-    // console.log(browse, "让我看看谁被点了");
-    props.commandClickHandle(e);
-  }
-
   function inputHandleClick() {
+    console.log("此处上传docker包");
     if (inputRef.current?.files) {
       const file = inputRef.current.files[0];
       const formData = new FormData();
@@ -75,6 +70,7 @@ const AlgorithmUpload: FC<Iprops> = (props) => {
 
   function submmitBtnClick(e: React.MouseEvent<HTMLSpanElement, MouseEvent>) {
     e.stopPropagation();
+    dispatch(getAlogListAction());
     if (inputRef.current?.files) {
       const file = inputRef.current.files[0];
       console.log("file", file);
@@ -83,58 +79,44 @@ const AlgorithmUpload: FC<Iprops> = (props) => {
       console.log("formData", formData);
       console.log(formData.get("docker"));
       dispatch(getDockerAction(formData));
+      console.log("提交docker包");
     }
-    // dispatch(changejSystemAction("hi"));
   }
 
-  return (
-    <AlgorWrap>
-      <div className="big-box">
-        <span className="icon">
-          <SwitcherFilled style={{ fontSize: "22px", color: "teal" }} />
+  const girl = (
+    <>
+      {" "}
+      <input
+        type="file"
+        className="docker"
+        ref={inputRef}
+        onInput={inputHandleClick}
+      />
+      <button onClick={btnHandleClick} className={"false-input"}>
+        <i ref={eContRef}> 选择docker包</i>
+        <span
+          onClick={(e) => {
+            submmitBtnClick(e);
+          }}
+        >
+          上传
         </span>
-        <p className="title">
-          {curModule ? `当前模型为：${curModule}` : "选择算法模型"}
-        </p>
-        <div className="select">
-          <div className="docker-box">
-            <input
-              type="file"
-              className="docker"
-              ref={inputRef}
-              //   placeholder="选择docker包"
-              onInput={inputHandleClick}
-            />
-            <button onClick={btnHandleClick}>
-              <i ref={eContRef}> 选择docker包</i>
-              <span
-                onClick={(e) => {
-                  submmitBtnClick(e);
-                }}
-              >
-                上传
-              </span>
-            </button>
-
-            {/* <p className="title">
-              {system_status == 0 ? "docker包加载成功" : "加载docker镜像包"}
-            </p> */}
-          </div>
-          <div className="divider"></div>
-          <div className="select-box">
-            <Select
-              style={{ width: "100%" }}
-              placeholder="选择算法"
-              onSelect={handleSelect}
-              options={options}
-            />
-          </div>
-        </div>
+      </button>
+      <div className="select-box">
+        <Select
+          style={{ width: "100%" }}
+          placeholder="选择算法"
+          onSelect={handleSelect}
+          options={options}
+        />
       </div>
-      <span className="command" onClick={(e) => btnClickHandle(e)}>
-        查看系统简况
-      </span>
-    </AlgorWrap>
+    </>
+  );
+
+  return (
+    <Upload isDocker={true} procommandClickHandle={commandClickHandle}>
+      {girl}
+    </Upload>
   );
 };
 

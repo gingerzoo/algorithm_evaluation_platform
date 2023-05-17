@@ -23,5 +23,6 @@ export const ProfileWrap = styled.div<Iprops>`
     /* min-width: 990px; */
     min-width: 900px;
     padding: 3.2vw;
+    background-color: ${(props) => props.theme.textColor.secondColor};
   }
 `;

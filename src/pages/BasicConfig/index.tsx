@@ -82,9 +82,9 @@ const BasicConfig: FC<Iprops> = () => {
   //是否点击了浏览数据集样本的按钮
   const [isPicture, setIsPicture] = useState(false);
 
-  useEffect(() => {
-    dispatch(getAlogListAction());
-  }, []);
+  //   useEffect(() => {
+  //     dispatch(getAlogListAction());
+  //   }, []);
 
   //校验成功的提示信息
   const success = (info: string) => {

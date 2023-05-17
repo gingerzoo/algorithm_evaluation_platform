@@ -63,7 +63,7 @@ const Home: FC<Iprops> = (props) => {
       <header>
         <div className="center">
           <div className="top">
-            <h1 className="page-name">智能算法评估平台</h1>
+            <h1 className="page-name"> 感知分级算法评估平台</h1>
             <h5 className="desc">
               提供基础效能、可依赖性、可适应性、协同感知和抽象感知等多维度测试
             </h5>
@@ -87,30 +87,29 @@ const Home: FC<Iprops> = (props) => {
           <div className="envisable box">
             <h2>
               <EyeOutlined className="icon" />
-              <span className="title"> 可视化数据生成</span>
+              <span className="title"> 可视化和易于使用</span>
             </h2>
             <p>
-              提供图片、文本、音频、视频等丰富数据
-              类型的可视化管理，支持便捷的数据导入导出、查看、分版本管理等完善的管理服务
+              本平台应该具有直观的用户界面和易于使用的工具，以便客户可以轻松地执行算法评估并获得结果。此外，还可以通过图表和可视化工具向客户展示评估结果。
             </p>
           </div>
           <div className="freedom box">
             <h2>
               <BorderOuterOutlined className="icon" />
-              <span className="title">高自由度定义工况</span>
+              <span className="title">可扩展性和灵活性</span>
             </h2>
             <p>
-              提供便捷的数据定义方案,丰富的工况数据模板及工具，以及智能化的数据清洗及加工服务,为AI开发提供高质量的训练数据
+              本平台具有可扩展性和灵活性，以便客户可以根据自己的需求进行定制。例如，可以选择要评估的算法类型、数据集大小和评估指标等。
             </p>
           </div>
           <div className="freedom box">
             <h2>
               <SlidersOutlined className="icon" />
 
-              <span className="title">高自由度定义工况</span>
+              <span className="title"> 自动化和高效性</span>
             </h2>
             <p>
-              提供便捷的数据定义方案,丰富的工况数据模板及工具，以及智能化的数据清洗及加工服务,为AI开发提供高质量的训练数据
+              本感知分级算法评估平台可以自动执行算法评估，并提供快速、准确的结果。节省时间和精力，同时提高工作效率。
             </p>
           </div>
         </section>

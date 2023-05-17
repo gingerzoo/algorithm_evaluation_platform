@@ -26,20 +26,31 @@ export const ConfigWrap = styled.div<Iprops>`
       height: 3vw;
       line-height: 3vw;
       width: 50vw;
+
       /* margin: 0 15px; */
     }
     .ant-input {
       border-radius: 0;
+      background-color: white;
+      border: 3px solid ${(props) => props.theme.color.forthColor};
+      /* opacity: 0.8; */
     }
     .ant-menu {
       border-bottom: none;
+      background-color: ${(props) => props.theme.textColor.secondColor};
     }
     .ant-menu-item {
-      border: 1px solid #d9d9d9;
+      border: 3px solid ${(props) => props.theme.color.forthColor};
+      /* border-bottom: none; */
+      border-radius: 4px;
+      background-color: white;
+      margin-left: 10px;
+
       padding: 0 2.4vw;
     }
     .ant-menu-horizontal .ant-menu-item-selected {
       background-color: ${(props) => props.theme.color.orangeColor};
+      border: none;
       color: white;
     }
   }

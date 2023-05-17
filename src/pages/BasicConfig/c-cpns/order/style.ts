@@ -6,7 +6,7 @@ export const OrderWrap = styled.div`
   /* justify-content: space-between; */
   margin-bottom: 1.4vw;
   .title {
-    color: black;
+    color: ${(props) => props.theme.textColor.primaryColor};
     font-weight: 700;
     font-size: 1.3vw;
     margin-right: 1.4vw;
