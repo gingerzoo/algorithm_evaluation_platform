@@ -226,3 +226,38 @@ export const resultName = [
     en: "collaAware"
   }
 ];
+
+export const datasetInfos = [
+  {
+    name: "可见光数据集",
+    state: "1",
+    labels: 10,
+    samples: 446,
+    marked: 440,
+    markAll: 1670
+  },
+  {
+    name: "遥感数据集",
+    state: "1",
+    labels: 16,
+    samples: 298,
+    marked: 244,
+    markAll: 1311
+  },
+  {
+    name: "可见光数据集",
+    state: "1",
+    labels: 10,
+    samples: 446,
+    marked: 440,
+    markAll: 1670
+  },
+  {
+    name: "遥感数据集",
+    state: "1",
+    labels: 16,
+    samples: 298,
+    marked: 244,
+    markAll: 1311
+  }
+];

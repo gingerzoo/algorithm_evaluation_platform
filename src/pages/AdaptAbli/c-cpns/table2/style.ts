@@ -45,13 +45,6 @@ export const Table2Wrapper = styled.div`
             }
           }
         }
-
-        /* justify-content: center; */
-        /* margin: 0 0.5vw; */
-        /* margin-right: 0.5vw; */
-        /* span {
-          padding: 0 0.3vw 0 0.2vw;
-        } */
       }
 
       .viewPic {

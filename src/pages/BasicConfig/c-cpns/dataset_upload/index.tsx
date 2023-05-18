@@ -26,12 +26,9 @@ const DataUpload: FC<Iprops> = (props) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const eContRef = useRef<HTMLElement>(null);
 
-  function btnClickHandle(e: React.MouseEvent<HTMLSpanElement, MouseEvent>) {
-    // console.log(browse, "让我看看谁被点了");
-    commandClickHandle(e);
-  }
-
-  function inputHandleClick() {
+  function inputHandleClick(e: React.FormEvent<HTMLInputElement>) {
+    e.stopPropagation();
+    // e.preventDefault();
     console.log("上传数据集");
     if (inputRef.current?.files) {
       const file = inputRef.current.files[0];
@@ -47,7 +44,8 @@ const DataUpload: FC<Iprops> = (props) => {
     }
   }
 
-  function btnHandleClick() {
+  function btnHandleClick(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    e.stopPropagation();
     inputRef.current?.click();
   }
 
@@ -81,6 +79,7 @@ const DataUpload: FC<Iprops> = (props) => {
         )}
         onClick={(e) => {
           console.log(e.target);
+          e.stopPropagation();
           dispatch(changeDataSetAction(index));
           dispatch(changeStatusCommAction(-1));
           dispatch(changeStatusBeAction(-1));
@@ -100,9 +99,17 @@ const DataUpload: FC<Iprops> = (props) => {
           type="file"
           className="docker"
           ref={inputRef}
-          onInput={inputHandleClick}
+          onClick={(e) => e.preventDefault()}
+          onInput={(e) => {
+            inputHandleClick(e);
+          }}
         />
-        <button onClick={btnHandleClick} className={"false-input"}>
+        <button
+          onClick={(e) => {
+            btnHandleClick(e);
+          }}
+          className={"false-input"}
+        >
           <i ref={eContRef}>从本地上传数据集</i>
           <span
             onClick={(e) => {

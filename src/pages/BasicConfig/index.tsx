@@ -28,6 +28,7 @@ import {
 } from "./store";
 
 import Typewriter from "./c-cpns/typewriter";
+import { getImgAction } from "../AdaptAbli/store";
 
 interface Iprops {
   children?: ReactNode;
@@ -82,9 +83,9 @@ const BasicConfig: FC<Iprops> = () => {
   //是否点击了浏览数据集样本的按钮
   const [isPicture, setIsPicture] = useState(false);
 
-  //   useEffect(() => {
-  //     dispatch(getAlogListAction());
-  //   }, []);
+  useEffect(() => {
+    dispatch(getImgAction({ workIndex: 1 }));
+  }, [scene]);
 
   //校验成功的提示信息
   const success = (info: string) => {

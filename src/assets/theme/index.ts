@@ -19,6 +19,8 @@ const theme = {
   },
   mixin: {
     btnHover: `
+        color:white;
+        border-radius: 10px;
         background-color: rgba(40,123,140,0.8);
         box-shadow: 3px 3px 2px  rgba(40, 123, 140, 0.6);
         &:hover {

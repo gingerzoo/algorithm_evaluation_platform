@@ -66,8 +66,6 @@ export const UploadWrap = styled.div`
 
       i {
         flex: 1;
-        /* width: 7vw; */
-        /* margin-right: 60px; */
         padding: 0 15px;
         font-size: 12px;
         white-space: none;
@@ -75,12 +73,9 @@ export const UploadWrap = styled.div`
         text-overflow: ellipsis;
       }
       span {
-        /* position: absolute; */
-        color: white;
-        /* right: 0; */
+        ${(props) => props.theme.mixin.btnHover};
         padding: 0 5px;
         border-radius: 0 6px 6px 0;
-        ${(props) => props.theme.mixin.btnHover};
       }
     }
 
@@ -119,7 +114,6 @@ export const UploadWrap = styled.div`
     margin-top: 1.2vw;
     padding: 0.8vw 1.6vw;
     color: white;
-    border-radius: 8px;
 
     ${(props) => props.theme.mixin.btnHover}
 

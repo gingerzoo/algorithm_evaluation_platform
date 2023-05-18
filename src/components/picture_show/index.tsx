@@ -5,12 +5,16 @@ import { Carousel } from "antd";
 import { CaretLeftFilled, CaretRightFilled } from "@ant-design/icons";
 import { CarouselRef } from "antd/es/carousel";
 import { mockPic } from "@/assets/data/local_data";
+import { useAppSelector } from "@/store";
 
 interface Iprops {
   children?: ReactNode;
 }
 
 const Picture: FC<Iprops> = (props) => {
+  const { imgUrls } = useAppSelector((state) => ({
+    imgUrls: state.adaptAbili.imgUrl
+  }));
   const onChange = (currentSlide: number) => {
     console.log(currentSlide);
   };
@@ -18,12 +22,15 @@ const Picture: FC<Iprops> = (props) => {
   const carouselRef = useRef<CarouselRef>(null);
   return (
     <PictureWrap>
+      {/* <div className="desc">
+        <p>当前数据集类型：</p>
+      </div> */}
       <div className="slider">
         <Carousel afterChange={onChange} dots={false} ref={carouselRef}>
-          {mockPic.map((item) => {
+          {imgUrls.map((item) => {
             return (
               <div key={item} className="pic">
-                <img src={item} />;
+                <img src={`data:image/png;base64,${item}`} />;
               </div>
             );
           })}

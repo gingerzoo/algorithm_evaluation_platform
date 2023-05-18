@@ -9,7 +9,8 @@ interface Iprops {
 
 export const ConfigWrap = styled.div<Iprops>`
   /* position: relative; */
-  margin: 0 6vw;
+
+  padding: 0 6vw;
 
   .top {
     display: flex;
@@ -32,7 +33,8 @@ export const ConfigWrap = styled.div<Iprops>`
     .ant-input {
       border-radius: 0;
       background-color: white;
-      border: 3px solid ${(props) => props.theme.color.forthColor};
+      border: 1px solid ${(props) => props.theme.color.forthColor};
+      box-shadow: 0 0 4px ${(props) => props.theme.color.secondColor};
       /* opacity: 0.8; */
     }
     .ant-menu {
@@ -40,7 +42,8 @@ export const ConfigWrap = styled.div<Iprops>`
       background-color: ${(props) => props.theme.textColor.secondColor};
     }
     .ant-menu-item {
-      border: 3px solid ${(props) => props.theme.color.forthColor};
+      border: 1px solid ${(props) => props.theme.color.forthColor};
+      box-shadow: 0 0 3px ${(props) => props.theme.color.secondColor};
       /* border-bottom: none; */
       border-radius: 4px;
       background-color: white;
@@ -61,17 +64,14 @@ export const ConfigWrap = styled.div<Iprops>`
     .spinning {
       /* display: ${(props) => (props.run_status == 0 ? "block" : "none")}; */
       height: 3.8vw;
-      /* margin: 0 30px; */
       margin: 0 4vw 0 -2.7vw;
       line-height: 4.3vw;
     }
     .btn {
       height: 3.8vw;
       line-height: 3.8vw;
-      border-radius: 8px;
       margin-right: 4.8vw;
       padding: 0 2.2vw;
-      color: white;
       ${(props) => props.theme.mixin.btnHover}
     }
     .next {

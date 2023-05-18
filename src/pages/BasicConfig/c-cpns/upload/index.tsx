@@ -3,6 +3,7 @@ import type { FC, ReactNode } from "react";
 import { UploadWrap } from "./style";
 import { SwitcherFilled } from "@ant-design/icons";
 import { useAppSelector } from "@/store";
+import { useNavigate } from "react-router-dom";
 
 interface Iprops {
   children?: ReactNode;
@@ -18,14 +19,22 @@ const App_header: FC<Iprops> = (props) => {
     curModule: state.basicConfig.currentModule
   }));
 
+  const navigate = useNavigate();
+
   //bigBox最下面的按钮
   function btnClickHandle(e: React.MouseEvent<HTMLSpanElement, MouseEvent>) {
     procommandClickHandle(e);
   }
 
+  function bigBoxHandle() {
+    if (!isDocker) {
+      navigate("/profile/dataset");
+    }
+  }
+
   return (
     <UploadWrap>
-      <div className="big-box">
+      <div className="big-box" onClick={bigBoxHandle}>
         <span className="icon">
           <SwitcherFilled style={{ fontSize: "22px", color: "teal" }} />
         </span>

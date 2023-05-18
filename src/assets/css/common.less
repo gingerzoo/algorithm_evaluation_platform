@@ -13,10 +13,13 @@
   margin: 0 auto;
   border-collapse: collapse;
   text-align: center;
-  border: 1px solid #dbdbdb;
+  border: 2px solid rgba(0, 128, 128, 0.2);
+  //   border-radius: 20px;
+  box-shadow: 0 0 px rgba(27, 145, 162, 0.9);
   td,
   th {
-    border: 1px solid #dbdbdb;
+    border: 1px solid rgba(49, 156, 171, 0.2);
+
     padding: 0.8vw 0;
   }
 }
@@ -35,7 +38,7 @@
   bottom: 0;
   top: 0;
   /* z-index: 1; */
-  background-color: rgba(74, 74, 74, 1);
+  background-color: rgba(84, 84, 84, 1);
 }
 
 .close_cover.ant-btn {
@@ -66,8 +69,12 @@ body {
     font-size: 18px;
   }
 
-  .ant-modal .ant-modal-content .ant-modal-header .ant-modal-title {
-    text-align: center;
+  .ant-modal .ant-modal-content {
+    // background-color: rgba(49, 156, 171, 0.1);
+    .ant-modal-header {
+      text-align: center;
+      margin-bottom: 15px;
+    }
   }
 
   .ant-drawer.ant-drawer-right > .ant-drawer-content-wrapper {

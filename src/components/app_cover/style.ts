@@ -13,7 +13,7 @@ export const CoverWrap = styled.section<Iprops>`
     min-height: calc(100vh - 150px);
     margin: 20px auto;
     padding: 0 10px;
-    border-right: 2px solid rgba(81, 165, 342, 1);
-    border-left: 2px solid rgba(81, 165, 342, 1);
+    border-right: 3px solid ${(props) => props.theme.color.secondColor};
+    border-left: 3px solid ${(props) => props.theme.color.secondColor};
   }
 `;

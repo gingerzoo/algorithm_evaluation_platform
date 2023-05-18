@@ -10,11 +10,12 @@
   margin: 0 auto;
   border-collapse: collapse;
   text-align: center;
-  border: 1px solid #dbdbdb;
+  border: 2px solid rgba(0, 128, 128, 0.2);
+  box-shadow: 0 0 px rgba(27, 145, 162, 0.9);
 }
 .table_v1 td,
 .table_v1 th {
-  border: 1px solid #dbdbdb;
+  border: 1px solid rgba(49, 156, 171, 0.2);
   padding: 0.8vw 0;
 }
 .table_color tbody tr:nth-child(2n + 1) {
@@ -27,7 +28,7 @@
   bottom: 0;
   top: 0;
   /* z-index: 1; */
-  background-color: #4a4a4a;
+  background-color: #545454;
 }
 .close_cover.ant-btn {
   position: absolute;
@@ -54,8 +55,9 @@ body .ant-message .ant-message-notice-error .ant-message-notice-content {
   border: 2px solid #ff4d4f;
   font-size: 18px;
 }
-body .ant-modal .ant-modal-content .ant-modal-header .ant-modal-title {
+body .ant-modal .ant-modal-content .ant-modal-header {
   text-align: center;
+  margin-bottom: 15px;
 }
 body .ant-drawer.ant-drawer-right > .ant-drawer-content-wrapper {
   bottom: auto;

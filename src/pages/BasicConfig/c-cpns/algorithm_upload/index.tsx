@@ -21,13 +21,11 @@ interface Iprops {
 
 const AlgorithmUpload: FC<Iprops> = (props) => {
   const { commandClickHandle } = props;
-  const { algorithmList, curModule, system_status } = useAppSelector(
-    (state) => ({
-      algorithmList: state.basicConfig.algolist,
-      curModule: state.basicConfig.currentModule,
-      system_status: state.basicConfig.commit_status
-    })
-  );
+  const { algorithmList } = useAppSelector((state) => ({
+    algorithmList: state.basicConfig.algolist,
+    curModule: state.basicConfig.currentModule,
+    system_status: state.basicConfig.commit_status
+  }));
 
   const inputRef = useRef<HTMLInputElement>(null);
   const eContRef = useRef<HTMLElement>(null);

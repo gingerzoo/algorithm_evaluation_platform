@@ -2,7 +2,8 @@ import { configureStore } from "@reduxjs/toolkit";
 import { useDispatch, useSelector, TypedUseSelectorHook } from "react-redux";
 import sceneReducer from "@/pages/BasicConfig/store";
 import effectReducer from "@/pages/BasicWork/store";
-import adaptReducer from "@/pages/AdaptAbli//store";
+import adaptReducer from "@/pages/AdaptAbli/store";
+import datasetReducer from "@/pages/Dataset/store";
 // import {
 //   guideAdaptReducer,
 //   navigateAdaptReducer,
@@ -18,7 +19,8 @@ const store = configureStore({
     // navigateAdapt: navigateAdaptReducer,
     // remoteAdapt: remoteAdaptReducer,
     // voiceAdapt: voiceAdaptReducer
-    adaptAbili: adaptReducer
+    adaptAbili: adaptReducer,
+    datasetMan: datasetReducer
   }
 });
 

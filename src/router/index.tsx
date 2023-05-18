@@ -22,6 +22,7 @@ const CollaAware = lazy(() => import("@/pages/CollaAware"));
 const AbstrAware = lazy(() => import("@/pages/AbstrAware"));
 const Home = lazy(() => import("@/pages/Home"));
 const Profile = lazy(() => import("@/pages/Profile"));
+const Dataset = lazy(() => import("@/pages/Dataset"));
 
 //路由表映射
 const routes: RouteObject[] = [
@@ -44,6 +45,10 @@ const routes: RouteObject[] = [
       {
         path: "config",
         element: <Basic_Config />
+      },
+      {
+        path: "dataset",
+        element: <Dataset />
       },
       {
         path: "basicwork",
