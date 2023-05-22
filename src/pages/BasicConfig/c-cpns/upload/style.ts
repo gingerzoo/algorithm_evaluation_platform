@@ -41,6 +41,22 @@ export const UploadWrap = styled.div`
         border-radius: 6px;
         overflow: hidden;
         box-shadow: 0 0 3px rgba(40, 123, 140, 0.8);
+
+        /* .ant-select-single.ant-select-show-arrow
+          .ant-select-selection-item
+          .selectItem {
+          display: flex;
+          justify-content: space-between;
+        } */
+
+        .ant-select-dropdown
+          .ant-select-item
+          .ant-select-item-option
+          .ant-select-item-option-content
+          .my-selectedItem {
+          display: flex;
+          justify-content: space-between;
+        }
       }
     }
 
@@ -90,7 +106,7 @@ export const UploadWrap = styled.div`
       justify-content: space-between;
       align-items: center;
       button.dataset-type {
-        padding: 6px 10px;
+        padding: 6px;
         color: white;
         font-size: 12px;
 

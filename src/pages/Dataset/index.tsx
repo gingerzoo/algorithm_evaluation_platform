@@ -1,4 +1,4 @@
-import React, { memo, useEffect, useState } from "react";
+import React, { memo, useCallback, useEffect, useState } from "react";
 import type { FC, ReactNode } from "react";
 import { DatasetWrap } from "./style";
 
@@ -7,6 +7,7 @@ import { getDatasetInfoAction } from "./store";
 import { Button, Modal } from "antd";
 import Add_dataset from "./c-cpns/buildData";
 import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 
 interface Iprops {
   children?: ReactNode;
@@ -16,12 +17,16 @@ const Dataset: FC<Iprops> = (props) => {
   const { datasets } = useAppSelector((state) => ({
     datasets: state.datasetMan.datasets
   }));
+
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  useEffect(() => {
-    dispatch(getDatasetInfoAction());
-  }, []);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  //   useEffect(() => {
+  //     dispatch(getDatasetInfoAction());
+  //   }, [docker]);
+
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -34,7 +39,11 @@ const Dataset: FC<Iprops> = (props) => {
     setIsModalOpen(false);
   };
 
-  console.log(datasets);
+  const btnBackClick = () => {
+    navigate("/profile/config");
+  };
+
+  //   console.log(datasets);
   const defaultDatas = Object.values(datasets).map((item, index) => {
     return (
       <tr key={index}>
@@ -81,8 +90,12 @@ const Dataset: FC<Iprops> = (props) => {
           <button className="newData" onClick={showModal}>
             新建
           </button>
+          <button onClick={btnBackClick} className="backToPrePage">
+            返回上一页
+          </button>
         </div>
       </div>
+
       <Modal
         title="新建数据集"
         open={isModalOpen}

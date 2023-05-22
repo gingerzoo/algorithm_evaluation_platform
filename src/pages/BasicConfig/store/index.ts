@@ -4,6 +4,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { message } from "antd";
 import {
   commitData,
+  getAfDelAlgoList,
   getAlogrithmName,
   getDocker,
   getSystemOverview
@@ -98,37 +99,6 @@ export const getSystemAction = createAsyncThunk(
   }
 );
 
-export const getDockerAction = createAsyncThunk(
-  "push_docker",
-  async (par: FormData, { dispatch }) => {
-    try {
-      const res = await getDocker(par);
-
-      if (res == "success") {
-        console.log("生成docker成功");
-        message.open({
-          type: "success",
-          content: "加载docker包成功",
-          duration: 2
-        });
-      } else {
-        message.open({
-          type: "error",
-          content: "生成docker包失败",
-          duration: 2
-        });
-      }
-    } catch (err) {
-      message.open({
-        type: "error",
-        content: "网络请求发生错误",
-        duration: 2
-      });
-      console.log(err);
-    }
-  }
-);
-
 export const commitDataAction = createAsyncThunk<
   //返回值的类型！！！！！一定要写啊啊啊啊！
   {
@@ -183,6 +153,22 @@ export const commitDataAction = createAsyncThunk<
   }
 });
 
+export const getAftDelAlgListAction = createAsyncThunk(
+  "delete_alogrithmList",
+  async (par: string, { dispatch }) => {
+    try {
+      const res = await getAfDelAlgoList(par);
+      dispatch(changeAlgoListAction(res));
+    } catch (err) {
+      message.open({
+        type: "error",
+        content: "网络错误",
+        duration: 2
+      });
+    }
+  }
+);
+
 export const getAlogListAction = createAsyncThunk(
   "alogrithmList",
   (par, { dispatch }) => {
@@ -197,6 +183,38 @@ export const getAlogListAction = createAsyncThunk(
         content: "网络错误",
         duration: 2
       });
+    }
+  }
+);
+
+export const getDockerAction = createAsyncThunk(
+  "push_docker",
+  async (par: FormData, { dispatch }) => {
+    try {
+      const res = await getDocker(par);
+
+      if (res == "success") {
+        console.log("生成docker成功");
+        message.open({
+          type: "success",
+          content: "加载docker包成功",
+          duration: 2
+        });
+        dispatch(getAlogListAction());
+      } else {
+        message.open({
+          type: "error",
+          content: "生成docker包失败",
+          duration: 2
+        });
+      }
+    } catch (err) {
+      message.open({
+        type: "error",
+        content: "网络请求发生错误",
+        duration: 2
+      });
+      console.log(err);
     }
   }
 );

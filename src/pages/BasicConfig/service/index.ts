@@ -47,3 +47,13 @@ export function getAlogrithmName() {
     method: "get"
   });
 }
+
+export function getAfDelAlgoList(model_name: string) {
+  return lxrequest.request({
+    url: "/baseConfig/delete_model",
+    method: "post",
+    data: {
+      model_name: model_name
+    }
+  });
+}

@@ -11,6 +11,7 @@ interface Iprops {
   procommandClickHandle: (
     e: React.MouseEvent<HTMLSpanElement, MouseEvent>
   ) => void;
+  changeState?: () => void;
 }
 
 const App_header: FC<Iprops> = (props) => {

@@ -2,12 +2,13 @@ import styled from "styled-components";
 
 export const DatasetWrap = styled.div`
   background-color: white;
-  padding: 15px 15px 50px 25px;
+  padding: 20px 30px 10px 30px;
 
   .dataset-body {
     .mytable {
-      display: inline-block;
       position: relative;
+      display: flex;
+      flex-direction: column;
     }
     table {
       margin: 15px 0;
@@ -35,12 +36,14 @@ export const DatasetWrap = styled.div`
       }
     }
     button {
-      position: absolute;
-      right: 0;
-      /* display: inline-block; */
+      align-self: end;
       padding: 10px 20px;
       border-radius: 10px;
       ${(props) => props.theme.mixin.btnHover}
+      &.backToPrePage {
+        align-self: stretch;
+        margin-top: 30px;
+      }
     }
   }
 `;

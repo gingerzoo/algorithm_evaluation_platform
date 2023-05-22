@@ -29,6 +29,7 @@ import {
 
 import Typewriter from "./c-cpns/typewriter";
 import { getImgAction } from "../AdaptAbli/store";
+import { getDatasetInfo } from "../Dataset/service";
 
 interface Iprops {
   children?: ReactNode;
@@ -83,9 +84,19 @@ const BasicConfig: FC<Iprops> = () => {
   //是否点击了浏览数据集样本的按钮
   const [isPicture, setIsPicture] = useState(false);
 
+  const [docker, setDocker] = useState(0);
+
+  const changeDocker = useCallback(() => {
+    setDocker((docker) => docker + 1);
+  }, [docker]);
+
   useEffect(() => {
     dispatch(getImgAction({ workIndex: 1 }));
   }, [scene]);
+
+  useEffect(() => {
+    dispatch(getAlogListAction());
+  }, [docker]);
 
   //校验成功的提示信息
   const success = (info: string) => {
@@ -199,7 +210,10 @@ const BasicConfig: FC<Iprops> = () => {
     >
       {contextHolder}
       <div className="top">
-        <Algorithm_upload commandClickHandle={systemCover} />
+        <Algorithm_upload
+          commandClickHandle={systemCover}
+          changeState={changeDocker}
+        />
         {/* <Docker_upload commandClickHandle={systemCover} /> */}
         <Dataset_upload commandClickHandle={pictureCover} />
       </div>

@@ -117,3 +117,36 @@ body {
     color: rgba(0, 0, 0, 0.48);
   }
 }
+
+.ant-select-dropdown
+  .ant-select-item.ant-select-item-option
+  .ant-select-item-option-content
+  .optionItem {
+  display: flex;
+  justify-content: space-between;
+
+  .optionItem-name {
+    flex: 1;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  .delect-icon {
+    width: 20px;
+    height: 20px;
+    margin-left: 5px;
+    color: #666;
+    &:hover {
+      color: #ff4d4f;
+    }
+  }
+}
+
+.ant-select-single
+  .ant-select-selector
+  .ant-select-selection-item
+  .optionItem
+  .delect-icon {
+  display: none;
+  //   pointer-events: none;
+}
