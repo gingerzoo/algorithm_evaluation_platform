@@ -52,7 +52,7 @@ export interface Iadapt {
   conditionList: string[];
   newWorkObj: Iwork;
   genIsPending: boolean[];
-  testIsPending: boolean;
+  testIsPending: boolean[];
   genData_status: number;
   workResult: string[];
   needGenData: boolean;
@@ -153,7 +153,7 @@ export const getWorkResultAction = createAsyncThunk<
   const sceneNum = getState().basicConfig.sceneNum;
   const date_type = getState().basicConfig.dataSet;
   const checkList = getState().adaptAbili.checkList[sceneNum];
-  const run_result = getState().adaptAbili.runResult;
+  //   const run_result = getState().adaptAbili.runResult;
   const newInter: Iwork[] = [];
   const realResult: string[] = [];
 
@@ -165,17 +165,19 @@ export const getWorkResultAction = createAsyncThunk<
   if (newInter.length > 0) {
     try {
       const res = await getWorkResult(sceneNum, date_type, newInter);
+      console.log("返回的测试结果", res);
       dispatch(changeRunResult(res));
       if (res.status == 0) {
         let count = 0;
         checkList.forEach((item, index) => {
           if (item) {
-            realResult.push(run_result.condition_result[count]);
+            realResult.push(res.condition_result[count]);
             count++;
           } else {
             realResult.push(" ");
           }
         });
+        console.log("真正的测试结果", realResult);
         switch (scene) {
           case "guide":
             dispatch(changeGuideResAction(realResult));
@@ -430,7 +432,7 @@ const initialState: Iadapt = {
   },
   conditionList: [],
   genIsPending: [false, false, false, false],
-  testIsPending: false,
+  testIsPending: [false, false, false, false],
   genData_status: -1,
   workResult: [],
   needGenData: false,
@@ -518,27 +520,37 @@ const adaptSlice = createSlice({
     }
   },
   extraReducers: (builder) => {
+    const updateIsPending = (state: Iadapt, prop: string, value: boolean) => {
+      const sceneNum = sceneToNum[state.pageScene];
+
+      const cur = state[prop] as boolean[];
+      const myState = [...cur];
+      myState[sceneNum] = value;
+      state[prop] = myState;
+    };
     builder
       .addCase(getWorkDataAction.pending, (state) => {
-        const sceneNum = sceneToNum[state.pageScene];
-        const myState = [...state.genIsPending];
-        myState[sceneNum] = true;
-        console.log("pending状态");
-        state.genIsPending = myState;
+        updateIsPending(state, "genIsPending", true);
       })
       .addCase(getWorkDataAction.fulfilled, (state) => {
-        const sceneNum = sceneToNum[state.pageScene];
-        const myState = [...state.genIsPending];
-        myState[sceneNum] = false;
-        console.log("fulfilled状态");
-        state.genIsPending = myState;
+        updateIsPending(state, "genIsPending", false);
       })
       .addCase(getWorkDataAction.rejected, (state) => {
-        const sceneNum = sceneToNum[state.pageScene];
-        const myState = [...state.genIsPending];
-        myState[sceneNum] = false;
-        console.log("rejected状态");
-        state.genIsPending = myState;
+        updateIsPending(state, "genIsPending", false);
+        // const sceneNum = sceneToNum[state.pageScene];
+        // const cur = state.genIsPending;
+        // const myState = [...cur];
+        // myState[sceneNum] = false;
+        // state.genIsPending = myState;
+      })
+      .addCase(getWorkResultAction.pending, (state) => {
+        updateIsPending(state, "testIsPending", true);
+      })
+      .addCase(getWorkResultAction.fulfilled, (state) => {
+        updateIsPending(state, "testIsPending", false);
+      })
+      .addCase(getWorkResultAction.rejected, (state) => {
+        updateIsPending(state, "testIsPending", false);
       });
     //   .addMatcher(isPendingAction, (state) => {
     //     const sceneNum = sceneToNum[state.pageScene];

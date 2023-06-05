@@ -4,10 +4,11 @@ import { DatasetWrap } from "./style";
 
 import { useAppDispatch, useAppSelector } from "@/store";
 import { getDatasetInfoAction } from "./store";
-import { Button, Modal } from "antd";
+import { Modal } from "antd";
 import Add_dataset from "./c-cpns/buildData";
 import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import { datasetInfos } from "@/assets/data/local_data";
 
 interface Iprops {
   children?: ReactNode;
@@ -44,7 +45,7 @@ const Dataset: FC<Iprops> = (props) => {
   };
 
   //   console.log(datasets);
-  const defaultDatas = Object.values(datasets).map((item, index) => {
+  const defaultDatas = Object.values(datasetInfos).map((item, index) => {
     return (
       <tr key={index}>
         <td>{item.name}</td>
@@ -103,6 +104,7 @@ const Dataset: FC<Iprops> = (props) => {
         onCancel={handleCancel}
         okText="确认"
         cancelText="取消"
+        width={400}
       >
         <Add_dataset />
       </Modal>

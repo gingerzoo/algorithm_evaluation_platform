@@ -57,7 +57,7 @@ const Addset: FC<Iprops> = (props) => {
         form={form}
         name={"add_dataser"}
         // disabled={componentDisabled}
-        style={{ maxWidth: 700 }}
+        style={{ maxWidth: 400 }}
       >
         <Form.Item label="数据来源" name="dataset_source">
           <Radio.Group>

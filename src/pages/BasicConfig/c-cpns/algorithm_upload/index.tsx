@@ -6,6 +6,7 @@ import {
   changeCurModuleAction,
   changeStatusCommAction,
   getAftDelAlgListAction,
+  getAlogListAction,
   getDockerAction,
   getSystemAction
 } from "../../store";
@@ -33,7 +34,7 @@ const AlgorithmUpload: FC<Iprops> = (props) => {
   const eContRef = useRef<HTMLElement>(null);
   const dispatch = useAppDispatch();
 
-  const options = algorithmList.map((item) => {
+  const options = algorithmList?.map((item) => {
     const optionItem = (
       <div className="optionItem">
         <span className="optionItem-name">{item}</span>
@@ -55,8 +56,9 @@ const AlgorithmUpload: FC<Iprops> = (props) => {
   ) => {
     e.stopPropagation();
     console.log("the model to be deleted", delete_name);
-    dispatch(getAftDelAlgListAction(delete_name));
-    if (changeState) changeState();
+    dispatch(getAftDelAlgListAction(delete_name)).then(() => {
+      if (changeState) changeState();
+    });
   };
 
   const handleSelect = (value: string) => {
@@ -76,9 +78,10 @@ const AlgorithmUpload: FC<Iprops> = (props) => {
       formData.append("docker", file);
 
       const now = formData.get("docker");
+      console.log("现在input框中被选中的压缩包", file);
       if (now instanceof File) {
         const name = now.name;
-        console.log(name);
+        // console.log(name);
         eContRef.current!.textContent = name;
       }
     }
@@ -99,8 +102,9 @@ const AlgorithmUpload: FC<Iprops> = (props) => {
       formData.append("docker", file);
       console.log("formData", formData);
       //   console.log(formData.get("docker"));
-      dispatch(getDockerAction(formData));
-      if (changeState) changeState();
+      dispatch(getDockerAction(formData)).then(() => {
+        if (changeState) changeState();
+      });
     } else {
       message.open({
         type: "error",

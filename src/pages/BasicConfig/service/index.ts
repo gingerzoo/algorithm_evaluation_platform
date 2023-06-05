@@ -16,6 +16,7 @@ export function getSystemOverview(docker_name: string) {
     url: "/baseConfig/loadModel",
     headers: { "Content-Type": "application/json" },
     method: "post",
+    timeout: 900000,
     data: {
       docker_name
     }
@@ -48,12 +49,12 @@ export function getAlogrithmName() {
   });
 }
 
-export function getAfDelAlgoList(model_name: string) {
+export function getAfDelAlgoList(docker_name: string) {
   return lxrequest.request({
     url: "/baseConfig/delete_model",
     method: "post",
     data: {
-      model_name: model_name
+      docker_name: docker_name
     }
   });
 }

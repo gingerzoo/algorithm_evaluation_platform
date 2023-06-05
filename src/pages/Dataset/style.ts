@@ -14,7 +14,7 @@ export const DatasetWrap = styled.div`
       margin: 15px 0;
       th,
       td {
-        padding: 10px 25px;
+        padding: 0.8vw 1.58vw;
         color: ${(props) => props.theme.textColor.primaryColor};
         font-weight: 400;
         font-size: 14px;

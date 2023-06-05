@@ -158,7 +158,7 @@ export const getAftDelAlgListAction = createAsyncThunk(
   async (par: string, { dispatch }) => {
     try {
       const res = await getAfDelAlgoList(par);
-      dispatch(changeAlgoListAction(res));
+      dispatch(changeAlgoListAction(res.model_name));
     } catch (err) {
       message.open({
         type: "error",
@@ -192,6 +192,7 @@ export const getDockerAction = createAsyncThunk(
   async (par: FormData, { dispatch }) => {
     try {
       const res = await getDocker(par);
+      dispatch(getAlogListAction());
 
       if (res == "success") {
         console.log("生成docker成功");
@@ -200,7 +201,6 @@ export const getDockerAction = createAsyncThunk(
           content: "加载docker包成功",
           duration: 2
         });
-        dispatch(getAlogListAction());
       } else {
         message.open({
           type: "error",

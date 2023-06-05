@@ -59,15 +59,18 @@ body .ant-modal .ant-modal-content .ant-modal-header {
   text-align: center;
   margin-bottom: 15px;
 }
+body .ant-modal-root .ant-modal-wrap .ant-modal {
+  width: 450px;
+}
 body .ant-drawer.ant-drawer-right > .ant-drawer-content-wrapper {
   bottom: auto;
 }
 body .ant-drawer.ant-drawer-right > .ant-drawer-content-wrapper .ant-drawer-content {
-  border: 1px dashed #0a97e8;
+  border: 1px dashed #319cab;
 }
 body .ant-menu-light .ant-menu-item-selected,
 body .ant-spin.ant-spin-lg .ant-spin-dot i {
-  background-color: rgba(49, 156, 171, 0.3);
+  background-color: #319cab;
   color: #319cab;
 }
 body .ant-menu-light .ant-menu-submenu-selected > .ant-menu-submenu-title {

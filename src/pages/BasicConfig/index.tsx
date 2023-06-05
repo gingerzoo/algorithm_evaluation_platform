@@ -88,6 +88,7 @@ const BasicConfig: FC<Iprops> = () => {
 
   const changeDocker = useCallback(() => {
     setDocker((docker) => docker + 1);
+    console.log("nowState", docker + 1);
   }, [docker]);
 
   useEffect(() => {

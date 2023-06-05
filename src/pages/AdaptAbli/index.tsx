@@ -160,7 +160,10 @@ const AdaptAbil: FC<Iprops> = () => {
           进行工况测试
         </Button>
         <div className="spinning">
-          <Spin spinning={scene == pageScene && isTestPending} size={"large"} />
+          <Spin
+            spinning={scene == pageScene && isTestPending[sceneNum]}
+            size={"large"}
+          />
         </div>
       </div>
       、
