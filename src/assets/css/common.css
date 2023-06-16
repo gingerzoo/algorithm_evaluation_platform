@@ -68,9 +68,12 @@ body .ant-drawer.ant-drawer-right > .ant-drawer-content-wrapper {
 body .ant-drawer.ant-drawer-right > .ant-drawer-content-wrapper .ant-drawer-content {
   border: 1px dashed #319cab;
 }
-body .ant-menu-light .ant-menu-item-selected,
 body .ant-spin.ant-spin-lg .ant-spin-dot i {
   background-color: #319cab;
+  color: #319cab;
+}
+body .ant-menu-light .ant-menu-item-selected {
+  background-color: rgba(49, 156, 171, 0.2);
   color: #319cab;
 }
 body .ant-menu-light .ant-menu-submenu-selected > .ant-menu-submenu-title {
