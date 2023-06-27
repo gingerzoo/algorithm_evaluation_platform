@@ -59,8 +59,8 @@ body .ant-modal .ant-modal-content .ant-modal-header {
   text-align: center;
   margin-bottom: 15px;
 }
-body .ant-modal-root .ant-modal-wrap .ant-modal {
-  width: 450px;
+body .ant-modal-root .ant-modal-wrap .ant-modal.css-dev-only-do-not-override-1km3mtt {
+  width: 700px;
 }
 body .ant-drawer.ant-drawer-right > .ant-drawer-content-wrapper {
   bottom: auto;

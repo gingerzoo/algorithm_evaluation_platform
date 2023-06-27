@@ -100,8 +100,8 @@ const MyTable2: FC<Iprops> = (props) => {
 
   useEffect(() => {
     // console.log("useEffect中发送了图片的网络请求");
-    dispatch(getImgAction({ workIndex: workNum }));
-  }, [workNum]);
+    dispatch(getImgAction({ workIndex: workNum, pageScene, sceneNum }));
+  }, [pageScene]);
   /* 某一场景所有工况的是否被勾选的状态 */
   const [checkList, setCheckList] = useState([true, true]);
 
@@ -179,7 +179,7 @@ const MyTable2: FC<Iprops> = (props) => {
     // console.log(newAllwork);
     chooseDispatch(pageScene, newAllwork);
     if (drawerOpen) {
-      dispatch(getImgAction({ workIndex: workNum }));
+      dispatch(getImgAction({ workIndex: workNum, pageScene, sceneNum }));
       console.log("应该获得新图片，因为改变了强度");
     }
   };

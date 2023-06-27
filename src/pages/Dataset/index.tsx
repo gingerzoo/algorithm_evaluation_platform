@@ -24,9 +24,9 @@ const Dataset: FC<Iprops> = (props) => {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  //   useEffect(() => {
-  //     dispatch(getDatasetInfoAction());
-  //   }, [docker]);
+  useEffect(() => {
+    dispatch(getDatasetInfoAction());
+  });
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -45,7 +45,7 @@ const Dataset: FC<Iprops> = (props) => {
   };
 
   //   console.log(datasets);
-  const defaultDatas = Object.values(datasetInfos).map((item, index) => {
+  const defaultDatas = Object.values(datasets).map((item, index) => {
     return (
       <tr key={index}>
         <td>{item.name}</td>
@@ -56,16 +56,16 @@ const Dataset: FC<Iprops> = (props) => {
             <CloseCircleOutlined style={{ color: "red" }} />
           )}
         </td>
-        <td>{item.label_num}</td>
-        <td>{`${item.sample_num}/${item.sample_labled}`}</td>
+        <td>{item.sample_num}</td>
+        <td>{`${item.sample_labled}/${item.sample_num}`}</td>
         <td>{item.label_all}</td>
-        <td className="oper">
+        {/* <td className="oper">
           <span>上传</span>
           <span className="divider">|</span>
           <span>标注</span>
           <span className="divider">|</span>
           <span>导出</span>
-        </td>
+        </td> */}
       </tr>
     );
   });
@@ -79,11 +79,11 @@ const Dataset: FC<Iprops> = (props) => {
               <tr>
                 <th>数据集名称</th>
                 <th>状态</th>
-                <th>标签数量</th>
-                <th>样本数量/已标注</th>
+                <th>样本数量</th>
+                <th>已标注/样本数量</th>
                 <th>标注总数</th>
                 {/* <th>更新时间</th> */}
-                <th>操作</th>
+                {/* <th>操作</th> */}
               </tr>
             </thead>
             <tbody>{defaultDatas}</tbody>
@@ -104,7 +104,7 @@ const Dataset: FC<Iprops> = (props) => {
         onCancel={handleCancel}
         okText="确认"
         cancelText="取消"
-        width={400}
+        width={470}
       >
         <Add_dataset />
       </Modal>

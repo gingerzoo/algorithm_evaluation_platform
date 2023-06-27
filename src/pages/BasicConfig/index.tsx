@@ -91,9 +91,9 @@ const BasicConfig: FC<Iprops> = () => {
     console.log("nowState", docker + 1);
   }, [docker]);
 
-  useEffect(() => {
-    dispatch(getImgAction({ workIndex: 1 }));
-  }, [scene]);
+  //   useEffect(() => {
+  //     dispatch(getImgAction({ workIndex: 1 ,}));
+  //   }, [scene]);
 
   useEffect(() => {
     dispatch(getAlogListAction());

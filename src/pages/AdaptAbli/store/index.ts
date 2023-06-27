@@ -220,14 +220,16 @@ export const getImgAction = createAsyncThunk<
   },
   {
     workIndex: number;
+    pageScene: string;
+    sceneNum: number;
     picIndex?: number;
   },
   { state: IrootState }
 >("getImage", async (par, { dispatch, getState }) => {
-  const scene = getState().basicConfig.scene;
-  const sceneNum = getState().basicConfig.sceneNum as number;
+  //   const scene = getState().basicConfig.scene;
+  const sceneNum = par.sceneNum;
   const date_type = getState().basicConfig.dataSet;
-  const interference = getState().adaptAbili[scene] as Iwork[];
+  const interference = getState().adaptAbili[par.pageScene] as Iwork[];
   const preImgUrlList = getState().adaptAbili.imgUrl;
   const nowWork = interference[par.workIndex];
   /* 用来存放5个url */

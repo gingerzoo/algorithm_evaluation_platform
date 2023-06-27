@@ -101,7 +101,7 @@ const AlgorithmUpload: FC<Iprops> = (props) => {
       const formData = new FormData();
       formData.append("docker", file);
       console.log("formData", formData);
-      //   console.log(formData.get("docker"));
+      console.log(formData.get("docker"));
       dispatch(getDockerAction(formData)).then(() => {
         if (changeState) changeState();
       });
