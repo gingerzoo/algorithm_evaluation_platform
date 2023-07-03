@@ -19,18 +19,31 @@ const AppSide: FC<Iprops> = (props) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
 
-  const { nextPath } = useAppSelector((state) => ({
-    nextPath: state.basicConfig.nextPath
+  const { nextPath, sceneNum } = useAppSelector((state) => ({
+    nextPath: state.basicConfig.nextPath,
+    sceneNum: state.basicConfig.sceneNum
   }));
-  const items: MenuItem[] = sideNav.map((item) =>
-    getItem(item.title, item.link, item.icon, item.sub)
-  );
 
   function linkBtnHandle(e: any) {
     dispatch(changeNextPathAction(e.key));
+    console.log(e.key);
     navigate(e.key);
-    // console.log(e.key);
   }
+
+  function getNav() {
+    const [config, effect, adapt, , , ,] = sideNav;
+    let result = null;
+    if (sceneNum === 3) result = [config, effect, adapt];
+    else result = [...sideNav];
+
+    return result;
+  }
+
+  const items: MenuItem[] = getNav().map((item) => {
+    // return getItem(item.title, item.link, item.icon, item.sub);
+    return getItem(item.title, item.link, item.icon);
+  });
+
   return (
     <SideWrap>
       <Sider width={"100%"}>

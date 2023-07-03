@@ -2,6 +2,7 @@ import React, { memo } from "react";
 import type { FC, ReactNode } from "react";
 import { HeaderWrap } from "./style";
 import { RadarChartOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
 
 interface Iprops {
   children?: ReactNode;
@@ -10,9 +11,15 @@ interface Iprops {
 
 const App_header: FC<Iprops> = (props) => {
   const { greenClickHandle } = props;
+  const navigate = useNavigate();
   return (
     <HeaderWrap>
-      <div className="left">
+      <div
+        className="left"
+        onClick={() => {
+          navigate("/home");
+        }}
+      >
         <div className="logo"></div>
         {/* <span className="divider">|</span> */}
         <h3 className="algor">
@@ -20,6 +27,7 @@ const App_header: FC<Iprops> = (props) => {
           &nbsp; 感知分级算法评估平台
         </h3>
       </div>
+
       <div className="right">
         <div className="start btn" onClick={greenClickHandle}>
           新手引导
@@ -28,6 +36,15 @@ const App_header: FC<Iprops> = (props) => {
         <div className="history btn">历史评估</div>
         <span className="divider">|</span>
         <div className="report btn">报表导出</div>
+        <span className="divider">|</span>
+        <div
+          className="backToHome btn"
+          onClick={() => {
+            navigate("/home");
+          }}
+        >
+          返回首页
+        </div>
       </div>
     </HeaderWrap>
   );

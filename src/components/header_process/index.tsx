@@ -10,11 +10,17 @@ interface Iprops {
 }
 
 const HeaderProcess: FC<Iprops> = (props) => {
-  const { nowProcess, system, sceneNum } = useAppSelector((state) => ({
-    nowProcess: state.basicConfig.nowProcess,
-    system: state.basicConfig.system,
-    sceneNum: state.basicConfig.sceneNum
-  }));
+  const { nowProcess, system, sceneNum, isSelected } = useAppSelector(
+    (state) => ({
+      nowProcess: state.basicConfig.nowProcess,
+      system: state.basicConfig.system,
+      sceneNum: state.basicConfig.sceneNum,
+      isSelected: state.basicConfig.selected
+    })
+  );
+
+  console.log("scene___num", sceneNum);
+
   return (
     <ProcessWrap>
       <MenuOutlined style={{ fontSize: "22px ", color: "white" }} />
@@ -33,7 +39,9 @@ const HeaderProcess: FC<Iprops> = (props) => {
             );
           })}
         </div>
-        <span>已选场景：{subs[sceneNum].title}</span>
+        <span>
+          {isSelected ? "已选场景" : "默认场景"} : {subs[sceneNum].title}
+        </span>
       </div>
     </ProcessWrap>
   );

@@ -12,6 +12,7 @@ const SystemOverview: FC<Iprops> = (props) => {
   const { system } = useAppSelector((state) => ({
     system: state.basicConfig.system
   }));
+
   return (
     <OverviewWrap>
       <h2>系统概况</h2>

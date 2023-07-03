@@ -15,12 +15,16 @@ import {
   RadarChartOutlined,
   SlidersOutlined
 } from "@ant-design/icons";
+import Sunburst from "@/components/sunburst";
+import { useAppDispatch } from "@/store";
+import { changeAlgoListAction } from "../BasicConfig/store";
 interface Iprops {
   children?: ReactNode;
 }
 
 const Home: FC<Iprops> = (props) => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const chartRef = useRef<EChartsReact>(null);
 
   function useBtnClick() {
@@ -52,12 +56,6 @@ const Home: FC<Iprops> = (props) => {
     ]
   };
 
-  //   useEffect(() => {
-  //     if (chartRef.current) {
-  //       chartRef.current.getEchartsInstance().setOption(options);
-  //     }
-  //   }, []);
-
   return (
     <HomeWrapper>
       <header>
@@ -71,7 +69,11 @@ const Home: FC<Iprops> = (props) => {
 
           <div className="opeBar">
             <button onClick={useBtnClick}>立即使用</button>
-            <button>技术文档 </button>
+
+            <a href="http://101.42.40.81:8080/guidance_info/label_format.pdf">
+              技术文档
+            </a>
+            {/* </button> */}
           </div>
         </div>
       </header>
@@ -81,7 +83,8 @@ const Home: FC<Iprops> = (props) => {
             <AlertOutlined className="icon" />
             <span className="title">全方位覆盖</span>
           </h2>
-          <img src={circle} />
+          {/* <img src={circle} /> */}
+          <Sunburst />
         </section>
         <section>
           <div className="envisable box">
@@ -90,7 +93,7 @@ const Home: FC<Iprops> = (props) => {
               <span className="title"> 可视化和易于使用</span>
             </h2>
             <p>
-              本平台应该具有直观的用户界面和易于使用的工具，以便客户可以轻松地执行算法评估并获得结果。此外，还可以通过图表和可视化工具向客户展示评估结果。
+              本平台具有直观的用户界面和易于使用的工具，以便客户可以轻松地执行算法评估并获得结果。此外，还可以通过图表和可视化工具向客户展示评估结果。
             </p>
           </div>
           <div className="freedom box">

@@ -1,4 +1,5 @@
 export const BASE_URL = "http://10.2.12.63:8080";
+// export const BASE_URL = "http://101.42.40.81:8080";
 
 // export const BASE_URL = "http://127.0.01:8000";
 

@@ -51,12 +51,12 @@ const MyTable2: FC<Iprops> = (props) => {
   const { workConditions } = props;
 
   /* 获得该页面的场景 */
-  const pageScene = location.hash.split("/").slice(-1)[0];
-  const sceneNum = sceneToNum[pageScene];
+  //   const pageScene = location.hash.split("/").slice(-1)[0];
+  const sceneNum = sceneToNum[scene];
   //   console.log("pageScene", pageScene);
 
   /* 获得该场景的工况数据 */
-  const adaptState = adapt[pageScene] as Iwork[];
+  const adaptState = adapt[scene] as Iwork[];
 
   /* 获得该场景的运行结果 */
   const sceneResult = adapt[`${scene}Result`] as string[];
@@ -70,7 +70,7 @@ const MyTable2: FC<Iprops> = (props) => {
   /* 这里有什么办法优化吗，每次重新渲染组件都很重新定义这三个遍历这三个变量 */
 
   const carouselTitle =
-    pageScene == "voice"
+    scene == "voice"
       ? `音频试听- 工况${workNum + 1}- 音频${picIndex + 1}`
       : `图片预览- 工况${workNum + 1} - 图片${picIndex + 1}`;
 
@@ -100,8 +100,8 @@ const MyTable2: FC<Iprops> = (props) => {
 
   useEffect(() => {
     // console.log("useEffect中发送了图片的网络请求");
-    dispatch(getImgAction({ workIndex: workNum, pageScene, sceneNum }));
-  }, [pageScene]);
+    dispatch(getImgAction({ workIndex: workNum, pageScene: scene, sceneNum }));
+  }, [scene]);
   /* 某一场景所有工况的是否被勾选的状态 */
   const [checkList, setCheckList] = useState([true, true]);
 
@@ -177,9 +177,11 @@ const MyTable2: FC<Iprops> = (props) => {
       newAllwork.push(newWork);
     });
     // console.log(newAllwork);
-    chooseDispatch(pageScene, newAllwork);
+    chooseDispatch(scene, newAllwork);
     if (drawerOpen) {
-      dispatch(getImgAction({ workIndex: workNum, pageScene, sceneNum }));
+      dispatch(
+        getImgAction({ workIndex: workNum, pageScene: scene, sceneNum })
+      );
       console.log("应该获得新图片，因为改变了强度");
     }
   };
@@ -206,7 +208,7 @@ const MyTable2: FC<Iprops> = (props) => {
     const newWorks = [...adaptState];
     console.log("newwork", newWork);
     newWorks.push(newWork);
-    chooseDispatch(pageScene, newWorks);
+    chooseDispatch(scene, newWorks);
   }
 
   /* 点击图片预览按钮的处理函数 */
@@ -254,7 +256,7 @@ const MyTable2: FC<Iprops> = (props) => {
                   viewImage(workIndex);
                 }}
               >
-                {pageScene == "voice" ? "音频试听" : "图片预览"}
+                {scene == "voice" ? "音频试听" : "图片预览"}
               </Button>
             </div>
           </td>
@@ -404,7 +406,7 @@ const MyTable2: FC<Iprops> = (props) => {
                     cancelText="取消"
                     className="myModal"
                   >
-                    <Add_work pageScene={pageScene} />
+                    <Add_work pageScene={scene} />
                   </Modal>
                 </>
               }
@@ -420,7 +422,7 @@ const MyTable2: FC<Iprops> = (props) => {
       </table>
       <Drawer
         title={carouselTitle}
-        width={pageScene == "voice" ? "32vw" : "38vw"}
+        width={scene == "voice" ? "32vw" : "38vw"}
         maskClosable={false}
         mask={false}
         open={drawerOpen}
@@ -441,7 +443,7 @@ const MyTable2: FC<Iprops> = (props) => {
         }
       >
         <div className="drawer-content">
-          <MyCarousel workNum={workNum} pageScene={pageScene} />
+          <MyCarousel workNum={workNum} pageScene={scene} />
         </div>
       </Drawer>
     </Table2Wrapper>

@@ -1,6 +1,10 @@
 import lxrequest from "@/services/index";
 import { Iguid, Inav, Iremo, Iresult, Ivoice } from "@/type";
-import type { Isystem } from "../store/index";
+import type { Ialgo, Isystem } from "../store/index";
+
+interface Ires {
+  model_name: Ialgo[];
+}
 
 export function getDocker(docker: FormData) {
   return lxrequest.request<string>({
@@ -11,14 +15,15 @@ export function getDocker(docker: FormData) {
   });
 }
 
-export function getSystemOverview(docker_name: string) {
+export function getSystemOverview(docker_name: string, scene: number) {
   return lxrequest.request<Isystem>({
     url: "/baseConfig/loadModel",
     headers: { "Content-Type": "application/json" },
     method: "post",
     timeout: 900000,
     data: {
-      docker_name
+      docker_name,
+      scene
     }
   });
 }
@@ -42,10 +47,13 @@ export function runBasicEffect() {
   });
 }
 
-export function getAlogrithmName() {
-  return lxrequest.request({
+export function getAlogrithmName(scene: number) {
+  return lxrequest.request<Ires>({
     url: "/baseConfig/retModels",
-    method: "get"
+    method: "post",
+    data: {
+      scene
+    }
   });
 }
 

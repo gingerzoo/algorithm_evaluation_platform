@@ -11,7 +11,7 @@ import Dataset_upload from "./c-cpns/dataset_upload";
 import { changeStatusBeAction, getBasicEffectAction } from "../BasicWork/store";
 
 import Order from "./c-cpns/order";
-import { subs } from "@/assets/data/local_data";
+import { sceneToNum, subs } from "@/assets/data/local_data";
 import { ConfigWrap } from "./style";
 import System_overview from "@/components/system_overview";
 import App_cover from "@/components/app_cover";
@@ -30,6 +30,11 @@ import {
 import Typewriter from "./c-cpns/typewriter";
 import { getImgAction } from "../AdaptAbli/store";
 import { getDatasetInfo } from "../Dataset/service";
+import WorkIntro from "../BasicWork/c-cpns/Intro";
+import WorkNav from "../BasicWork/c-cpns/Nav";
+import WorkRemote from "../BasicWork/c-cpns/Remote";
+import WorkVoice from "../BasicWork/c-cpns/Voice";
+import Basic_result from "./c-cpns/basic_result";
 
 interface Iprops {
   children?: ReactNode;
@@ -41,7 +46,6 @@ const BasicConfig: FC<Iprops> = () => {
     scene,
     inputPlace,
     inputRun,
-    sceneNum,
     commit_status,
     run_status,
     isPending,
@@ -49,7 +53,6 @@ const BasicConfig: FC<Iprops> = () => {
   } = useAppSelector(
     (state) => ({
       scene: state.basicConfig.scene,
-      sceneNum: state.basicConfig.sceneNum,
       inputPlace: state.basicConfig.inputPlace,
       inputRun: state.basicConfig.inputRun,
       dataset_type: state.basicConfig.dataSet,
@@ -62,6 +65,8 @@ const BasicConfig: FC<Iprops> = () => {
     }),
     shallowEqual
   );
+
+  const sceneNum = sceneToNum[scene];
 
   //派发函数
   const dispatch = useAppDispatch();
@@ -193,15 +198,6 @@ const BasicConfig: FC<Iprops> = () => {
     }
   }
 
-  //下一步按钮点击处理函数
-  function nextBtnClick() {
-    const nextPage = `/profile/basicwork/${scene}`;
-    dispatch(changeNextPathAction(nextPage));
-    dispatch(changeNowProcessAction(["基础设置", "基础效能"]));
-
-    navigate(`/profile/basicwork/${scene}`);
-  }
-
   return (
     <ConfigWrap
       isSystem={isSystem}
@@ -236,16 +232,6 @@ const BasicConfig: FC<Iprops> = () => {
             />
           </Order>
         </label>
-        <Order title="场景选择" isSecene={true}>
-          <Menu
-            mode="horizontal"
-            items={items}
-            selectedKeys={[`${sceneNum}${scene}`]}
-            onSelect={({ key, domEvent }) => {
-              sceneClickHandle(key, domEvent);
-            }}
-          />
-        </Order>
       </div>
       <div className="oper">
         <button className="affirm btn" onClick={affirmBtnClick}>
@@ -257,15 +243,9 @@ const BasicConfig: FC<Iprops> = () => {
         <div className="spinning">
           <Spin spinning={isPending} size={"large"} />
         </div>
-        <button
-          className="next btn"
-          onClick={nextBtnClick}
-          disabled={run_status != 0}
-        >
-          <span>下一步</span>
-        </button>
       </div>
       {isPending && <Typewriter />}
+      {run_status == 0 && <Basic_result />}
       <div className="cover system">
         <App_cover btnClickHandle={systemCover} width={600}>
           <System_overview />

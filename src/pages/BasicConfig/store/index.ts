@@ -18,6 +18,15 @@ export type Isystem = {
   default_data_path: string;
 };
 
+export type Ialgo = {
+  dataType: string[];
+  default_cmd: string;
+  description: string;
+  keyword: string[];
+  model_name: string;
+  scene: number;
+};
+
 interface Iname {
   //索引签名
   [key: string]: string;
@@ -30,6 +39,7 @@ interface Iname {
 type Iscene = {
   scene: "" | "guide" | "navigate" | "remote" | "voice";
   sceneNum: number;
+  selected: boolean;
   nextPath: string;
   nowProcess: string[];
   inputPlace: string;
@@ -40,12 +50,13 @@ type Iscene = {
   commit_info: string;
   //   isAsure: boolean;
   inputRun: string;
-  algolist: string[];
+  algolist: Ialgo[];
   currentModule: string;
   modelNames: Iname;
 };
 const initialState: Iscene = {
   scene: "guide",
+  selected: false,
   sceneNum: 0,
   nextPath: "",
   nowProcess: ["基础配置"],
@@ -70,34 +81,41 @@ const initialState: Iscene = {
   //0代表RGB 1代表近红外 2代表雷达
   //   isAsure: false,
   inputRun: "",
-  algolist: [""],
+  algolist: [],
   currentModule: ""
 };
 
-export const getSystemAction = createAsyncThunk(
-  "system_overview",
-  async (par: string, { dispatch }) => {
-    dispatch(changeDataNameAction(par));
-
-    try {
-      const res = await getSystemOverview(par);
-      dispatch(changeSystemAction(res));
-      dispatch(changeInputPlaceAction(res.default_cmd));
-      console.log("拿到系统简况！");
-      dispatch(changeInputRunAction(""));
-      dispatch(changeSceneNumAction(res.scene));
-      const scene = subs[res.scene].link.slice(1);
-      dispatch(changeSceneAction(scene));
-    } catch (err) {
-      message.open({
-        type: "error",
-        content: "网络请求发生错误",
-        duration: 2
-      });
-      console.log(err);
-    }
+export const getSystemAction = createAsyncThunk<
+  void,
+  string,
+  {
+    state: IrootState;
   }
-);
+>("system_overview", async (par: string, { dispatch, getState }) => {
+  dispatch(changeDataNameAction(par));
+
+  try {
+    const sceneNum = getState().basicConfig.sceneNum;
+    const scene = getState().basicConfig.scene;
+    const res = await getSystemOverview(par, sceneNum);
+    console.log("拿到系统简况！");
+    console.log("system___________", res);
+    dispatch(changeSystemAction(res));
+    dispatch(changeInputPlaceAction(res.default_cmd));
+
+    dispatch(changeInputRunAction(""));
+    dispatch(changeSceneNumAction(sceneNum));
+    // const scene = subs[res.scene].link.slice(1);
+    dispatch(changeSceneAction(scene));
+  } catch (err) {
+    message.open({
+      type: "error",
+      content: "网络请求发生错误",
+      duration: 2
+    });
+    console.log(err);
+  }
+});
 
 export const commitDataAction = createAsyncThunk<
   //返回值的类型！！！！！一定要写啊啊啊啊！
@@ -169,55 +187,63 @@ export const getAftDelAlgListAction = createAsyncThunk(
   }
 );
 
-export const getAlogListAction = createAsyncThunk(
-  "alogrithmList",
-  (par, { dispatch }) => {
-    try {
-      getAlogrithmName().then((res) => {
-        dispatch(changeAlgoListAction(res.model_name));
+export const getAlogListAction = createAsyncThunk<
+  void,
+  void,
+  {
+    state: IrootState;
+  }
+>("alogrithmList", (par, { dispatch, getState }) => {
+  try {
+    const sceneNum = getState().basicConfig.sceneNum;
+    getAlogrithmName(sceneNum).then((res) => {
+      dispatch(changeAlgoListAction(res));
+      console.log("alo-lidt1", res);
+    });
+  } catch (err) {
+    //   alert(`网络连接错误,请检查网络设置:${err}`);
+    message.open({
+      type: "error",
+      content: "网络错误",
+      duration: 2
+    });
+  }
+});
+
+export const getDockerAction = createAsyncThunk<
+  void,
+  FormData,
+  {
+    state: IrootState;
+  }
+>("push_docker", async (par: FormData, { dispatch }) => {
+  try {
+    const res = await getDocker(par);
+    dispatch(getAlogListAction());
+
+    if (res == "success") {
+      console.log("生成docker成功");
+      message.open({
+        type: "success",
+        content: "加载docker包成功",
+        duration: 2
       });
-    } catch (err) {
-      //   alert(`网络连接错误,请检查网络设置:${err}`);
+    } else {
       message.open({
         type: "error",
-        content: "网络错误",
+        content: "生成docker包失败",
         duration: 2
       });
     }
+  } catch (err) {
+    message.open({
+      type: "error",
+      content: "网络请求发生错误",
+      duration: 2
+    });
+    console.log(err);
   }
-);
-
-export const getDockerAction = createAsyncThunk(
-  "push_docker",
-  async (par: FormData, { dispatch }) => {
-    try {
-      const res = await getDocker(par);
-      dispatch(getAlogListAction());
-
-      if (res == "success") {
-        console.log("生成docker成功");
-        message.open({
-          type: "success",
-          content: "加载docker包成功",
-          duration: 2
-        });
-      } else {
-        message.open({
-          type: "error",
-          content: "生成docker包失败",
-          duration: 2
-        });
-      }
-    } catch (err) {
-      message.open({
-        type: "error",
-        content: "网络请求发生错误",
-        duration: 2
-      });
-      console.log(err);
-    }
-  }
-);
+});
 
 const sceneSlice = createSlice({
   name: "sceneslice",
@@ -243,6 +269,9 @@ const sceneSlice = createSlice({
     },
     changeDataSetAction(state, { payload }) {
       state.dataSet = payload;
+    },
+    changeSelectedSceneAction(state, { payload }) {
+      state.selected = payload;
     },
     changeDataNameAction(state, { payload }) {
       state.dataName = payload;
@@ -297,7 +326,8 @@ export const {
   changeGuideModelNameAction,
   changeNavModelNameAction,
   changeRemoteModelNameAction,
-  changeVoiceModelNameAction
+  changeVoiceModelNameAction,
+  changeSelectedSceneAction
 } = sceneSlice.actions;
 
 export default sceneSlice.reducer;

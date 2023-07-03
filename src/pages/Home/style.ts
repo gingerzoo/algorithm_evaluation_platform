@@ -19,7 +19,14 @@ export const HomeWrapper = styled.div`
       justify-content: space-between;
       align-items: center;
 
-      button {
+      a {
+        display: inline-block;
+        text-decoration: none;
+        font-size: 100%;
+      }
+
+      button,
+      a {
         color: #fcca00;
         padding: 0.8vw 1.6vw;
         background-color: transparent;

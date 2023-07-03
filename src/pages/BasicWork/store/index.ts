@@ -1,15 +1,28 @@
 import { runBasicEffect } from "@/pages/BasicConfig/service";
 import { IrootState } from "@/store";
-import { Iguid, Inav, Iremo, Ivoice } from "@/type";
+import { IbasicRes, Iguid, Inav, Iremo, Ivoice } from "@/type";
 import { createAsyncThunk, createSlice, Slice } from "@reduxjs/toolkit";
 
 interface Iprops {
+  [index: string]:
+    | number
+    | string
+    | Iguid
+    | Inav
+    | Iremo
+    | Ivoice
+    | boolean
+    | IbasicRes;
   run_status: number;
   run_info: string;
   guideBe: Iguid;
   navigateBe: Inav;
   remoteBe: Iremo;
   voiceBe: Ivoice;
+  guide: IbasicRes;
+  navigate: IbasicRes;
+  remote: IbasicRes;
+  voice: IbasicRes;
   isPending: boolean;
 }
 
@@ -27,14 +40,18 @@ const initialState: Iprops = {
   guideBe: {
     status: -1,
     info: "",
-    center_position_error_score: -1,
+    center_position_error_score: 80.5,
     center_position_error_result: -1,
-    iou_score: -1,
+    iou_score: 50.6,
     iou_result: -1,
-    robustness_score: -1,
+    robustness_score: 70,
     robustness_result: -1,
-    population_score: -1,
+    population_score: 75.4,
     population_result: -1
+  },
+  guide: {
+    score: [80.5, 50, 70.2, 75],
+    status: [true, false, true, false]
   },
   navigateBe: {
     status: -1,
@@ -48,6 +65,10 @@ const initialState: Iprops = {
     population_score: -1,
     population_result: -1
   },
+  navigate: {
+    score: [47, 57, 62, 40],
+    status: [false, false, false, false]
+  },
   remoteBe: {
     status: -1,
     info: "",
@@ -60,6 +81,10 @@ const initialState: Iprops = {
     population_score: -1,
     population_result: -1
   },
+  remote: {
+    score: [0, 0, 0, 0],
+    status: [false, false, false, false]
+  },
   voiceBe: {
     status: -1,
     info: "",
@@ -69,6 +94,10 @@ const initialState: Iprops = {
     sentence_error_rate_result: -1,
     population_score: -1,
     population_result: -1
+  },
+  voice: {
+    score: [0, 0, 0, 0],
+    status: [false, false, false, false]
   },
   run_status: -1,
   run_info: "",
@@ -92,16 +121,116 @@ export const getBasicEffectAction = createAsyncThunk<
     dispatch(changeInfoBeAction(res.info));
     switch (scene) {
       case 0:
-        dispatch(changeGuideBeAction(res));
+        {
+          dispatch(changeGuideBeAction(res));
+          const {
+            center_position_error_score,
+            center_position_error_result,
+            iou_score,
+            iou_result,
+            robustness_score,
+            robustness_result,
+            population_score,
+            population_result
+          } = res as Iguid;
+          dispatch(
+            changeNavBeListAction({
+              score: [
+                center_position_error_score,
+                iou_score,
+                robustness_score,
+                population_score
+              ],
+              status: [
+                center_position_error_result,
+                iou_score,
+                robustness_result,
+                population_result
+              ]
+            })
+          );
+        }
+
         break;
       case 1:
-        dispatch(changeNavigateBeAction(res));
+        {
+          dispatch(changeNavigateBeAction(res));
+          const {
+            mutual_information_score,
+            mutual_information_result,
+            relevance_score,
+            relevance_result,
+            positioning_accuracy_score,
+            positioning_accuracy_result,
+            population_score,
+            population_result
+          } = res as Inav;
+          dispatch(
+            changeNavBeListAction({
+              score: [
+                relevance_score,
+                mutual_information_score,
+                positioning_accuracy_score,
+                population_score
+              ],
+              status: [
+                relevance_result,
+                mutual_information_result,
+                positioning_accuracy_result,
+                population_result
+              ]
+            })
+          );
+        }
+
         break;
       case 2:
-        dispatch(changeRemoBeAction(res));
+        {
+          dispatch(changeRemoBeAction(res));
+          const {
+            f1_score,
+            f1_result,
+            map_score,
+            map_result,
+            mar_score,
+            mar_result,
+            population_score,
+            population_result
+          } = res as Iremo;
+          dispatch(
+            changeNavBeListAction({
+              score: [f1_score, map_score, mar_score, population_score],
+              status: [f1_result, map_result, mar_result, population_result]
+            })
+          );
+        }
         break;
       case 3:
-        dispatch(changeVoiceBeAction(res));
+        {
+          dispatch(changeVoiceBeAction(res));
+          const {
+            word_error_rate_score,
+            word_error_rate_result,
+            sentence_error_rate_score,
+            sentence_error_rate_result,
+            population_score,
+            population_result
+          } = res as Ivoice;
+          dispatch(
+            changeNavBeListAction({
+              score: [
+                word_error_rate_score,
+                sentence_error_rate_score,
+                population_score
+              ],
+              status: [
+                word_error_rate_result,
+                sentence_error_rate_result,
+                population_result
+              ]
+            })
+          );
+        }
         break;
       default:
         break;
@@ -147,6 +276,18 @@ const basicEffectSlice = createSlice({
     },
     changeInfoBeAction(state, { payload }) {
       state.run_info = payload;
+    },
+    changeGuiBeListAction(state, { payload }) {
+      state.guide = payload;
+    },
+    changeNavBeListAction(state, { payload }) {
+      state.navigate = payload;
+    },
+    changeRemoteListAction(state, { payload }) {
+      state.remote = payload;
+    },
+    changeVoiBeListAction(state, { payload }) {
+      state.voice = payload;
     }
   },
   //   extraReducers: {
@@ -178,7 +319,11 @@ export const {
   changeRemoBeAction,
   changeVoiceBeAction,
   changeInfoBeAction,
-  changeStatusBeAction
+  changeStatusBeAction,
+  changeGuiBeListAction,
+  changeNavBeListAction,
+  changeRemoteListAction,
+  changeVoiBeListAction
 } = basicEffectSlice.actions;
 
 export default basicEffectSlice.reducer;

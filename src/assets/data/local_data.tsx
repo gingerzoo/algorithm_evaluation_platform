@@ -60,19 +60,19 @@ export const sideNav = [
   {
     icon: <LaptopOutlined />,
     title: "基础效能",
-    link: "/profile/basicwork",
-    sub: subs.map((item) =>
-      getItem(item.title, "/profile/basicwork" + "/" + item.link.slice(1))
-    )
+    link: "/profile/basicwork"
+    // sub: subs.map((item) =>
+    //   getItem(item.title, "/profile/basicwork" + "/" + item.link.slice(1))
+    // )
   },
 
   {
     icon: <PullRequestOutlined />,
     title: "可适应能力评估",
-    link: "/profile/adapt",
-    sub: subs.map((item) =>
-      getItem(item.title, "/profile/adapt" + "/" + item.link.slice(1))
-    )
+    link: "/profile/adapt"
+    // sub: subs.map((item) =>
+    //   getItem(item.title, "/profile/adapt" + "/" + item.link.slice(1))
+    // )
   },
   {
     icon: <SendOutlined />,
@@ -260,4 +260,11 @@ export const datasetInfos = [
     sample_labled: 244,
     label_all: 1311
   }
+];
+
+export const basicResList = [
+  ["中心位置误差", "区域重叠度", "跟踪鲁棒性"],
+  ["相关性", "互信息", "定位精度"],
+  ["F1-score", "mAP", "mAR"],
+  ["字错误率", "句错误率"]
 ];

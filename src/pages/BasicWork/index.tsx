@@ -8,6 +8,10 @@ import {
   changeNowProcessAction
 } from "../BasicConfig/store";
 import { Button } from "antd";
+import WorkIntro from "./c-cpns/Intro";
+import WorkNav from "./c-cpns/Nav";
+import WorkRemote from "./c-cpns/Remote";
+import WorkVoice from "./c-cpns/Voice";
 
 interface Iprops {
   children?: ReactNode;
@@ -15,11 +19,12 @@ interface Iprops {
 
 const BasicWork: FC<Iprops> = () => {
   const navigate = useNavigate();
-  const { scene, nowProcess } = useAppSelector((state) => ({
+  const { scene, sceneNum, nowProcess } = useAppSelector((state) => ({
     scene: state.basicConfig.scene,
+    sceneNum: state.basicConfig.sceneNum,
     nowProcess: state.basicConfig.nowProcess
   }));
-  const pageScene = location.hash.split("/").pop();
+  //   const pageScene = location.hash.split("/").pop();
 
   function next() {
     const nextPath = `/profile/adapt/${scene}`;
@@ -32,16 +37,24 @@ const BasicWork: FC<Iprops> = () => {
 
   const dispatch = useAppDispatch();
 
+  //   return (
+  //     <WorkWrap>
+  //       <Outlet />
+  //       <div className="next">
+  //         <Button onClick={next} type="primary" className="btn">
+  //           进行可适应性评估
+  //         </Button>
+  //       </div>
+  //     </WorkWrap>
+  //   );
   return (
     <WorkWrap>
-      <Outlet />
+      {sceneNum == 0 && <WorkIntro />}
+      {sceneNum == 1 && <WorkNav />}
+      {sceneNum == 2 && <WorkRemote />}
+      {sceneNum == 3 && <WorkVoice />}
       <div className="next">
-        <Button
-          onClick={next}
-          type="primary"
-          disabled={pageScene != scene}
-          className="btn"
-        >
+        <Button onClick={next} type="primary" className="btn">
           进行可适应性评估
         </Button>
       </div>

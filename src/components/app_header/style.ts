@@ -12,6 +12,9 @@ export const HeaderWrap = styled.div`
   .btn:hover {
     cursor: pointer;
   }
+  .left {
+    cursor: pointer;
+  }
 
   .left,
   .right {

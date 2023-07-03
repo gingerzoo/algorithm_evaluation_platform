@@ -30,11 +30,15 @@ const AlgorithmUpload: FC<Iprops> = (props) => {
     system_status: state.basicConfig.commit_status
   }));
 
+  console.log("algorithmList", algorithmList);
+
+  const algoNames = algorithmList?.map((item) => item.model_name);
+
   const inputRef = useRef<HTMLInputElement>(null);
   const eContRef = useRef<HTMLElement>(null);
   const dispatch = useAppDispatch();
 
-  const options = algorithmList?.map((item) => {
+  const options = algoNames.map((item) => {
     const optionItem = (
       <div className="optionItem">
         <span className="optionItem-name">{item}</span>

@@ -20,6 +20,10 @@ export type picConditionType =
 
 export type voiConditionType = "explosion" | "signalLoss";
 
+export type IbasicRes = {
+  score: number[];
+  status: boolean[];
+};
 export interface Iguid {
   status: number;
   info: string;

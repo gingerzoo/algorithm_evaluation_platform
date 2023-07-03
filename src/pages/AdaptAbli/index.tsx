@@ -1,6 +1,6 @@
 import React, { memo, useEffect, useState } from "react";
 import type { FC, ReactNode } from "react";
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet, useNavigate } from "react-router-dom";
 import { AdaptWraper } from "./style";
 import { useAppDispatch, useAppSelector } from "@/store";
 import {
@@ -15,6 +15,11 @@ import {
 } from "./store";
 import { Button, message, Spin } from "antd";
 import { sceneToNum } from "@/assets/data/local_data";
+import WorkIntro from "./c-cpns/Intro";
+import WorkNav from "./c-cpns/Nav";
+import WorkRemote from "./c-cpns/Remote";
+import WorkVoice from "./c-cpns/Voice";
+import { changeNextPathAction } from "../BasicConfig/store";
 
 interface Iprops {
   children?: ReactNode;
@@ -27,39 +32,40 @@ const AdaptAbil: FC<Iprops> = () => {
     genData_status,
     needGenState,
     scene,
-    genIsPending
+    genIsPending,
+    run_status
   } = useAppSelector((state) => ({
     isGenPending: state.adaptAbili.genIsPending,
     isTestPending: state.adaptAbili.testIsPending,
     genData_status: state.adaptAbili.genData_status,
     needGenState: state.adaptAbili.needGenData,
     scene: state.basicConfig.scene,
-    genIsPending: state.adaptAbili.genIsPending
+    genIsPending: state.adaptAbili.genIsPending,
+    run_status: state.adaptAbili.runResult.status
   }));
 
   //拿到工况测试运行结果
 
   //   const realResult: string[] = [];
-  const pageScene = location.hash.split("/").pop() as string;
-  const sceneNum = sceneToNum[pageScene];
+  //   const pageScene = location.hash.split("/").pop() as string;
+  const sceneNum = sceneToNum[scene];
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(getWorkDefaultAction());
     console.log("生成了一次默认数据");
-  }, []);
+  }, [scene]);
   useEffect(() => {
-    dispatch(changePageSceneAction(pageScene));
-    // dispatch(changePa)
-    // console.log("useEffect中的pagesecne", pageScene);
+    // dispatch(changePageSceneAction(pageScene));
     console.log("genIs", genIsPending);
     dispatch(changeNewWorkObjAction({}));
     dispatch(changeConditionList([]));
-  }, [pageScene]);
+  }, [scene]);
 
   const genWorkData = () => {
     // if (!genData_status) dispatch(changeGenDataStatAction(-1));
-    console.log("pagescene", pageScene);
+    console.log("pagescene", scene);
     // if (genIsPending[sceneNum]) {
     //   message.open({
     //     type: "error",
@@ -68,7 +74,7 @@ const AdaptAbil: FC<Iprops> = () => {
     //   });
     //   return;
     // }
-    dispatch(getWorkDataAction(pageScene)).then((res) => {
+    dispatch(getWorkDataAction(scene)).then((res) => {
       if (getWorkDataAction.fulfilled.match(res)) {
         if (res.payload.status == 0) {
           message.open({
@@ -89,23 +95,6 @@ const AdaptAbil: FC<Iprops> = () => {
     });
   };
   const runWorkTest = () => {
-    // if (genIsPending[sceneNum]) {
-    //   message.open({
-    //     type: "error",
-    //     content: `有数据集正在生成，请稍后再试`,
-    //     duration: 3
-    //   });
-    //   return;
-    // }
-    if (pageScene != scene) {
-      message.open({
-        type: "error",
-        content: `生成的数据集与基础配置中的场景不一致`,
-        duration: 3
-      });
-      return;
-    }
-
     dispatch(getWorkResultAction()).then((res) => {
       if (getWorkResultAction.fulfilled.match(res)) {
         if (res.payload.status == 0) {
@@ -126,13 +115,13 @@ const AdaptAbil: FC<Iprops> = () => {
   };
   return (
     <AdaptWraper
-      canTest={
-        scene == pageScene ||
-        !needGenState ||
-        (needGenState && genData_status == 0)
-      }
+      canTest={!needGenState || (needGenState && genData_status == 0)}
+      run_status={run_status}
     >
-      <Outlet />
+      {sceneNum == 0 && <WorkIntro />}
+      {sceneNum == 1 && <WorkNav />}
+      {sceneNum == 2 && <WorkRemote />}
+      {sceneNum == 3 && <WorkVoice />}
       <div className="operate">
         <Button
           className="generate-data btn"
@@ -160,13 +149,29 @@ const AdaptAbil: FC<Iprops> = () => {
           进行工况测试
         </Button>
         <div className="spinning">
-          <Spin
-            spinning={scene == pageScene && isTestPending[sceneNum]}
-            size={"large"}
-          />
+          <Spin spinning={isTestPending[sceneNum]} size={"large"} />
         </div>
+        {/* <div className="next">
+          <button
+            className="next btn"
+            // onClick={nextBtnClick}
+            // disabled={run_status != 0}
+          >
+            <span>评估自学习能力</span>
+          </button>
+        </div> */}
+        <Button
+          className="next btn"
+          disabled={run_status !== 0}
+          onClick={() => {
+            const next_path = "/profile/selflearning";
+            dispatch(changeNextPathAction(next_path));
+            navigate(next_path);
+          }}
+        >
+          评估自学习能力
+        </Button>
       </div>
-      、
     </AdaptWraper>
   );
 };

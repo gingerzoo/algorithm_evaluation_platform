@@ -57,6 +57,13 @@ export const ConfigWrap = styled.div<Iprops>`
       color: white;
     }
   }
+  .btn {
+    height: 3.8vw;
+    line-height: 3.8vw;
+    margin-right: 4.8vw;
+    padding: 0 2.2vw;
+    ${(props) => props.theme.mixin.btnHover}
+  }
 
   .oper {
     display: flex;
@@ -67,21 +74,14 @@ export const ConfigWrap = styled.div<Iprops>`
       margin: 0 4vw 0 -2.7vw;
       line-height: 4.3vw;
     }
-    .btn {
-      height: 3.8vw;
-      line-height: 3.8vw;
-      margin-right: 4.8vw;
-      padding: 0 2.2vw;
-      ${(props) => props.theme.mixin.btnHover}
-    }
-    .next {
+  }
+  button.next {
+    background-color: ${(props) =>
+      props.run_status == 0 ? props.theme.color.primaryColor : "#C8C8C8"};
+
+    &:hover {
       background-color: ${(props) =>
         props.run_status == 0 ? props.theme.color.primaryColor : "#C8C8C8"};
-
-      &:hover {
-        background-color: ${(props) =>
-          props.run_status == 0 ? props.theme.color.primaryColor : "#C8C8C8"};
-      }
     }
   }
 
