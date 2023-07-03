@@ -18,6 +18,7 @@ import {
 import Sunburst from "@/components/sunburst";
 import { useAppDispatch } from "@/store";
 import { changeAlgoListAction } from "../BasicConfig/store";
+import Library from "./c-cpns/library";
 interface Iprops {
   children?: ReactNode;
 }
@@ -87,8 +88,8 @@ const Home: FC<Iprops> = (props) => {
           <Sunburst />
         </section>
         <section>
-          <div className="envisable box">
-            <h2>
+          {/* <div className="envisable box"> */}
+          {/* <h2>
               <EyeOutlined className="icon" />
               <span className="title"> 可视化和易于使用</span>
             </h2>
@@ -114,7 +115,8 @@ const Home: FC<Iprops> = (props) => {
             <p>
               本感知分级算法评估平台可以自动执行算法评估，并提供快速、准确的结果。节省时间和精力，同时提高工作效率。
             </p>
-          </div>
+          </div> */}
+          <Library />
         </section>
 
         <section className="result">
