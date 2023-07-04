@@ -1,21 +1,16 @@
 import React, { memo, useEffect, useRef } from "react";
 import type { FC, ReactNode } from "react";
 import ReactEcharts from "echarts-for-react";
-import echarts from "echarts";
-
-import { RadarWrap } from "./style";
 import { resultName, sceneToNum } from "@/assets/data/local_data";
-import { EChartsOption } from "echarts";
-import EChartsReact from "echarts-for-react";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "@/store";
 import {
-  changeAlgoListAction,
   changeSceneAction,
   changeSceneNumAction,
   changeSelectedSceneAction,
   getAlogListAction
 } from "@/pages/BasicConfig/store";
+import { changePageSceneAction } from "@/pages/AdaptAbli/store";
 
 interface Iitem {
   [key: string]: number;
@@ -190,29 +185,29 @@ const Sunburst: FC<Iprops> = (props) => {
 
   const data2 = [
     {
-      name: "导航",
-      value: 10,
+      name: "自动导航",
+      value: 6,
       dataType: "navigate",
 
       label: {
         fontWeight: "bold",
-        fontSize: 14
+        fontSize: 12
       },
       children: [
         {
-          value: 10,
+          value: 6,
           name: "可适应性",
           children: [
             {
-              value: 9,
+              value: 5,
               name: "可信赖性",
               children: [
                 {
-                  value: 8,
+                  value: 4,
                   name: "自学习能力",
                   children: [
                     {
-                      value: 7,
+                      value: 4,
                       name: "协同感知"
                     }
                   ]
@@ -226,26 +221,27 @@ const Sunburst: FC<Iprops> = (props) => {
         label: {
           show: true,
           position: "inside",
-          fontSize: 16
+          fontSize: 14
         },
         itemStyle: {
           opacity: 0.7
         }
       }
     },
+
     {
-      name: "导引",
+      name: "精确追踪",
       dataType: "guide",
-      value: 7,
+      value: 6,
       label: {
         fontWeight: "bold",
-        fontSize: 14
+        fontSize: 12
       },
       emphasis: {
         label: {
           show: true,
           position: "inside",
-          fontSize: 16
+          fontSize: 14
         },
         itemStyle: {
           opacity: 0.7
@@ -270,16 +266,15 @@ const Sunburst: FC<Iprops> = (props) => {
         }
       ]
     },
-
     {
-      name: "遥感",
-      dataType: "remote",
-      value: 7,
+      name: "协同感知",
+      dataType: "coin",
+      value: 6,
       emphasis: {
         label: {
           show: true,
           position: "inside",
-          fontSize: 16
+          fontSize: 14
         },
         itemStyle: {
           opacity: 0.7
@@ -287,27 +282,47 @@ const Sunburst: FC<Iprops> = (props) => {
       },
       label: {
         fontWeight: "bold",
-        fontSize: 14
+        fontSize: 12
+      }
+    },
+
+    {
+      name: "遥感侦察",
+      dataType: "remote",
+      value: 6,
+      emphasis: {
+        label: {
+          show: true,
+          position: "inside",
+          fontSize: 14
+        },
+        itemStyle: {
+          opacity: 0.7
+        }
+      },
+      label: {
+        fontWeight: "bold",
+        fontSize: 12
       },
       children: [
         {
-          value: 7,
+          value: 6,
           name: "可适应性",
           children: [
             {
-              value: 7,
+              value: 6,
               name: "可信赖性",
               children: [
                 {
-                  value: 6,
+                  value: 5,
                   name: "自学习能力",
                   children: [
                     {
-                      value: 5,
+                      value: 3,
                       name: "协同感知",
                       children: [
                         {
-                          value: 4,
+                          value: 5,
                           name: "抽象感知",
                           silent: true
                         }
@@ -322,14 +337,14 @@ const Sunburst: FC<Iprops> = (props) => {
       ]
     },
     {
-      name: "语音",
+      name: "语音识别",
       dataType: "voice",
-      value: 5,
+      value: 6,
       emphasis: {
         label: {
           show: true,
           position: "inside",
-          fontSize: 16
+          fontSize: 14
         },
         itemStyle: {
           opacity: 0.7
@@ -337,7 +352,7 @@ const Sunburst: FC<Iprops> = (props) => {
       },
       label: {
         fontWeight: "bold",
-        fontSize: 14
+        fontSize: 12
       },
       children: [
         {
@@ -361,6 +376,7 @@ const Sunburst: FC<Iprops> = (props) => {
       // 判断点击的元素是否为祖先元素
       //   params.event.preventDefault();
       const seletcedScene = params.data.dataType;
+      dispatch(changePageSceneAction(seletcedScene));
       const selectedSceneNum = sceneToNum[seletcedScene];
       if (
         seletcedScene === "navigate" ||
@@ -393,24 +409,13 @@ const Sunburst: FC<Iprops> = (props) => {
     // }
     return {
       //   "#ED7D31"
-      color: ["#73C0DE", "#FCCA00", "#26C3BE", "#7496d2"], // 这是一个雷达图渲染的线的颜色
-      //点击提示标签
-
-      //   visualMap: {
-      //     type: "continuous",
-      //     min: 0,
-      //     max: 10,
-      //     inRange: {
-      //       color: ["#2F93C8", "#AEC48F", "#FFDB5C", "#F98862"]
-      //       //   color: ["#73C0DE", "#FCCA00", "#26C3BE", "#7496d2"]
-      //     }
-      //   },
+      color: ["#73C0DE", "#FCCA00", "#26C3BE", "#7496d2", "#ED7D31"], // 这是一个雷达图渲染的线的颜色
 
       series: [
         {
           id: "one",
-          radius: ["17%", "95%"],
-          center: ["50%", "50%"],
+          radius: ["19%", "95%"],
+          center: ["50%", "45%"],
           type: "sunburst",
           //废弃了这个属性
           emphasis: {
@@ -449,7 +454,7 @@ const Sunburst: FC<Iprops> = (props) => {
       //   lazyUpdate={true}
       //   onEvents={}
       // onChartReady={onChartReady}
-      style={{ width: "100%", height: "25vw" }}
+      style={{ width: "100%", height: "28vw" }}
       onEvents={onEvents}
     />
   );

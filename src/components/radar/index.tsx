@@ -2,8 +2,6 @@ import React, { memo, useEffect, useRef } from "react";
 import type { FC, ReactNode } from "react";
 import ReactEcharts from "echarts-for-react";
 import echarts from "echarts";
-
-import { RadarWrap } from "./style";
 import { resultName } from "@/assets/data/local_data";
 
 interface Iitem {
@@ -19,10 +17,12 @@ interface Iitem {
 interface Iprops {
   children?: ReactNode;
   result: Iitem[];
+  key?: number;
 }
 
 const Radar: FC<Iprops> = (props) => {
   const { result } = props;
+  const resLen = result.length;
 
   //   const chartRef = useRef<EChartsReact>(null);
 
@@ -35,7 +35,7 @@ const Radar: FC<Iprops> = (props) => {
 
   const data = result.map((item, index) => ({
     value: Object.values(item),
-    name: `算法${index + 1}`
+    name: resLen == 1 ? "" : `算法${index + 1}`
   }));
 
   function getOption() {
@@ -45,7 +45,8 @@ const Radar: FC<Iprops> = (props) => {
     // }
     return {
       //   backgroundColor: "#161627",
-      color: ["#73C0DE", "#FCCA00", "#26C3BE", "#FFE434"], // 这是一个雷达图渲染的线的颜色
+      color:
+        resLen == 1 ? "#7496d2" : ["#FCCA00", "#73C0DE", "#26C3BE", "#FFE434"], // 这是一个雷达图渲染的线的颜色
       //点击提示标签
       // tooltip: {},
       legend: {
@@ -69,7 +70,7 @@ const Radar: FC<Iprops> = (props) => {
         // shape: "circle",
         indicator: indicator,
         splitNumber: 5,
-        center: ["50%", "56%"],
+        center: resLen == 1 ? ["50%", "50%"] : ["50%", "56%"],
         radius: "72%",
         //指示器名称和指示器轴的距离。[ default: 15 ]
         axisNameGap: 6,
@@ -77,12 +78,15 @@ const Radar: FC<Iprops> = (props) => {
         // 设置雷达图中间射线的颜色
         axisLine: {
           lineStyle: {
-            color: "rgba(238, 197, 102, 0.5)"
+            // color: "rgba(238, 197, 102, 0.5)"
+            color:
+              resLen == 1 ? "rgba(10, 62, 122,0.7)" : "rgba(10, 62, 122,0.2)"
           }
         },
         splitLine: {
           lineStyle: {
-            color: "rgba(10, 62, 122,0.2)"
+            color:
+              resLen == 1 ? "rgba(238, 197, 102, 0.5)" : "rgba(10, 62, 122,0.2)"
           }
         },
         // textStyle: {
@@ -91,27 +95,18 @@ const Radar: FC<Iprops> = (props) => {
         // },
         //这个是设置每根射线的名称的样式
         axisName: {
-          color: "rgba(78, 76, 76,0.8)",
+          color: resLen == 1 ? "black" : "rgba(10, 62, 122,0.2)",
+          //   color: "rgba(78, 76, 76,0.8)",
           textStyle: {
             fontSize: 16 // 设置字体大小
           }
-          //   backgroundColor: "rgba(228, 196, 119,0.7)",
-          //   borderRadius: 3,
-          //   padding: [4, 4, 2, 4]
         }
       },
       // 这是雷达图展示的每个点的数据
 
       // center: ['50%'],
       //雷达图背景的颜色，在这儿随便设置了一个颜色，完全不透明度为0，就实现了透明背景
-      splitArea: {
-        show: false
-        // areaStyle: {
-        //   color: ["#77EADF", "#26C3BE", "#64AFE9", "#428BD4", "#E4C477"],
-        //   shadowColor: "rgba(0, 0, 0, 0.2)",
-        //   shadowBlur: 10
-        // }
-      },
+
       grid: {
         top: "60px"
       },
@@ -119,7 +114,7 @@ const Radar: FC<Iprops> = (props) => {
         {
           id: "one",
           type: "radar",
-          areaStyle: { opacity: 0.5 },
+          areaStyle: { opacity: resLen == 1 ? 0.9 : 0.5 },
           //显示雷达图选中背景
           // data中的对象就是雷达图中的每一组数据，若是只有一组数据默认雷达图的线数据只有一条
           data: data
@@ -142,7 +137,12 @@ const Radar: FC<Iprops> = (props) => {
       //   lazyUpdate={true}
       //   onEvents={}
       // onChartReady={onChartReady}
-      style={{ width: "100%", height: "25vw" }}
+
+      style={
+        resLen == 1
+          ? { width: "90%", height: "25vw" }
+          : { width: "100%", height: "25vw" }
+      }
     />
   );
 };

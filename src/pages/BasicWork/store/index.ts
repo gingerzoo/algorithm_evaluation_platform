@@ -51,7 +51,7 @@ const initialState: Iprops = {
   },
   guide: {
     score: [80.5, 50, 70.2, 75],
-    status: [true, false, true, false]
+    status: [1, 2, 1, 1]
   },
   navigateBe: {
     status: -1,
@@ -67,7 +67,7 @@ const initialState: Iprops = {
   },
   navigate: {
     score: [47, 57, 62, 40],
-    status: [false, false, false, false]
+    status: [1, 1, 1, 1]
   },
   remoteBe: {
     status: -1,
@@ -83,7 +83,7 @@ const initialState: Iprops = {
   },
   remote: {
     score: [0, 0, 0, 0],
-    status: [false, false, false, false]
+    status: [1, 2, 1, 1]
   },
   voiceBe: {
     status: -1,
@@ -97,7 +97,7 @@ const initialState: Iprops = {
   },
   voice: {
     score: [0, 0, 0, 0],
-    status: [false, false, false, false]
+    status: [1, 2, 1, 1]
   },
   run_status: -1,
   run_info: "",
@@ -120,118 +120,115 @@ export const getBasicEffectAction = createAsyncThunk<
     dispatch(changeStatusBeAction(res.status));
     dispatch(changeInfoBeAction(res.info));
     switch (scene) {
-      case 0:
-        {
-          dispatch(changeGuideBeAction(res));
-          const {
-            center_position_error_score,
-            center_position_error_result,
-            iou_score,
-            iou_result,
-            robustness_score,
-            robustness_result,
-            population_score,
-            population_result
-          } = res as Iguid;
-          dispatch(
-            changeNavBeListAction({
-              score: [
-                center_position_error_score,
-                iou_score,
-                robustness_score,
-                population_score
-              ],
-              status: [
-                center_position_error_result,
-                iou_score,
-                robustness_result,
-                population_result
-              ]
-            })
-          );
-        }
+      case 0: {
+        dispatch(changeGuideBeAction(res));
+        const {
+          center_position_error_score,
+          center_position_error_result,
+          iou_score,
+          iou_result,
+          robustness_score,
+          robustness_result,
+          population_score,
+          population_result
+        } = res as Iguid;
+        dispatch(
+          changeGuiReListAction({
+            score: [
+              center_position_error_score,
+              iou_score,
+              robustness_score,
+              population_score
+            ],
+            status: [
+              center_position_error_result,
+              iou_result,
+              robustness_result,
+              population_result
+            ]
+          })
+        );
+        break;
+      }
+      case 1: {
+        dispatch(changeNavigateBeAction(res));
+        const {
+          mutual_information_score,
+          mutual_information_result,
+          relevance_score,
+          relevance_result,
+          positioning_accuracy_score,
+          positioning_accuracy_result,
+          population_score,
+          population_result
+        } = res as Inav;
+        dispatch(
+          changeNavReListAction({
+            score: [
+              relevance_score,
+              mutual_information_score,
+              positioning_accuracy_score,
+              population_score
+            ],
+            status: [
+              relevance_result,
+              mutual_information_result,
+              positioning_accuracy_result,
+              population_result
+            ]
+          })
+        );
 
         break;
-      case 1:
-        {
-          dispatch(changeNavigateBeAction(res));
-          const {
-            mutual_information_score,
-            mutual_information_result,
-            relevance_score,
-            relevance_result,
-            positioning_accuracy_score,
-            positioning_accuracy_result,
-            population_score,
-            population_result
-          } = res as Inav;
-          dispatch(
-            changeNavBeListAction({
-              score: [
-                relevance_score,
-                mutual_information_score,
-                positioning_accuracy_score,
-                population_score
-              ],
-              status: [
-                relevance_result,
-                mutual_information_result,
-                positioning_accuracy_result,
-                population_result
-              ]
-            })
-          );
-        }
+      }
+      case 2: {
+        dispatch(changeRemoBeAction(res));
+        const {
+          f1_score,
+          f1_result,
+          map_score,
+          map_result,
+          mar_score,
+          mar_result,
+          population_score,
+          population_result
+        } = res as Iremo;
+        dispatch(
+          changeRemoteReListAction({
+            score: [f1_score, map_score, mar_score, population_score],
+            status: [f1_result, map_result, mar_result, population_result]
+          })
+        );
 
         break;
-      case 2:
-        {
-          dispatch(changeRemoBeAction(res));
-          const {
-            f1_score,
-            f1_result,
-            map_score,
-            map_result,
-            mar_score,
-            mar_result,
-            population_score,
-            population_result
-          } = res as Iremo;
-          dispatch(
-            changeNavBeListAction({
-              score: [f1_score, map_score, mar_score, population_score],
-              status: [f1_result, map_result, mar_result, population_result]
-            })
-          );
-        }
+      }
+      case 3: {
+        dispatch(changeVoiceBeAction(res));
+        const {
+          word_error_rate_score,
+          word_error_rate_result,
+          sentence_error_rate_score,
+          sentence_error_rate_result,
+          population_score,
+          population_result
+        } = res as Ivoice;
+        dispatch(
+          changeVoiReListAction({
+            score: [
+              word_error_rate_score,
+              sentence_error_rate_score,
+              population_score
+            ],
+            status: [
+              word_error_rate_result,
+              sentence_error_rate_result,
+              population_result
+            ]
+          })
+        );
+
         break;
-      case 3:
-        {
-          dispatch(changeVoiceBeAction(res));
-          const {
-            word_error_rate_score,
-            word_error_rate_result,
-            sentence_error_rate_score,
-            sentence_error_rate_result,
-            population_score,
-            population_result
-          } = res as Ivoice;
-          dispatch(
-            changeNavBeListAction({
-              score: [
-                word_error_rate_score,
-                sentence_error_rate_score,
-                population_score
-              ],
-              status: [
-                word_error_rate_result,
-                sentence_error_rate_result,
-                population_result
-              ]
-            })
-          );
-        }
-        break;
+      }
       default:
         break;
     }
@@ -277,16 +274,16 @@ const basicEffectSlice = createSlice({
     changeInfoBeAction(state, { payload }) {
       state.run_info = payload;
     },
-    changeGuiBeListAction(state, { payload }) {
+    changeGuiReListAction(state, { payload }) {
       state.guide = payload;
     },
-    changeNavBeListAction(state, { payload }) {
+    changeNavReListAction(state, { payload }) {
       state.navigate = payload;
     },
-    changeRemoteListAction(state, { payload }) {
+    changeRemoteReListAction(state, { payload }) {
       state.remote = payload;
     },
-    changeVoiBeListAction(state, { payload }) {
+    changeVoiReListAction(state, { payload }) {
       state.voice = payload;
     }
   },
@@ -320,10 +317,10 @@ export const {
   changeVoiceBeAction,
   changeInfoBeAction,
   changeStatusBeAction,
-  changeGuiBeListAction,
-  changeNavBeListAction,
-  changeRemoteListAction,
-  changeVoiBeListAction
+  changeGuiReListAction,
+  changeNavReListAction,
+  changeRemoteReListAction,
+  changeVoiReListAction
 } = basicEffectSlice.actions;
 
 export default basicEffectSlice.reducer;

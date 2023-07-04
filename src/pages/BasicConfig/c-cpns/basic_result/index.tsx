@@ -28,13 +28,18 @@ const BasicResult: FC<Iprops> = (props) => {
     }));
 
   const curResult = basic_result[scene] as IbasicRes;
+  const curScore = curResult.score.map(
+    (item) => parseFloat(item.toFixed(2)) * 100
+  );
+  const resLen = curScore.length;
+
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const color = ["#73C0DE", "#7496d2", "#ecd472"];
 
   //下一步按钮点击处理函数
   function nextBtnClick() {
-    const nextPath = `/profile/adapt/${scene}`;
+    const nextPath = `/profile/basicwork`;
     dispatch(changeNextPathAction(nextPath));
     dispatch(changeNowProcessAction(["基础设置", "基础效能"]));
 
@@ -50,8 +55,10 @@ const BasicResult: FC<Iprops> = (props) => {
               <div key={index} className="result_item">
                 <div className="name">{item}</div>
                 <Progress
-                  percent={curResult["score"][index]}
-                  status={curResult["status"][index] ? "success" : "exception"}
+                  percent={curScore[index]}
+                  status={
+                    curResult["status"][index] == 0 ? "success" : "exception"
+                  }
                   showInfo={true}
                   //   strokeColor={{
                   //     from: color[index * 2],
@@ -67,8 +74,11 @@ const BasicResult: FC<Iprops> = (props) => {
           <Space className="right">
             <Progress
               type="circle"
-              percent={70}
-              status="exception"
+              percent={curScore[resLen - 1]}
+              //   status="exception"
+              status={
+                curResult["status"][resLen - 1] == 0 ? "success" : "exception"
+              }
               format={(percent) => `总体分数:${percent}`}
               width={100}
             />

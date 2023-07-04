@@ -21,12 +21,13 @@ interface Iprops {
 
 const MyTable: FC<Iprops> = (props) => {
   const { secIndex, population_result, population_score } = props;
-  const { module_names, sceneNum, dataset, scene } = useAppSelector(
+  const { module_names, sceneNum, dataset, scene, curModel } = useAppSelector(
     (state) => ({
       module_names: state.basicConfig.modelNames,
       sceneNum: state.basicConfig.sceneNum,
       dataset: state.basicConfig.dataSet,
-      scene: state.basicConfig.scene
+      scene: state.basicConfig.scene,
+      curModel: state.basicConfig.currentModule
     })
   );
 
@@ -43,7 +44,7 @@ const MyTable: FC<Iprops> = (props) => {
           <td rowSpan={props.secIndex.length + 1}>二级指标</td>
           <td style={{ width: "11.8vw" }}>名称</td>
           <td>评估工作</td>
-          <td style={{ width: "6vw" }}>权重</td>
+          {/* <td style={{ width: "6vw" }}>权重</td> */}
           <td style={{ width: "7.2vw" }}>得分</td>
           <td style={{ width: "6vw" }}>结果</td>
         </tr>
@@ -52,7 +53,7 @@ const MyTable: FC<Iprops> = (props) => {
             <tr key={index}>
               <td>{item.name}</td>
               <td>{item.assess}</td>
-              <td>{item.weight}</td>
+              {/* <td>{item.weight}</td> */}
               <td
                 className={["score", item.result ? "noPass" : "pass"].join(" ")}
               >
@@ -74,7 +75,7 @@ const MyTable: FC<Iprops> = (props) => {
         })}
         <tr>
           <td className="row-sub-header">总体分数</td>
-          <td colSpan={4} className="population">
+          <td colSpan={3} className="population">
             {population_score}
           </td>
           <td>
@@ -98,14 +99,14 @@ const MyTable: FC<Iprops> = (props) => {
         <tbody>
           <tr>
             <td className="row-header">算法名称</td>
-            <td>{nowModelName}算法</td>
+            <td>{curModel}算法</td>
           </tr>
-          <tr>
+          {/* <tr>
             <td>算法说明</td>
             <td>
               {nowModelName}算法采用xxx方案,实现{pageScene}效果
             </td>
-          </tr>
+          </tr> */}
           <tr>
             <td>输入说明</td>
             <td>

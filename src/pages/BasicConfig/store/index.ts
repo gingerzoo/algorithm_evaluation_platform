@@ -22,9 +22,10 @@ export type Ialgo = {
   dataType: string[];
   default_cmd: string;
   description: string;
-  keyword: string[];
+  key_word: string[];
   model_name: string;
   scene: number;
+  author: string;
 };
 
 interface Iname {
@@ -53,6 +54,7 @@ type Iscene = {
   algolist: Ialgo[];
   currentModule: string;
   modelNames: Iname;
+  curAlgo: Ialgo;
 };
 const initialState: Iscene = {
   scene: "guide",
@@ -82,6 +84,15 @@ const initialState: Iscene = {
   //   isAsure: false,
   inputRun: "",
   algolist: [],
+  curAlgo: {
+    dataType: [],
+    default_cmd: "",
+    description: "",
+    key_word: [],
+    model_name: "",
+    scene: 0,
+    author: ""
+  },
   currentModule: ""
 };
 
@@ -305,6 +316,9 @@ const sceneSlice = createSlice({
     },
     changeVoiceModelNameAction(state, { payload }) {
       state.modelNames.voiceName = payload;
+    },
+    changeCurAlgoAction(state, { payload }) {
+      state.curAlgo = payload;
     }
   }
 });
@@ -327,7 +341,8 @@ export const {
   changeNavModelNameAction,
   changeRemoteModelNameAction,
   changeVoiceModelNameAction,
-  changeSelectedSceneAction
+  changeSelectedSceneAction,
+  changeCurAlgoAction
 } = sceneSlice.actions;
 
 export default sceneSlice.reducer;

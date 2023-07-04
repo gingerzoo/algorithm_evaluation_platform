@@ -2,7 +2,7 @@ import React, { memo, useCallback, useEffect, useState } from "react";
 import { shallowEqual } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import type { FC, ReactNode } from "react";
-import { Input, Menu, message, Spin } from "antd";
+import { Input, message, Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 
 import Picture_show from "@/components/picture_show";
@@ -18,8 +18,6 @@ import App_cover from "@/components/app_cover";
 import { useAppDispatch, useAppSelector } from "@/store";
 import {
   changeInputRunAction,
-  changeNextPathAction,
-  changeNowProcessAction,
   changeSceneAction,
   changeSceneNumAction,
   changeStatusCommAction,
@@ -28,12 +26,6 @@ import {
 } from "./store";
 
 import Typewriter from "./c-cpns/typewriter";
-import { getImgAction } from "../AdaptAbli/store";
-import { getDatasetInfo } from "../Dataset/service";
-import WorkIntro from "../BasicWork/c-cpns/Intro";
-import WorkNav from "../BasicWork/c-cpns/Nav";
-import WorkRemote from "../BasicWork/c-cpns/Remote";
-import WorkVoice from "../BasicWork/c-cpns/Voice";
 import Basic_result from "./c-cpns/basic_result";
 
 interface Iprops {

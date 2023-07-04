@@ -5,13 +5,10 @@ import { AdaptWraper } from "./style";
 import { useAppDispatch, useAppSelector } from "@/store";
 import {
   changeConditionList,
-  changeGenDataStatAction,
   changeNewWorkObjAction,
-  changePageSceneAction,
   getWorkDataAction,
   getWorkDefaultAction,
-  getWorkResultAction,
-  Iresult
+  getWorkResultAction
 } from "./store";
 import { Button, message, Spin } from "antd";
 import { sceneToNum } from "@/assets/data/local_data";
@@ -57,7 +54,7 @@ const AdaptAbil: FC<Iprops> = () => {
     console.log("生成了一次默认数据");
   }, [scene]);
   useEffect(() => {
-    // dispatch(changePageSceneAction(pageScene));
+    // dispatch(changePageSceneAction(scene));
     console.log("genIs", genIsPending);
     dispatch(changeNewWorkObjAction({}));
     dispatch(changeConditionList([]));

@@ -1,13 +1,10 @@
 import React, { memo, useEffect, useRef } from "react";
 import type { FC, ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
-
 import { HomeWrapper } from "./style";
-import circle from "@/assets/images/circle.png";
 import Radar from "@/components/radar";
-import ReactEcharts from "echarts-for-react";
 import EChartsReact from "echarts-for-react";
-import echarts from "echarts";
+
 import {
   AlertOutlined,
   BorderOuterOutlined,
@@ -82,16 +79,16 @@ const Home: FC<Iprops> = (props) => {
         <section className="freedom">
           <h2>
             <AlertOutlined className="icon" />
-            <span className="title">全方位覆盖</span>
+            <span className="title">多任务覆盖</span>
           </h2>
           {/* <img src={circle} /> */}
           <Sunburst />
         </section>
         <section>
-          {/* <div className="envisable box"> */}
-          {/* <h2>
+          <div className="envisable box">
+            <h2>
               <EyeOutlined className="icon" />
-              <span className="title"> 可视化和易于使用</span>
+              <span className="title"> 支持技术文档</span>
             </h2>
             <p>
               本平台具有直观的用户界面和易于使用的工具，以便客户可以轻松地执行算法评估并获得结果。此外，还可以通过图表和可视化工具向客户展示评估结果。
@@ -115,8 +112,8 @@ const Home: FC<Iprops> = (props) => {
             <p>
               本感知分级算法评估平台可以自动执行算法评估，并提供快速、准确的结果。节省时间和精力，同时提高工作效率。
             </p>
-          </div> */}
-          <Library />
+          </div>
+          {/* <Library /> */}
         </section>
 
         <section className="result">

@@ -3,6 +3,7 @@ import type { FC, ReactNode } from "react";
 import { message, Select } from "antd";
 import { useAppDispatch, useAppSelector } from "@/store";
 import {
+  changeCurAlgoAction,
   changeCurModuleAction,
   changeStatusCommAction,
   getAftDelAlgListAction,
@@ -69,6 +70,10 @@ const AlgorithmUpload: FC<Iprops> = (props) => {
     // console.log(value);
     dispatch(changeCurModuleAction(value));
     console.log("option被选择了", value);
+    const curAlgo = algorithmList.filter(
+      (item) => item.model_name === value
+    )[0];
+    dispatch(changeCurAlgoAction(curAlgo));
     dispatch(getSystemAction(value));
     dispatch(changeStatusCommAction(-1));
     dispatch(changeStatusBeAction(-1));

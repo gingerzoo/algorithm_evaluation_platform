@@ -62,9 +62,10 @@ export const Table2Wrapper = styled.div`
         .viewPic {
           margin-top: 0.5vw;
         }
-        button.ant-btn {
+        /* button.ant-btn {
           padding: 0;
-        }
+          height: 3.6vw;
+        } */
       }
     }
   }

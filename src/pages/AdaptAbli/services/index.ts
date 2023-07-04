@@ -1,16 +1,9 @@
 import lxrequset from "@/services/index";
-import { Iresult, Iwork } from "@/type";
+import { Iresult, Iwork, IworkResult } from "@/type";
 
 interface Idefault {
   [index: string]: Iwork;
 }
-
-type IworkResult = {
-  condition_result: string[];
-  overall: string;
-  status: number;
-  info: string;
-};
 
 interface Icondition {
   [index: string]: string[];

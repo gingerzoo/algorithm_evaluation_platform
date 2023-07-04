@@ -3,6 +3,8 @@ import type { FC, ReactNode } from "react";
 import { HeaderWrap } from "./style";
 import { RadarChartOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "@/store";
+import { changeNextPathAction } from "@/pages/BasicConfig/store";
 
 interface Iprops {
   children?: ReactNode;
@@ -12,14 +14,15 @@ interface Iprops {
 const App_header: FC<Iprops> = (props) => {
   const { greenClickHandle } = props;
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+
+  const backToHome = () => {
+    navigate("/home");
+    dispatch(changeNextPathAction("/profile/config"));
+  };
   return (
     <HeaderWrap>
-      <div
-        className="left"
-        onClick={() => {
-          navigate("/home");
-        }}
-      >
+      <div className="left" onClick={backToHome}>
         <div className="logo"></div>
         {/* <span className="divider">|</span> */}
         <h3 className="algor">
@@ -37,12 +40,7 @@ const App_header: FC<Iprops> = (props) => {
         <span className="divider">|</span>
         <div className="report btn">报表导出</div>
         <span className="divider">|</span>
-        <div
-          className="backToHome btn"
-          onClick={() => {
-            navigate("/home");
-          }}
-        >
+        <div className="backToHome btn" onClick={backToHome}>
           返回首页
         </div>
       </div>

@@ -22,7 +22,7 @@ export type voiConditionType = "explosion" | "signalLoss";
 
 export type IbasicRes = {
   score: number[];
-  status: boolean[];
+  status: number[];
 };
 export interface Iguid {
   status: number;
@@ -99,6 +99,15 @@ export interface Iwork {
     weight: number;
   };
 }
+
+export type IworkResult = {
+  condition_result: string[];
+  overall: string;
+  status: number;
+  info: string;
+  population_score: number[];
+  score_info: any[];
+};
 
 type GenericAsyncThunk = AsyncThunk<unknown, unknown, any>;
 

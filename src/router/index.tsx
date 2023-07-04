@@ -24,6 +24,7 @@ const Home = lazy(() => import("@/pages/Home"));
 const Profile = lazy(() => import("@/pages/Profile"));
 const Dataset = lazy(() => import("@/pages/Dataset"));
 const PDFviewer = lazy(() => import("@/components/PDFviewer"));
+const Results = lazy(() => import("@/pages/Results"));
 
 //路由表映射
 const routes: RouteObject[] = [
@@ -118,6 +119,10 @@ const routes: RouteObject[] = [
       {
         path: "absawareness",
         element: <AbstrAware />
+      },
+      {
+        path: "result",
+        element: <Results />
       }
     ]
   },

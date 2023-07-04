@@ -1,9 +1,4 @@
-import {
-  AnyAction,
-  createAsyncThunk,
-  createSlice,
-  PayloadAction
-} from "@reduxjs/toolkit";
+import { AnyAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 import {
   getViewPic,
@@ -15,19 +10,12 @@ import {
 import store, { IrootState } from "@/store";
 import { message } from "antd";
 import { sceneToNum } from "@/assets/data/local_data";
-import { FulfilledAction, Iwork, PendingAction, RejectedAction } from "@/type";
+import { FulfilledAction, Iwork, IworkResult, RejectedAction } from "@/type";
 import { adaptAsyncState } from "@/utils/getItem";
 
 //这是干啥的？？？返回的不同场景下condition的列表
 type Icondition = {
   [index: string]: string[];
-};
-
-export type Iresult = {
-  condition_result: string[];
-  overall: string;
-  status: number;
-  info: string;
 };
 
 export interface Iadapt {
@@ -40,10 +28,11 @@ export interface Iadapt {
     | boolean
     | number
     | string
-    | Iresult
+    | IworkResult
     | boolean[][]
     | boolean[]
-    | Iwork;
+    | Iwork
+    | (number | undefined)[];
   guide: Iwork[];
   navigate: Iwork[];
   remote: Iwork[];
@@ -60,8 +49,12 @@ export interface Iadapt {
   navigateResult: string[];
   remoteResult: string[];
   voiceResult: string[];
+  guideScore: (number | undefined)[];
+  navigateScore: string[];
+  remoteScore: string[];
+  voiceScore: string[];
   checkList: boolean[][];
-  runResult: Iresult;
+  runResult: IworkResult;
   imgUrl: string[];
   picIndex: number;
   pageScene: string;
@@ -156,6 +149,7 @@ export const getWorkResultAction = createAsyncThunk<
   //   const run_result = getState().adaptAbili.runResult;
   const newInter: Iwork[] = [];
   const realResult: string[] = [];
+  const realScore: (number | undefined)[] = [];
 
   const interference = getState().adaptAbili[scene] as Iwork[];
   checkList.forEach((item: boolean, index: number) => {
@@ -172,25 +166,39 @@ export const getWorkResultAction = createAsyncThunk<
         checkList.forEach((item, index) => {
           if (item) {
             realResult.push(res.condition_result[count]);
+            realScore.push(res["population_score"][count]);
             count++;
           } else {
             realResult.push(" ");
+            realScore.push(undefined);
           }
         });
+
+        console.log("real_score", realScore);
         console.log("真正的测试结果", realResult);
         switch (scene) {
-          case "guide":
+          case "guide": {
             dispatch(changeGuideResAction(realResult));
+            dispatch(changeGuideScoreAction(realScore));
             break;
-          case "navigate":
+          }
+          case "navigate": {
             dispatch(changeNaviResAction(realResult));
+            dispatch(changeNavScoreAction(realScore));
             break;
-          case "remote":
+          }
+          case "remote": {
             dispatch(changeRemoResAction(realResult));
+            dispatch(changeRemoteScore(realScore));
             break;
-          case "voice":
+          }
+
+          case "voice": {
             dispatch(changeVoiResAction(realResult));
+            dispatch(changeVoiceScore(realScore));
             break;
+          }
+
           default:
             break;
         }
@@ -442,6 +450,10 @@ const initialState: Iadapt = {
   navigateResult: [],
   remoteResult: [],
   voiceResult: [],
+  navigateScore: [],
+  remoteScore: [],
+  guideScore: [],
+  voiceScore: [],
   checkList: [
     [true, true],
     [true, true],
@@ -452,7 +464,46 @@ const initialState: Iadapt = {
     condition_result: [],
     overall: "",
     status: -1,
-    info: ""
+    info: "",
+    population_score: [],
+    score_info: [
+      {
+        status: 0,
+        info: "",
+        f1_score: 56,
+        f1_result: 0,
+        map_score: 87,
+        map_result: 0,
+        mar_score: 66,
+        mar_result: 0,
+        population_score: 70,
+        population_result: 0
+      },
+      {
+        status: 0,
+        info: "",
+        f1_score: 45,
+        f1_result: 0,
+        map_score: 73,
+        map_result: 0,
+        mar_score: 89,
+        mar_result: 0,
+        population_score: 56,
+        population_result: 0
+      },
+      {
+        status: 0,
+        info: "",
+        f1_score: 67,
+        f1_result: 0,
+        map_score: 82,
+        map_result: 0,
+        mar_score: 56,
+        mar_result: 0,
+        population_score: 77,
+        population_result: 0
+      }
+    ]
   },
   imgUrl: [],
   newWorkObj: {},
@@ -519,40 +570,63 @@ const adaptSlice = createSlice({
     },
     changePageSceneAction(state, { payload }) {
       state.pageScene = payload;
+    },
+    changeNavScoreAction(state, { payload }) {
+      state.navigateScore = payload;
+    },
+    changeGuideScoreAction(state, { payload }) {
+      state.guideScore = payload;
+    },
+    changeRemoteScore(state, { payload }) {
+      state.remoteScore = payload;
+    },
+    changeVoiceScore(state, { payload }) {
+      state.voiceScore = payload;
     }
   },
   extraReducers: (builder) => {
-    const updateIsPending = (state: Iadapt, prop: string, value: boolean) => {
+    // const updateIsPending = (state: Iadapt, prop: string, value: boolean) => {
+    //     const sceneNum = sceneToNum[state.pageScene];
+
+    //     const cur = state[prop] as boolean[];
+    //     const myState = [...cur];
+    //     myState[sceneNum] = value;
+    //     state[prop] = myState;
+    //   };
+    const updateIsPending = (state: Iadapt, value: boolean) => {
       const sceneNum = sceneToNum[state.pageScene];
 
-      const cur = state[prop] as boolean[];
+      const cur = state.genIsPending;
       const myState = [...cur];
       myState[sceneNum] = value;
-      state[prop] = myState;
+      state.genIsPending = myState;
+    };
+    const updateIsTesting = (state: Iadapt, value: boolean) => {
+      const sceneNum = sceneToNum[state.pageScene];
+
+      const cur = state.testIsPending;
+      const myState = [...cur];
+      myState[sceneNum] = value;
+      state.testIsPending = myState;
     };
     builder
       .addCase(getWorkDataAction.pending, (state) => {
-        updateIsPending(state, "genIsPending", true);
+        updateIsPending(state, true);
       })
       .addCase(getWorkDataAction.fulfilled, (state) => {
-        updateIsPending(state, "genIsPending", false);
+        updateIsPending(state, false);
       })
       .addCase(getWorkDataAction.rejected, (state) => {
-        updateIsPending(state, "genIsPending", false);
-        // const sceneNum = sceneToNum[state.pageScene];
-        // const cur = state.genIsPending;
-        // const myState = [...cur];
-        // myState[sceneNum] = false;
-        // state.genIsPending = myState;
+        updateIsPending(state, false);
       })
       .addCase(getWorkResultAction.pending, (state) => {
-        updateIsPending(state, "testIsPending", true);
+        updateIsTesting(state, true);
       })
       .addCase(getWorkResultAction.fulfilled, (state) => {
-        updateIsPending(state, "testIsPending", false);
+        updateIsTesting(state, false);
       })
       .addCase(getWorkResultAction.rejected, (state) => {
-        updateIsPending(state, "testIsPending", false);
+        updateIsTesting(state, false);
       });
     //   .addMatcher(isPendingAction, (state) => {
     //     const sceneNum = sceneToNum[state.pageScene];
@@ -603,5 +677,9 @@ export const {
   changeImgUrlAction,
   changeNewWorkObjAction,
   changePicIndexAction,
-  changePageSceneAction
+  changePageSceneAction,
+  changeGuideScoreAction,
+  changeNavScoreAction,
+  changeRemoteScore,
+  changeVoiceScore
 } = adaptSlice.actions;

@@ -7,6 +7,7 @@ import jpg3 from "../images/3.jpg";
 import jpg4 from "../images/4.jpg";
 
 import {
+  ContainerOutlined,
   FundProjectionScreenOutlined,
   LaptopOutlined,
   NodeIndexOutlined,
@@ -68,7 +69,7 @@ export const sideNav = [
 
   {
     icon: <PullRequestOutlined />,
-    title: "可适应能力评估",
+    title: "可适应能力",
     link: "/profile/adapt"
     // sub: subs.map((item) =>
     //   getItem(item.title, "/profile/adapt" + "/" + item.link.slice(1))
@@ -76,7 +77,7 @@ export const sideNav = [
   },
   {
     icon: <SendOutlined />,
-    title: "可信赖性",
+    title: "可信赖能力",
     link: "/profile/trust"
   },
   {
@@ -93,6 +94,11 @@ export const sideNav = [
     icon: <NodeIndexOutlined />,
     title: "抽象感知能力",
     link: "/profile/absawareness"
+  },
+  {
+    icon: <ContainerOutlined />,
+    title: "测试结果总览",
+    link: "/profile/result"
   }
 ];
 
@@ -267,4 +273,13 @@ export const basicResList = [
   ["相关性", "互信息", "定位精度"],
   ["F1-score", "mAP", "mAR"],
   ["字错误率", "句错误率"]
+];
+
+export const res_measurement = [
+  "基础效能",
+  "可适应能力",
+  "可信赖能力",
+  "自学习能力",
+  "协同感知能力",
+  "抽象感知能力"
 ];
