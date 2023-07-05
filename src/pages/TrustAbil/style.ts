@@ -2,8 +2,6 @@ import styled from "styled-components";
 
 export const TrustWrap = styled.div`
   .prepare td {
-    /* width: 770px; */
-
     .text {
       margin: 0 20px;
     }

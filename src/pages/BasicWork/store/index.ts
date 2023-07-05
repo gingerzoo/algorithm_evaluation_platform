@@ -2,6 +2,8 @@ import { runBasicEffect } from "@/pages/BasicConfig/service";
 import { IrootState } from "@/store";
 import { IbasicRes, Iguid, Inav, Iremo, Ivoice } from "@/type";
 import { createAsyncThunk, createSlice, Slice } from "@reduxjs/toolkit";
+import { message } from "antd";
+import { getResultPic } from "../service";
 
 interface Iprops {
   [index: string]:
@@ -12,7 +14,8 @@ interface Iprops {
     | Iremo
     | Ivoice
     | boolean
-    | IbasicRes;
+    | IbasicRes
+    | string[];
   run_status: number;
   run_info: string;
   guideBe: Iguid;
@@ -24,6 +27,7 @@ interface Iprops {
   remote: IbasicRes;
   voice: IbasicRes;
   isPending: boolean;
+  resImgs: string[];
 }
 
 type Ipromise = {
@@ -101,7 +105,8 @@ const initialState: Iprops = {
   },
   run_status: -1,
   run_info: "",
-  isPending: false
+  isPending: false,
+  resImgs: []
 };
 
 export const getBasicEffectAction = createAsyncThunk<
@@ -111,7 +116,7 @@ export const getBasicEffectAction = createAsyncThunk<
     state: IrootState;
     rejectValue: ValidationErrors;
   }
->("effectResult", async (par, { dispatch, getState, rejectWithValue }) => {
+>("effectResult", async (par, { dispatch, getState }) => {
   const scene = getState().basicConfig.sceneNum;
   try {
     const res = await runBasicEffect();
@@ -242,13 +247,26 @@ export const getBasicEffectAction = createAsyncThunk<
       status: -1,
       info: `网络发生错误：${err}`
     };
+  }
+});
 
-    // 我们遇到了合法性的错误，让我们把这些错误返回以便我们能在组件中引用它们并且设置表单错误
-    // const error: AxiosError<ValidationErrors> = err;
-    // if (!error.response) {
-    //   throw new Error("fff");
-    // }
-    // return rejectWithValue(error.response.data);
+export const getResultImgsAction = createAsyncThunk<
+  void,
+  void,
+  { state: IrootState }
+>("getBasic_imgs", async (par, { dispatch, getState }) => {
+  try {
+    const model_name = getState().basicConfig.currentModule;
+    const sceneNum = getState().basicConfig.sceneNum;
+    const data_type = getState().basicConfig.dataSet;
+    const res = await getResultPic(model_name, sceneNum, data_type);
+    dispatch(changeResImgsAction(res.images));
+  } catch (err) {
+    message.open({
+      type: "error",
+      content: "网络错误",
+      duration: 2
+    });
   }
 });
 
@@ -285,16 +303,11 @@ const basicEffectSlice = createSlice({
     },
     changeVoiReListAction(state, { payload }) {
       state.voice = payload;
+    },
+    changeResImgsAction(state, { payload }) {
+      state.resImgs = payload;
     }
   },
-  //   extraReducers: {
-  //     [getBasicEffectAction.pending]: (state) => {
-  //       state.isPending = true;
-  //     },
-  //     [getBasicEffectAction.fulfilled]: (state) => {
-  //       state.isPending = false;
-  //     }
-  //   }
 
   extraReducers: (builder) => {
     builder
@@ -320,7 +333,8 @@ export const {
   changeGuiReListAction,
   changeNavReListAction,
   changeRemoteReListAction,
-  changeVoiReListAction
+  changeVoiReListAction,
+  changeResImgsAction
 } = basicEffectSlice.actions;
 
 export default basicEffectSlice.reducer;

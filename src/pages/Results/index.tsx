@@ -66,7 +66,7 @@ const Results: FC<Iprops> = (props) => {
 
   const bar_data = score_list.map((item, index) => {
     const curIndex = item;
-    const curData: number[] = adaptAbli.map((item) => item[curIndex]);
+    const curData: number[] = adaptAbli.map((item) => item[curIndex] * 100);
     return {
       name: curName[index],
       data: curData,
@@ -76,7 +76,7 @@ const Results: FC<Iprops> = (props) => {
 
   const pie_data: Ipie[] = [];
   curName.forEach((item, index) => {
-    pie_data.push({ value: pieValue[index], name: curName[index] });
+    pie_data.push({ value: pieValue[index] * 100, name: curName[index] });
   });
 
   const sliderChangeHandle = (value: number, index: number) => {

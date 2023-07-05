@@ -27,6 +27,7 @@ import {
 
 import Typewriter from "./c-cpns/typewriter";
 import Basic_result from "./c-cpns/basic_result";
+import { getResultPic } from "../BasicWork/service";
 
 interface Iprops {
   children?: ReactNode;

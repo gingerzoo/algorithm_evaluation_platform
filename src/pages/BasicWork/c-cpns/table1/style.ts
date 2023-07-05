@@ -38,6 +38,14 @@ export const TableWrap = styled.div<Iprops>`
       background-color: #f2f2f2;
     }
 
+    .show_basicResult {
+      cursor: pointer;
+      &:hover {
+        background-color: ${(props) => props.theme.color.orangeColor};
+        color: white;
+      }
+    }
+
     .pass {
       background: ${(props) => props.theme.color.greenColor};
     }

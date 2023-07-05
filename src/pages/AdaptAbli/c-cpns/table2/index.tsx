@@ -21,6 +21,8 @@ import {
 } from "../../store";
 import { createOneWork } from "@/utils/getItem";
 import { shallowEqual } from "react-redux";
+import { use } from "echarts";
+import My_drawer from "@/components/my_drawer";
 
 interface Iprops {
   children?: ReactNode;
@@ -36,18 +38,26 @@ const weightArray: number[][] = [];
 const condiArray: string[][] = [];
 
 const MyTable2: FC<Iprops> = (props) => {
-  const { scene, adapt, needCenDataChange, newWork, picIndex, iniCheckList } =
-    useAppSelector(
-      (state) => ({
-        scene: state.basicConfig.scene,
-        adapt: state.adaptAbili,
-        needCenDataChange: state.adaptAbili.needGenData,
-        newWork: state.adaptAbili.newWorkObj,
-        picIndex: state.adaptAbili.picIndex,
-        iniCheckList: state.adaptAbili.checkList
-      }),
-      shallowEqual
-    );
+  const {
+    scene,
+    adapt,
+    needCenDataChange,
+    newWork,
+    picIndex,
+    iniCheckList,
+    imgUrls
+  } = useAppSelector(
+    (state) => ({
+      scene: state.basicConfig.scene,
+      adapt: state.adaptAbili,
+      needCenDataChange: state.adaptAbili.needGenData,
+      newWork: state.adaptAbili.newWorkObj,
+      picIndex: state.adaptAbili.picIndex,
+      iniCheckList: state.adaptAbili.checkList,
+      imgUrls: state.adaptAbili.imgUrl
+    }),
+    shallowEqual
+  );
   const { workConditions } = props;
 
   /* 获得该页面的场景 */
@@ -64,7 +74,7 @@ const MyTable2: FC<Iprops> = (props) => {
   const [modal2Open, setModal2Open] = useState(false);
   //控制抽屉组件开关的状态
   const [drawerOpen, setDrawOpen] = useState(false);
-  //点击图片预览时所在工况号
+
   const [workNum, setWorkNum] = useState(0);
 
   /* 这里有什么办法优化吗，每次重新渲染组件都很重新定义这三个遍历这三个变量 */
@@ -420,32 +430,19 @@ const MyTable2: FC<Iprops> = (props) => {
           </tr>
         </tbody>
       </table>
-      <Drawer
+
+      <My_drawer
         title={carouselTitle}
-        width={scene == "voice" ? "32vw" : "38vw"}
-        maskClosable={false}
-        mask={false}
-        open={drawerOpen}
+        drawerOpen={drawerOpen}
+        sceneNum={sceneNum}
+        imgUrls={imgUrls}
         onClose={() => {
           setDrawOpen(false);
         }}
-        extra={
-          <Space>
-            <Button
-              type="primary"
-              onClick={() => {
-                setDrawOpen(false);
-              }}
-            >
-              退出
-            </Button>
-          </Space>
-        }
-      >
-        <div className="drawer-content">
-          <MyCarousel workNum={workNum} pageScene={scene} />
-        </div>
-      </Drawer>
+        onLeave={() => {
+          setDrawOpen(false);
+        }}
+      />
     </Table2Wrapper>
   );
 };

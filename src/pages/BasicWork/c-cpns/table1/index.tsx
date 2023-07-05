@@ -1,9 +1,13 @@
-import React, { memo } from "react";
+import React, { memo, useEffect, useState } from "react";
 import type { FC, ReactNode } from "react";
 import { TableWrap } from "./style";
 import { CheckCircleFilled, CloseCircleFilled } from "@ant-design/icons";
-import { useAppSelector } from "@/store";
+import { useAppDispatch, useAppSelector } from "@/store";
 import { datasets, subs } from "@/assets/data/local_data";
+import My_drawer from "@/components/my_drawer";
+import { getResultPic } from "../../service";
+import { changeResImgsAction, getResultImgsAction } from "../../store";
+import { message } from "antd";
 interface Isecindex {
   name: string;
   assess: string;
@@ -21,18 +25,36 @@ interface Iprops {
 
 const MyTable: FC<Iprops> = (props) => {
   const { secIndex, population_result, population_score } = props;
-  const { module_names, sceneNum, dataset, scene, curModel } = useAppSelector(
-    (state) => ({
-      module_names: state.basicConfig.modelNames,
-      sceneNum: state.basicConfig.sceneNum,
-      dataset: state.basicConfig.dataSet,
-      scene: state.basicConfig.scene,
-      curModel: state.basicConfig.currentModule
-    })
-  );
+  const {
+    module_names,
+    sceneNum,
+    dataset,
+    scene,
+    curModel,
+    data_tupe,
+    resImgs,
+    basic_runStatus
+  } = useAppSelector((state) => ({
+    module_names: state.basicConfig.modelNames,
+    sceneNum: state.basicConfig.sceneNum,
+    dataset: state.basicConfig.dataSet,
+    scene: state.basicConfig.scene,
+    curModel: state.basicConfig.currentModule,
+    data_tupe: state.basicConfig.dataSet,
+    resImgs: state.basicEffect.resImgs,
+    basic_runStatus: state.basicEffect.run_status
+  }));
 
   const pageScene = location.hash.split("/").pop();
   const nowModelName = module_names[`${pageScene}Name`];
+  const dispatch = useAppDispatch();
+  //控制抽屉组件开关的状态
+  const [drawerOpen, setDrawOpen] = useState(false);
+
+  useEffect(() => {
+    dispatch(getResultImgsAction());
+  }, []);
+
   const secondIndex = (
     <table className="smalltable table_v1 table_color">
       <tbody>
@@ -46,7 +68,15 @@ const MyTable: FC<Iprops> = (props) => {
           <td>评估工作</td>
           {/* <td style={{ width: "6vw" }}>权重</td> */}
           <td style={{ width: "7.2vw" }}>得分</td>
-          <td style={{ width: "6vw" }}>结果</td>
+          <td
+            className="show_basicResult"
+            style={{ width: "10vw" }}
+            onClick={() => {
+              setDrawOpen(true);
+            }}
+          >
+            查看结果
+          </td>
         </tr>
         {secIndex.map((item, index) => {
           return (
@@ -101,12 +131,6 @@ const MyTable: FC<Iprops> = (props) => {
             <td className="row-header">算法名称</td>
             <td>{curModel}算法</td>
           </tr>
-          {/* <tr>
-            <td>算法说明</td>
-            <td>
-              {nowModelName}算法采用xxx方案,实现{pageScene}效果
-            </td>
-          </tr> */}
           <tr>
             <td>输入说明</td>
             <td>
@@ -119,6 +143,18 @@ const MyTable: FC<Iprops> = (props) => {
           </tr>
         </tbody>
       </table>
+      <My_drawer
+        title="结果预览"
+        drawerOpen={drawerOpen}
+        sceneNum={sceneNum}
+        imgUrls={resImgs}
+        onClose={() => {
+          setDrawOpen(false);
+        }}
+        onLeave={() => {
+          setDrawOpen(false);
+        }}
+      />
     </TableWrap>
   );
 };

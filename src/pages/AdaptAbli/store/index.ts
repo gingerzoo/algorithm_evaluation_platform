@@ -251,10 +251,6 @@ export const getImgAction = createAsyncThunk<
       enumerable: true
     });
   });
-  //   console.log("工况", par.workIndex);
-  //   console.log("干扰字典", sendCondition);
-
-  //   console.log("发送了请求图片的网络请求");
 
   try {
     if (par.picIndex) {
@@ -264,6 +260,7 @@ export const getImgAction = createAsyncThunk<
         par.picIndex,
         sendCondition
       );
+
       imgUrlList = [...preImgUrlList];
       imgUrlList[par.picIndex] = res;
       console.log("发送一张图片的网络请求！");
@@ -271,10 +268,10 @@ export const getImgAction = createAsyncThunk<
       for (let i = 0; i < 5; i++) {
         const res = await getViewPic(sceneNum, date_type, i, sendCondition);
         // console.log("发送一张图片的网络请求！", i);
+
         imgUrlList.push(res);
       }
       //   console.log("发送五张图片的网络请求！");
-      //   console.log(imgUrlList);
     }
     dispatch(changeImgUrlAction(imgUrlList));
 
@@ -470,37 +467,37 @@ const initialState: Iadapt = {
       {
         status: 0,
         info: "",
-        f1_score: 56,
+        f1_score: 0.56,
         f1_result: 0,
-        map_score: 87,
+        map_score: 0.87,
         map_result: 0,
-        mar_score: 66,
+        mar_score: 0.66,
         mar_result: 0,
-        population_score: 70,
+        population_score: 0.7,
         population_result: 0
       },
       {
         status: 0,
         info: "",
-        f1_score: 45,
+        f1_score: 0.45,
         f1_result: 0,
-        map_score: 73,
+        map_score: 0.73,
         map_result: 0,
-        mar_score: 89,
+        mar_score: 0.89,
         mar_result: 0,
-        population_score: 56,
+        population_score: 0.56,
         population_result: 0
       },
       {
         status: 0,
         info: "",
-        f1_score: 67,
+        f1_score: 0.67,
         f1_result: 0,
-        map_score: 82,
+        map_score: 0.82,
         map_result: 0,
-        mar_score: 56,
+        mar_score: 0.56,
         mar_result: 0,
-        population_score: 77,
+        population_score: 0.77,
         population_result: 0
       }
     ]
@@ -508,7 +505,7 @@ const initialState: Iadapt = {
   imgUrl: [],
   newWorkObj: {},
   picIndex: 0,
-  pageScene: ""
+  pageScene: "remote"
 };
 const adaptSlice = createSlice({
   name: "adaptSlice",
@@ -586,13 +583,13 @@ const adaptSlice = createSlice({
   },
   extraReducers: (builder) => {
     // const updateIsPending = (state: Iadapt, prop: string, value: boolean) => {
-    //     const sceneNum = sceneToNum[state.pageScene];
+    //   const sceneNum = sceneToNum[state.pageScene];
 
-    //     const cur = state[prop] as boolean[];
-    //     const myState = [...cur];
-    //     myState[sceneNum] = value;
-    //     state[prop] = myState;
-    //   };
+    //   const cur = state[prop] as boolean[];
+    //   const myState = [...cur];
+    //   myState[sceneNum] = value;
+    //   state[prop] = myState;
+    // };
     const updateIsPending = (state: Iadapt, value: boolean) => {
       const sceneNum = sceneToNum[state.pageScene];
 

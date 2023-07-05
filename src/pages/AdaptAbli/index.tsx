@@ -161,12 +161,12 @@ const AdaptAbil: FC<Iprops> = () => {
           className="next btn"
           disabled={run_status !== 0}
           onClick={() => {
-            const next_path = "/profile/selflearning";
+            const next_path = "/profile/trust";
             dispatch(changeNextPathAction(next_path));
             navigate(next_path);
           }}
         >
-          评估自学习能力
+          评估可信赖能力
         </Button>
       </div>
     </AdaptWraper>

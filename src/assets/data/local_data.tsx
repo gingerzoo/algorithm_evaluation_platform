@@ -283,3 +283,17 @@ export const res_measurement = [
   "协同感知能力",
   "抽象感知能力"
 ];
+
+export const attackWhite = [
+  "基于白盒的攻击方法",
+  " 快速梯度方法（二范数）",
+  "快速梯度符号攻击方法",
+  "投影梯度下降算法(无穷范数)",
+  "投影棵度下降算法(二范数)",
+  "基础法代攻击(二范数)",
+  "基础法代攻击",
+  "DeepFool(一范数)",
+  " DeepFool",
+  "Carlini & Wagner攻击(二范数)",
+  "Newtonfool Attack"
+];

@@ -57,9 +57,9 @@ type Iscene = {
   curAlgo: Ialgo;
 };
 const initialState: Iscene = {
-  scene: "guide",
+  scene: "remote",
   selected: false,
-  sceneNum: 0,
+  sceneNum: 2,
   nextPath: "",
   nowProcess: ["基础配置"],
   inputPlace: ``,

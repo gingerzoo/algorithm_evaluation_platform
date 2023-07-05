@@ -11,8 +11,9 @@ import { BASE_URL } from "@/services/config";
 
 interface Iprops {
   children?: ReactNode;
-  workNum: number;
-  pageScene: string;
+  workNum?: number;
+  imgUrls: string[];
+  sceneNum: number;
 }
 const contentStyle: React.CSSProperties = {
   margin: 0,
@@ -24,11 +25,8 @@ const contentStyle: React.CSSProperties = {
 };
 
 const MyCarousel: FC<Iprops> = (props) => {
-  const { workNum, pageScene } = props;
-  const { imgUrls, scene } = useAppSelector((state) => ({
-    imgUrls: state.adaptAbili.imgUrl,
-    scene: state.basicConfig.scene
-  }));
+  const { workNum, imgUrls, sceneNum } = props;
+  console.log("啥啊这是", imgUrls);
 
   const dispatch = useAppDispatch();
 
@@ -49,31 +47,10 @@ const MyCarousel: FC<Iprops> = (props) => {
     dispatch(changePicIndexAction(to));
     console.log("currentSlide", to);
     // setCurSlide(to);
-    if (scene == "voice") {
+    if (sceneNum === 3) {
       audios[from].current?.pause();
     }
   };
-
-  //   const picControl = (
-  //     <div className="switch-pic">
-  //       <button
-  //         className="left-btn slider-control"
-  //         onClick={() => {
-  //           carouselRef.current?.prev();
-  //         }}
-  //       >
-  //         <CaretLeftFilled />
-  //       </button>
-  //       <button
-  //         className="right-btn slider-control"
-  //         onClick={() => {
-  //           carouselRef.current?.next();
-  //         }}
-  //       >
-  //         <CaretRightFilled />
-  //       </button>
-  //     </div>
-  //   );
 
   const carousel = (
     <Carousel beforeChange={onChange} dots={false} ref={carouselRef}>
@@ -91,7 +68,7 @@ const MyCarousel: FC<Iprops> = (props) => {
   );
 
   return (
-    <MyCarouselWrap isVoice={pageScene == "voice"}>
+    <MyCarouselWrap isVoice={sceneNum === 3}>
       <div className="switch-pic">
         <button
           className="left-btn slider-control"
@@ -124,7 +101,7 @@ const MyCarousel: FC<Iprops> = (props) => {
         {imgUrls?.map((item, index) => {
           return (
             <div key={index}>
-              {pageScene != "voice" ? (
+              {sceneNum !== 3 ? (
                 <img
                   src={`data:image/png;base64,${item}`}
                   alt={`图片${currentSlide + 1}`}

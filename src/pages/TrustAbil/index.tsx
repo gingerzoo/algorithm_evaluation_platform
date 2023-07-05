@@ -7,6 +7,7 @@ import {
   CloseCircleFilled,
   EyeFilled
 } from "@ant-design/icons";
+import { attackWhite } from "@/assets/data/local_data";
 
 interface Iprops {
   children?: ReactNode;
@@ -18,35 +19,51 @@ const TrustAbil: FC<Iprops> = () => {
       <table className="prepare table_v1">
         <tbody>
           <tr>
-            <td style={{ width: "130px" }}>经典对抗</td>
-            <td style={{ width: "300px" }}>/workspace/sample1</td>
-            <td style={{ width: "200px" }}>
-              <CheckCircleFilled style={{ color: "#A7C875" }} />
-              <span className="text"> 已配置</span>
-              <EyeFilled />
+            <th colSpan={2}>攻击方法选择及配置</th>
+          </tr>
+
+          <tr>
+            <td style={{ width: "250px" }}>攻击类型</td>
+            <td style={{ width: "550px" }}>攻击方法</td>
+          </tr>
+          <tr>
+            <td rowSpan={12}>
+              <input name="Attack_WhiteBox" type="checkbox" value="" />
+              基于白盒的攻击方法
             </td>
-            <td rowSpan={3}>
-              <Button type="primary" className="start">
-                开始测试
-              </Button>
+            <td>
+              <input name="Attack_WhiteBox" type="checkbox" value="" />
+              快速梯度方法（二范数）
+              <a>参数配置</a>
+            </td>
+          </tr>
+          {attackWhite.map((item, index) => {
+            return (
+              <tr key={item}>
+                <td>
+                  <input name="Attack_WhiteBox" type="checkbox" value="" />
+                  {item}
+                  <a>参数配置</a>
+                </td>
+              </tr>
+            );
+          })}
+          <tr>
+            <td rowSpan={2}>
+              <input name="Attack_WhiteBox" type="checkbox" value="" />
+              基于黑盒的攻击方法
+            </td>
+            <td>
+              <input name="Attack_WhiteBox" type="checkbox" value="" />
+              Decision-based Adversarial Attack (DBA攻击)
+              <a>参数配置</a>
             </td>
           </tr>
           <tr>
-            <td>虚假目标</td>
-            <td>/workspace/sample2</td>
             <td>
-              <CloseCircleFilled style={{ color: "#FF0000" }} />{" "}
-              <span className="text"> 未配置</span>
-              <EyeFilled />
-            </td>
-          </tr>
-          <tr>
-            <td>特殊装涂</td>
-            <td>/workspace/sample3</td>
-            <td>
-              <CheckCircleFilled style={{ color: "#A7C875" }} />
-              <span className="text"> 已配置</span>
-              <EyeFilled />
+              <input name="Attack_WhiteBox" type="checkbox" value="" />
+              Hop Skip Jump Attack (HS攻击)
+              <a>参数配置</a>
             </td>
           </tr>
         </tbody>

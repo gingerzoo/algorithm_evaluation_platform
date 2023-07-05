@@ -37,6 +37,18 @@ const routes: RouteObject[] = [
     element: <Home />
   },
   {
+    path: "/all",
+    element: <Home />
+  },
+  {
+    path: "/document",
+    element: <Home />
+  },
+  {
+    path: "/standard",
+    element: <Home />
+  },
+  {
     path: "/profile",
     element: <Profile />,
     children: [

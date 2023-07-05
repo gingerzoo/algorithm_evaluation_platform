@@ -110,6 +110,7 @@ export const HomeWrapper = styled.div`
       }
 
       .box {
+        width: 100%;
         box-sizing: border-box;
         margin-bottom: 20px;
         padding: 0 3.95vw;
