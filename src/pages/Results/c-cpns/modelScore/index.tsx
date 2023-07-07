@@ -19,7 +19,7 @@ const ModelScore: FC<Iprops> = ({ name, score, children }) => {
           <span className="model_name">{name}</span>
         </div>
         <div className="rate">
-          <Rate allowHalf value={score} disabled />
+          <Rate value={score} disabled />
         </div>
       </div>
       <p className="desc">{children}</p>

@@ -11,12 +11,12 @@ interface Iprops {
   children?: ReactNode;
   workCondition: string[];
   intenList: number[];
-  weightList: number[];
+  //   weightList: number[];
   newWork: Iwork;
 }
 
 const WorkConfig: FC<Iprops> = (props) => {
-  const { workCondition, newWork, intenList, weightList } = props;
+  const { workCondition, newWork, intenList } = props;
 
   const dispatch = useAppDispatch();
 
@@ -26,8 +26,8 @@ const WorkConfig: FC<Iprops> = (props) => {
       changeNewWorkObjAction({
         ...newWork,
         [workCondition[index]]: {
-          intensity: value,
-          weight: weightList[index]
+          intensity: value
+          //   weight: weightList[index]
         }
       })
     );
@@ -52,7 +52,7 @@ const WorkConfig: FC<Iprops> = (props) => {
         <tr>
           <th>干扰名称</th>
           <th>强度</th>
-          <th>权重</th>
+          {/* <th>权重</th> */}
         </tr>
       </thead>
       <tbody>
@@ -73,7 +73,7 @@ const WorkConfig: FC<Iprops> = (props) => {
                     }}
                   />
                 </td>
-                <td>
+                {/* <td>
                   <InputNumber
                     min={1}
                     max={10}
@@ -84,7 +84,7 @@ const WorkConfig: FC<Iprops> = (props) => {
                       }
                     }}
                   />
-                </td>
+                </td> */}
               </tr>
             );
           })}

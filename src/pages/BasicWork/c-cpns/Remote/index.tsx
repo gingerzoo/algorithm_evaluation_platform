@@ -16,21 +16,21 @@ const WorkRemote: FC<Iprops> = (props) => {
       secIndex={[
         {
           name: "F1-score",
-          assess: "错误率预计为5%以下",
+          assess: "IOU阈值设置为0.75时,分数不低于0.8",
           weight: 9,
           score: basicEffect.f1_score,
           result: basicEffect.f1_result
         },
         {
           name: "mAP",
-          assess: "错误率预计为5%以下",
+          assess: "IOU设置为0.5到0.95时,分数不低于0.6",
           weight: 9,
           score: basicEffect.map_score,
           result: basicEffect.map_result
         },
         {
           name: "mar",
-          assess: "阈值预计为50%以上",
+          assess: "平均查全率分数不低于0.8",
           weight: 9,
           score: basicEffect.mar_score,
           result: basicEffect.mar_result

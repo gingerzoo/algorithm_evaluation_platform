@@ -49,10 +49,10 @@ const AdaptAbil: FC<Iprops> = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    dispatch(getWorkDefaultAction());
-    console.log("生成了一次默认数据");
-  }, [scene]);
+  //   useEffect(() => {
+  //     dispatch(getWorkDefaultAction());
+  //     console.log("生成了一次默认数据");
+  //   }, [scene]);
   useEffect(() => {
     // dispatch(changePageSceneAction(scene));
     console.log("genIs", genIsPending);
@@ -63,14 +63,6 @@ const AdaptAbil: FC<Iprops> = () => {
   const genWorkData = () => {
     // if (!genData_status) dispatch(changeGenDataStatAction(-1));
     console.log("pagescene", scene);
-    // if (genIsPending[sceneNum]) {
-    //   message.open({
-    //     type: "error",
-    //     content: `有数据集正在生成，请稍后再试`,
-    //     duration: 3
-    //   });
-    //   return;
-    // }
     dispatch(getWorkDataAction(scene)).then((res) => {
       if (getWorkDataAction.fulfilled.match(res)) {
         if (res.payload.status == 0) {
@@ -123,8 +115,6 @@ const AdaptAbil: FC<Iprops> = () => {
         <Button
           className="generate-data btn"
           type="primary"
-          //   disabled={scene != pageScene || !needGenState}
-          //   disabled={scene != pageScene}
           onClick={() => {
             genWorkData();
           }}
@@ -148,15 +138,6 @@ const AdaptAbil: FC<Iprops> = () => {
         <div className="spinning">
           <Spin spinning={isTestPending[sceneNum]} size={"large"} />
         </div>
-        {/* <div className="next">
-          <button
-            className="next btn"
-            // onClick={nextBtnClick}
-            // disabled={run_status != 0}
-          >
-            <span>评估自学习能力</span>
-          </button>
-        </div> */}
         <Button
           className="next btn"
           disabled={run_status !== 0}

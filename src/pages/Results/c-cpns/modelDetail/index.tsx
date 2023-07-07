@@ -8,9 +8,15 @@ interface Iprops {
   children: ReactNode;
   model_name: string;
   model_index: number;
+  model_desribe: string;
 }
 
-const ModelDetail: FC<Iprops> = ({ model_name, model_index, children }) => {
+const ModelDetail: FC<Iprops> = ({
+  model_name,
+  model_index,
+  children,
+  model_desribe
+}) => {
   return (
     <ModelDetailWrap>
       <div className="model_header">
@@ -23,9 +29,7 @@ const ModelDetail: FC<Iprops> = ({ model_name, model_index, children }) => {
           <HighlightTwoTone twoToneColor="teal" />
           <span>{model_name}解释</span>
         </div>
-        <p>
-          这是一段解释这是一段解释这是一段解释这是一段解释这是一段解释这是一段解释这是一段解释这是一段解释这是一段解释
-        </p>
+        <p>{model_desribe}</p>
       </div>
     </ModelDetailWrap>
   );

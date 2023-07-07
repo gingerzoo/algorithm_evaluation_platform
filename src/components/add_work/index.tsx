@@ -17,17 +17,18 @@ import {
 
 interface Iprops {
   children?: ReactNode;
-  pageScene: string;
+  //   pageScene: string;
 }
 
 const AddWork: FC<Iprops> = (props) => {
-  const { WorkObj, workCondition } = useAppSelector((state) => ({
+  const { WorkObj, workCondition, sceneNum } = useAppSelector((state) => ({
     WorkObj: state.adaptAbili.newWorkObj,
-    workCondition: state.adaptAbili.workCondition
+    workCondition: state.adaptAbili.workCondition,
+    sceneNum: state.basicConfig.sceneNum
   }));
 
   const disptach = useAppDispatch();
-  const sceneNum = sceneToNum[props.pageScene];
+  //   const sceneNum = sceneToNum[props.pageScene];
   const [addCondition, setAddCondis] = useState([""]);
   //   console.log("workCondition", workCondition);
 
@@ -39,13 +40,6 @@ const AddWork: FC<Iprops> = (props) => {
       };
     }
   );
-
-  //   const options: SelectProps["options"] = picWorkCondition.map((item) => {
-  //     return {
-  //       value: item,
-  //       label: tranEntoCh[item]
-  //     };
-  //   });
 
   const handleChange = (value: string[]) => {
     setAddCondis(value);
@@ -77,7 +71,7 @@ const AddWork: FC<Iprops> = (props) => {
 
   useEffect(() => {
     disptach(getWorkCondiAction());
-  }, [props.pageScene]);
+  }, [sceneNum]);
   return (
     <AddworkWrapper>
       {/* <div className="selected">已选干扰项</div> */}
@@ -95,7 +89,7 @@ const AddWork: FC<Iprops> = (props) => {
         <Work_config
           workCondition={addCondition}
           intenList={Object.values(WorkObj).map((item) => item.intensity)}
-          weightList={Object.values(WorkObj).map((item) => item.weight)}
+          //   weightList={Object.values(WorkObj).map((item) => item.weight)}
           newWork={WorkObj}
         />
       </div>

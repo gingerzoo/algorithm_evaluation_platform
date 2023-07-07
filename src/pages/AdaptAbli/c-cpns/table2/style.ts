@@ -29,6 +29,9 @@ export const Table2Wrapper = styled.div`
       &.evaluation {
         background-color: ${(props) => props.theme.color.greenColor};
       }
+      a.showPic {
+        cursor: pointer;
+      }
 
       .preWork {
         display: flex;

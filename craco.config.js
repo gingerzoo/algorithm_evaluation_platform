@@ -7,5 +7,8 @@ module.exports = {
       "@": path.resolve(__dirname, "./src")
     }
   },
-  plugins: [{ plugin: CracoLessPlugin }]
+  plugins: [{ plugin: CracoLessPlugin }],
+  devServer: {
+    port: 3000 // 指定要使用的端口号
+  }
 };

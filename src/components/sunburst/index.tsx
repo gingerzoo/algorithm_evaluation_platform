@@ -10,7 +10,7 @@ import {
   changeSelectedSceneAction,
   getAlogListAction
 } from "@/pages/BasicConfig/store";
-import { changePageSceneAction } from "@/pages/AdaptAbli/store";
+import { changePageSceneAction, getImgAction } from "@/pages/AdaptAbli/store";
 
 interface Iitem {
   [key: string]: number;
@@ -378,6 +378,9 @@ const Sunburst: FC<Iprops> = (props) => {
       const seletcedScene = params.data.dataType;
       dispatch(changePageSceneAction(seletcedScene));
       const selectedSceneNum = sceneToNum[seletcedScene];
+      dispatch(
+        getImgAction({ workIndex: 1, pageScene: "navigate", sceneNum: 2 })
+      );
       if (
         seletcedScene === "navigate" ||
         seletcedScene === "guide" ||

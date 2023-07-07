@@ -13,18 +13,24 @@ import {
 import Sunburst from "@/components/sunburst";
 import { useAppDispatch } from "@/store";
 import Library from "./c-cpns/library";
+import { getWorkDefaultAction } from "../AdaptAbli/store";
 interface Iprops {
   children?: ReactNode;
 }
 
 const Home: FC<Iprops> = (props) => {
   const navigate = useNavigate();
-  //   const dispatch = useAppDispatch();
+  const dispatch = useAppDispatch();
   //   const chartRef = useRef<EChartsReact>(null);
 
   function useBtnClick() {
     navigate(`/profile`);
   }
+
+  useEffect(() => {
+    dispatch(getWorkDefaultAction());
+    console.log("在首页拿默认工况");
+  }, []);
 
   const options = {
     radar: {

@@ -21,6 +21,10 @@ type Ipic = {
   [index: string]: number;
 };
 
+type IRespic = {
+  images: string[];
+};
+
 export function getWorkCondition() {
   return lxrequset.request<Icondition>({
     url: "/adaptability/retType"
@@ -80,6 +84,24 @@ export function getViewPic(
       scene,
       data_type,
       index_img,
+      interference
+    }
+  });
+}
+
+export function getAdaptResultImgs(
+  model_name: string,
+  scene: number,
+  data_type: number,
+  interference: Iwork[]
+) {
+  return lxrequset.request<IRespic>({
+    url: "/retImg/adaptabilityResult",
+    method: "post",
+    data: {
+      model_name,
+      scene,
+      data_type,
       interference
     }
   });

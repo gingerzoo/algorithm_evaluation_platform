@@ -1,6 +1,7 @@
 import { AnyAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 import {
+  getAdaptResultImgs,
   getViewPic,
   getWorkCondition,
   getWorkDataset,
@@ -12,6 +13,7 @@ import { message } from "antd";
 import { sceneToNum } from "@/assets/data/local_data";
 import { FulfilledAction, Iwork, IworkResult, RejectedAction } from "@/type";
 import { adaptAsyncState } from "@/utils/getItem";
+import { getResultImgsAction } from "@/pages/BasicWork/store";
 
 //这是干啥的？？？返回的不同场景下condition的列表
 type Icondition = {
@@ -58,6 +60,8 @@ export interface Iadapt {
   imgUrl: string[];
   picIndex: number;
   pageScene: string;
+  populstion_score: number;
+  resultImgs: string[];
 }
 
 export const getWorkCondiAction = createAsyncThunk(
@@ -143,10 +147,10 @@ export const getWorkResultAction = createAsyncThunk<
   { state: IrootState }
 >("workResult", async (par, { dispatch, getState }) => {
   const scene = getState().basicConfig.scene;
-  const sceneNum = getState().basicConfig.sceneNum;
+  const sceneNum: number = getState().basicConfig.sceneNum;
   const date_type = getState().basicConfig.dataSet;
   const checkList = getState().adaptAbili.checkList[sceneNum];
-  //   const run_result = getState().adaptAbili.runResult;
+  const model_name = getState().basicConfig.currentModule;
   const newInter: Iwork[] = [];
   const realResult: string[] = [];
   const realScore: (number | undefined)[] = [];
@@ -161,15 +165,22 @@ export const getWorkResultAction = createAsyncThunk<
       const res = await getWorkResult(sceneNum, date_type, newInter);
       console.log("返回的测试结果", res);
       dispatch(changeRunResult(res));
+      const populationAll = (
+        100 *
+        (res.population_score.reduce((pre: number, cur: number) => cur + pre) /
+          res.population_score.length)
+      ).toFixed(2);
+      dispatch(changeAdaptPopulationAction(populationAll));
       if (res.status == 0) {
         let count = 0;
         checkList.forEach((item, index) => {
           if (item) {
+            const curScore = res["population_score"][count];
             realResult.push(res.condition_result[count]);
-            realScore.push(res["population_score"][count]);
+            realScore.push(parseFloat((100 * curScore).toFixed(2)));
             count++;
           } else {
-            realResult.push(" ");
+            realResult.push("");
             realScore.push(undefined);
           }
         });
@@ -202,6 +213,8 @@ export const getWorkResultAction = createAsyncThunk<
           default:
             break;
         }
+        //请求图片
+        // const imgRes = await getResultImgsAction(model_name,sceneNum,date_type,);
       }
       return {
         status: res.status,
@@ -235,10 +248,10 @@ export const getImgAction = createAsyncThunk<
   { state: IrootState }
 >("getImage", async (par, { dispatch, getState }) => {
   //   const scene = getState().basicConfig.scene;
-  const sceneNum = par.sceneNum;
-  const date_type = getState().basicConfig.dataSet;
+  const sceneNum: number = par.sceneNum;
+  const date_type: number = getState().basicConfig.dataSet;
   const interference = getState().adaptAbili[par.pageScene] as Iwork[];
-  const preImgUrlList = getState().adaptAbili.imgUrl;
+  const preImgUrlList: string[] = getState().adaptAbili.imgUrl;
   const nowWork = interference[par.workIndex];
   /* 用来存放5个url */
   let imgUrlList = [];
@@ -282,6 +295,29 @@ export const getImgAction = createAsyncThunk<
     return {
       baseUrl: [""]
     };
+  }
+});
+
+export const getAdaptResImgsAction = createAsyncThunk<
+  void,
+  Iwork[],
+  {
+    state: IrootState;
+  }
+>("getAdaptResImgs", async (par, { dispatch, getState }) => {
+  try {
+    const sceneNum = getState().basicConfig.sceneNum;
+    const date_type = getState().basicConfig.dataSet;
+    const model_name = getState().basicConfig.currentModule;
+    const res = await getAdaptResultImgs(model_name, sceneNum, date_type, par);
+    console.log("结果返回的图片", res);
+    dispatch(changeAdaptResImgsAction(res.images));
+  } catch (err) {
+    message.open({
+      type: "error",
+      content: "网络请求发生错误",
+      duration: 2
+    });
   }
 });
 
@@ -505,7 +541,9 @@ const initialState: Iadapt = {
   imgUrl: [],
   newWorkObj: {},
   picIndex: 0,
-  pageScene: "remote"
+  pageScene: "remote",
+  populstion_score: 0,
+  resultImgs: []
 };
 const adaptSlice = createSlice({
   name: "adaptSlice",
@@ -579,6 +617,12 @@ const adaptSlice = createSlice({
     },
     changeVoiceScore(state, { payload }) {
       state.voiceScore = payload;
+    },
+    changeAdaptPopulationAction(state, { payload }) {
+      state.populstion_score = payload;
+    },
+    changeAdaptResImgsAction(state, { payload }) {
+      state.resultImgs = payload;
     }
   },
   extraReducers: (builder) => {
@@ -678,5 +722,7 @@ export const {
   changeGuideScoreAction,
   changeNavScoreAction,
   changeRemoteScore,
-  changeVoiceScore
+  changeVoiceScore,
+  changeAdaptPopulationAction,
+  changeAdaptResImgsAction
 } = adaptSlice.actions;

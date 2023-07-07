@@ -28,6 +28,7 @@ interface Iprops {
   voice: IbasicRes;
   isPending: boolean;
   resImgs: string[];
+  population_score: number;
 }
 
 type Ipromise = {
@@ -106,7 +107,8 @@ const initialState: Iprops = {
   run_status: -1,
   run_info: "",
   isPending: false,
-  resImgs: []
+  resImgs: [],
+  population_score: 0
 };
 
 export const getBasicEffectAction = createAsyncThunk<
@@ -124,6 +126,9 @@ export const getBasicEffectAction = createAsyncThunk<
 
     dispatch(changeStatusBeAction(res.status));
     dispatch(changeInfoBeAction(res.info));
+    dispatch(
+      changeBasicPopulationAction((100 * res.population_score).toFixed(2))
+    );
     switch (scene) {
       case 0: {
         dispatch(changeGuideBeAction(res));
@@ -306,6 +311,9 @@ const basicEffectSlice = createSlice({
     },
     changeResImgsAction(state, { payload }) {
       state.resImgs = payload;
+    },
+    changeBasicPopulationAction(state, { payload }) {
+      state.population_score = payload;
     }
   },
 
@@ -334,7 +342,8 @@ export const {
   changeNavReListAction,
   changeRemoteReListAction,
   changeVoiReListAction,
-  changeResImgsAction
+  changeResImgsAction,
+  changeBasicPopulationAction
 } = basicEffectSlice.actions;
 
 export default basicEffectSlice.reducer;

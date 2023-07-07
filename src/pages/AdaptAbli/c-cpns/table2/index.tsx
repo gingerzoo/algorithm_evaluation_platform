@@ -3,7 +3,7 @@ import type { FC, ReactNode } from "react";
 import { Table2Wrapper } from "./style";
 import { Button, Drawer, Modal, Space } from "antd";
 import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
-import { Iconditon, Iwork } from "@/type";
+import { IbasicRes, Iconditon, Iwork } from "@/type";
 import { useAppDispatch, useAppSelector } from "@/store";
 
 import Checkbox, { CheckboxChangeEvent } from "antd/es/checkbox/Checkbox";
@@ -17,6 +17,7 @@ import {
   changeNeedGenDataAction,
   changeRemoteNewCondiAction,
   changeVoiceNewCondiAction,
+  getAdaptResImgsAction,
   getImgAction
 } from "../../store";
 import { createOneWork } from "@/utils/getItem";
@@ -45,7 +46,9 @@ const MyTable2: FC<Iprops> = (props) => {
     newWork,
     picIndex,
     iniCheckList,
-    imgUrls
+    imgUrls,
+    basicResult,
+    resImgs
   } = useAppSelector(
     (state) => ({
       scene: state.basicConfig.scene,
@@ -54,11 +57,15 @@ const MyTable2: FC<Iprops> = (props) => {
       newWork: state.adaptAbili.newWorkObj,
       picIndex: state.adaptAbili.picIndex,
       iniCheckList: state.adaptAbili.checkList,
-      imgUrls: state.adaptAbili.imgUrl
+      imgUrls: state.adaptAbili.imgUrl,
+      basicResult: state.basicEffect.population_score,
+      resImgs: state.adaptAbili.resultImgs
     }),
     shallowEqual
   );
   const { workConditions } = props;
+
+  console.log("workConditions", workConditions);
 
   /* 获得该页面的场景 */
   //   const pageScene = location.hash.split("/").slice(-1)[0];
@@ -73,23 +80,31 @@ const MyTable2: FC<Iprops> = (props) => {
   //控制新建工况对话框开关状态
   const [modal2Open, setModal2Open] = useState(false);
   //控制抽屉组件开关的状态
-  const [drawerOpen, setDrawOpen] = useState(false);
+  const [drawer1Open, setDraw1Open] = useState(false);
+
+  //控制结果预览的抽屉组件开关的状态
+  const [drawer2Open, setDraw2Open] = useState(false);
 
   const [workNum, setWorkNum] = useState(0);
 
-  /* 这里有什么办法优化吗，每次重新渲染组件都很重新定义这三个遍历这三个变量 */
+  const adaptResult = adapt[`${scene}Result`] as string[];
+
+  const adaptRes = adaptResult
+    .filter((item, index) => item !== "")
+    .map((item, index) => `在工况${index + 1}的环境下，正确率下降为${item}级`);
 
   const carouselTitle =
     scene == "voice"
       ? `音频试听- 工况${workNum + 1}- 音频${picIndex + 1}`
       : `图片预览- 工况${workNum + 1} - 图片${picIndex + 1}`;
 
+  const resPic = `结果预览-工况${workNum + 1}`;
+
   const intenRef = useRef(intenArray);
   const weightRef = useRef(weightArray);
   const condiRef = useRef(condiArray);
 
   useEffect(() => {
-    //分别给存储intensity和weight的两个二维数组初始化初始化
     intenRef.current = [];
     weightRef.current = [];
     condiRef.current = [];
@@ -102,10 +117,8 @@ const MyTable2: FC<Iprops> = (props) => {
         condiRef.current[workIndex].push(Object.keys(work)[condiIndex]);
         intenRef.current[workIndex].push(condition.intensity);
         weightRef.current[workIndex].push(condition.weight);
-        //   noteArray[workIndex].push(condition.note);
       });
     });
-    // dispatch(getImgAction({ workIndex: workNum, picIndex }));
   });
 
   useEffect(() => {
@@ -188,7 +201,7 @@ const MyTable2: FC<Iprops> = (props) => {
     });
     // console.log(newAllwork);
     chooseDispatch(scene, newAllwork);
-    if (drawerOpen) {
+    if (drawer1Open) {
       dispatch(
         getImgAction({ workIndex: workNum, pageScene: scene, sceneNum })
       );
@@ -210,22 +223,44 @@ const MyTable2: FC<Iprops> = (props) => {
     setCheckList(newCheckList);
     dispatch(changeCheckListAction(myCheckList));
     setModal2Open(false);
-    // createOneWork(newCondition as string[], newIntensity, newWeight, new3Work);
+    // dispatch(change)
 
     //push方法返回的是新数组的长度！！！！！！！！！！！
     //pop() 方法移除数组的最后一个元素，并返回该元素。
-    //shift()删除数组的第一个元素，并返回该元素。
+
     const newWorks = [...adaptState];
     console.log("newwork", newWork);
     newWorks.push(newWork);
+    if (sceneNum === 0) {
+      dispatch(changeGuideNewCondiAction(newWorks));
+    } else if (sceneNum === 1) {
+      dispatch(changeNavigateNewCondiAction(newWorks));
+    } else if (sceneNum === 2) {
+      dispatch(changeRemoteNewCondiAction(newWorks));
+    } else {
+      dispatch(changeVoiceNewCondiAction(newWorks));
+    }
     chooseDispatch(scene, newWorks);
+    console.log("newworks____________", newWorks);
   }
 
   /* 点击图片预览按钮的处理函数 */
   function viewImage(workIndex: number) {
-    setDrawOpen((drawerOpen) => !drawerOpen);
-    // dispatch(getImgAction({ workIndex, picIndex }));
+    if (drawer2Open) setDraw2Open(false);
+    setDraw1Open((drawer1Open) => !drawer1Open);
+
     setWorkNum(workIndex);
+  }
+  //点击查看结果预览按钮的处理函数
+  function showResPicHandle(workIndex: number) {
+    if (drawer1Open) setDraw2Open(false);
+    setWorkNum(workIndex);
+    console.log("workIndex--------------", workIndex);
+    setDraw2Open((drawer2Open) => !drawer2Open);
+    const workk = [...workConditions].slice(workIndex, workIndex + 1);
+
+    dispatch(getAdaptResImgsAction(workk));
+    console.log("发送了结果图片的请求", workk);
   }
 
   function createTr(
@@ -291,7 +326,7 @@ const MyTable2: FC<Iprops> = (props) => {
             }}
             disabled={
               workCondition.intensity <= 0 ||
-              (drawerOpen && workIndex != workNum)
+              (drawer1Open && workIndex != workNum)
             }
           />
           <span className={`intensity ${workIndex}${condition}`}>
@@ -303,7 +338,7 @@ const MyTable2: FC<Iprops> = (props) => {
             size="small"
             disabled={
               workCondition.intensity >= 10 ||
-              (drawerOpen && workIndex != workNum)
+              (drawer1Open && workIndex != workNum)
             }
             onClick={() => {
               intensityChange(
@@ -316,12 +351,29 @@ const MyTable2: FC<Iprops> = (props) => {
             }}
           />
         </td>
-        <td>
-          {" "}
+        {/* <td>
           <span> {workCondition.weight}</span>
-        </td>
+        </td> */}
         <td>{getNote[condition]}</td>
-        {isFirst ? <td rowSpan={condiLen}>{sceneResult[workIndex]}</td> : ""}
+        {isFirst ? (
+          <td rowSpan={condiLen}>
+            {sceneResult[workIndex] && (
+              <span>
+                {sceneResult[workIndex]}{" "}
+                <a
+                  className="showPic"
+                  onClick={() => {
+                    showResPicHandle(workIndex);
+                  }}
+                >
+                  查看结果
+                </a>
+              </span>
+            )}
+          </td>
+        ) : (
+          ""
+        )}
       </tr>
     );
   }
@@ -335,21 +387,21 @@ const MyTable2: FC<Iprops> = (props) => {
               可适应能力
             </td>
             <td>说明</td>
-            <td colSpan={5}>
-              作用强度为0-10,结果等级:A级别为97%,B级别为92%,C级别为85%,D级别为70%,E级别为55%
+            <td colSpan={4}>
+              作用强度为0-5,结果等级:5级为80-100,4级别为60-80,3级为40-60,2级为20-40,1级为0-20
             </td>
           </tr>
           <tr>
             {/* <td rowSpan={tranEntoCh.length + 1}>预设工况I</td> */}
             <td></td>
-            <td>干扰名称</td>
+            <td style={{ width: "11vw" }}>干扰名称</td>
             <td style={{ width: "9vw" }}>作用强度</td>
-            <td style={{ width: "7.5vw" }}>权重</td>
-            <td style={{ width: "21vw" }}>备注</td>
-            <td style={{ width: "5.5vw" }}>等级</td>
+            {/* <td style={{ width: "7.5vw" }}>权重</td> */}
+            <td>备注</td>
+            <td style={{ width: "8vw" }}>等级</td>
           </tr>
-          {workConditions &&
-            workConditions.map((works, workIndex) => {
+          {adapt[scene] &&
+            (adapt[scene] as Iwork[]).map((works, workIndex) => {
               const itemworkValue = Object.values(works);
               const itemKeys = Object.keys(works);
               //   console.log(itemKeys);
@@ -416,7 +468,7 @@ const MyTable2: FC<Iprops> = (props) => {
                     cancelText="取消"
                     className="myModal"
                   >
-                    <Add_work pageScene={scene} />
+                    <Add_work />
                   </Modal>
                 </>
               }
@@ -425,7 +477,10 @@ const MyTable2: FC<Iprops> = (props) => {
           <tr>
             <td>总体评价</td>
             <td colSpan={5} className="evaluation">
-              基础效能(检测正确率)为95%,在I级环境下,正确率下降到94%,二级环境下正确率下降到90%
+              {` 基础效能检测分数为为${basicResult},智能等级为${Math.floor(
+                basicResult / 20 + 1
+              )}
+                 ,${adaptRes.join(",")}`}
             </td>
           </tr>
         </tbody>
@@ -433,14 +488,26 @@ const MyTable2: FC<Iprops> = (props) => {
 
       <My_drawer
         title={carouselTitle}
-        drawerOpen={drawerOpen}
+        drawerOpen={drawer1Open}
         sceneNum={sceneNum}
         imgUrls={imgUrls}
         onClose={() => {
-          setDrawOpen(false);
+          setDraw1Open(false);
         }}
         onLeave={() => {
-          setDrawOpen(false);
+          setDraw1Open(false);
+        }}
+      />
+      <My_drawer
+        title={resPic}
+        drawerOpen={drawer2Open}
+        sceneNum={sceneNum}
+        imgUrls={resImgs}
+        onClose={() => {
+          setDraw2Open(false);
+        }}
+        onLeave={() => {
+          setDraw2Open(false);
         }}
       />
     </Table2Wrapper>

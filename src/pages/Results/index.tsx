@@ -4,7 +4,11 @@ import { ResultsWrap } from "./style";
 import { useAppSelector } from "@/store";
 import Radar from "@/components/radar";
 
-import { basicResList, res_measurement } from "@/assets/data/local_data";
+import {
+  basicResList,
+  model_desribe,
+  res_measurement
+} from "@/assets/data/local_data";
 import Model_score from "./c-cpns/modelScore";
 import ModelDetail from "./c-cpns/modelDetail";
 import classNames from "classnames";
@@ -28,16 +32,28 @@ interface Ipie {
 }
 
 const Results: FC<Iprops> = (props) => {
-  const { scene, sceneNum, curAlgo, checkList, abliRes, basic_result } =
-    useAppSelector((state) => ({
-      scene: state.basicConfig.scene,
-      sceneNum: state.basicConfig.sceneNum,
-      curAlgo: state.basicConfig.curAlgo,
-      checkList: state.adaptAbili.checkList,
-      abliRes: state.adaptAbili.runResult,
-      basic_result: state.basicEffect
-    }));
+  const {
+    scene,
+    sceneNum,
+    curAlgo,
+    checkList,
+    abliRes,
+    basic_result,
+    abiliPop
+  } = useAppSelector((state) => ({
+    scene: state.basicConfig.scene,
+    sceneNum: state.basicConfig.sceneNum,
+    curAlgo: state.basicConfig.curAlgo,
+    checkList: state.adaptAbili.checkList,
+    abliRes: state.adaptAbili.runResult,
+    basic_result: state.basicEffect,
+    abiliPop: state.adaptAbili.populstion_score
+  }));
   const { model_name, author, key_word, dataType } = curAlgo;
+
+  const basicPop = basic_result.population_score;
+  const basicRate = Math.floor(basicPop / 20 + 1);
+  const abiliRate = Math.floor(abiliPop / 20 + 1);
 
   const curName = basicResList[sceneNum];
   const workName = checkList[sceneNum].map((item: boolean, index) => {
@@ -179,23 +195,23 @@ const Results: FC<Iprops> = (props) => {
         <div className="right">
           <h3>模型评分详情</h3>
           <div className="score_content">
-            <Model_score name={res_measurement[0]} score={4}>
-              在50000张测试图片上达到了69.76%的top-1分类准确率。
+            <Model_score name={res_measurement[0]} score={basicRate}>
+              {` 在无干扰的理想情况下,智能体拥有${basicRate}级智能`}
             </Model_score>
-            <Model_score name={res_measurement[1]} score={2}>
-              在50000张测试图片上达到了69.76%的top-1分类准确率。
+            <Model_score name={res_measurement[1]} score={abiliRate}>
+              {`加入实况中可能遇到的特情,智能体拥有${abiliRate}级智能`}
             </Model_score>
             <Model_score name={res_measurement[2]} score={4}>
-              在50000张测试图片上达到了69.76%的top-1分类准确率。
+              对抗攻击,智能体可信赖能力表现为4级智能
             </Model_score>
-            <Model_score name={res_measurement[3]} score={3.5}>
-              在50000张测试图片上达到了69.76%的top-1分类准确率。
+            <Model_score name={res_measurement[3]} score={2}>
+              特情瞬息万变,智能体自学习能力表现为2级智能
             </Model_score>
-            <Model_score name={res_measurement[4]} score={3.5}>
-              在50000张测试图片上达到了69.76%的top-1分类准确率。
+            <Model_score name={res_measurement[4]} score={3}>
+              多波段融合,智能体协同感知能力表现为3级智能
             </Model_score>
-            <Model_score name={res_measurement[5]} score={4}>
-              在50000张测试图片上达到了69.76%的top-1分类准确率。
+            <Model_score name={res_measurement[5]} score={3}>
+              高级语义理解,智能体抽象感知能力表现为3级智能
             </Model_score>
           </div>
         </div>
@@ -203,7 +219,11 @@ const Results: FC<Iprops> = (props) => {
       <section>
         {res_measurement.map((item, index) => (
           <div className={classNames("chart", `chart${index + 1}`)} key={item}>
-            <ModelDetail model_index={index + 1} model_name={item}>
+            <ModelDetail
+              model_index={index + 1}
+              model_name={item}
+              model_desribe={model_desribe[index]}
+            >
               {echarts[index]}
             </ModelDetail>
           </div>

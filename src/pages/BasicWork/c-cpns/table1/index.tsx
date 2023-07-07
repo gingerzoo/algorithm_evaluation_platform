@@ -64,8 +64,8 @@ const MyTable: FC<Iprops> = (props) => {
         </tr>
         <tr>
           <td rowSpan={props.secIndex.length + 1}>二级指标</td>
-          <td style={{ width: "11.8vw" }}>名称</td>
-          <td>评估工作</td>
+          <td style={{ width: "10vw" }}>名称</td>
+          <td>评估阈值</td>
           {/* <td style={{ width: "6vw" }}>权重</td> */}
           <td style={{ width: "7.2vw" }}>得分</td>
           <td
@@ -87,7 +87,7 @@ const MyTable: FC<Iprops> = (props) => {
               <td
                 className={["score", item.result ? "noPass" : "pass"].join(" ")}
               >
-                {item.score}
+                {(item.score * 100).toFixed(2)}
               </td>
               <td>
                 {item.result ? (
@@ -106,7 +106,7 @@ const MyTable: FC<Iprops> = (props) => {
         <tr>
           <td className="row-sub-header">总体分数</td>
           <td colSpan={3} className="population">
-            {population_score}
+            {(population_score * 100).toFixed(2)}
           </td>
           <td>
             {population_result ? (
