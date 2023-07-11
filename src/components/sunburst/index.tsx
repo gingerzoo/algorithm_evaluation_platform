@@ -3,8 +3,9 @@ import type { FC, ReactNode } from "react";
 import ReactEcharts from "echarts-for-react";
 import { resultName, sceneToNum } from "@/assets/data/local_data";
 import { useNavigate } from "react-router-dom";
-import { useAppDispatch } from "@/store";
+import { useAppDispatch, useAppSelector } from "@/store";
 import {
+  changeCurModuleAction,
   changeSceneAction,
   changeSceneNumAction,
   changeSelectedSceneAction,
@@ -31,7 +32,9 @@ interface Iprops {
 // }
 
 const Sunburst: FC<Iprops> = (props) => {
-  //   const { result } = props;
+  const { scene } = useAppSelector((state) => ({
+    scene: state.basicConfig.scene
+  }));
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -47,141 +50,6 @@ const Sunburst: FC<Iprops> = (props) => {
       r: radius2
     };
   });
-
-  const data1 = [
-    {
-      name: "导航",
-      value: "ttt",
-      dataType: "navigate",
-
-      label: {
-        fontWeight: "bold",
-        fontSize: 12
-        //   color: "white"
-      },
-      children: [
-        {
-          value: 3,
-          name: "相关性",
-          silent: true
-        },
-        {
-          value: 3,
-          name: "互信息",
-          silent: true
-        },
-        {
-          value: 3,
-          name: "定位精度",
-          silent: true
-        }
-      ],
-      emphasis: {
-        label: {
-          show: true,
-          position: "inside",
-
-          fontSize: 14
-        },
-        itemStyle: {
-          opacity: 0.7
-        }
-      }
-    },
-    {
-      name: "导引",
-      dataType: "guide",
-      label: {
-        fontWeight: "bold",
-        fontSize: 12
-      },
-      emphasis: {
-        label: {
-          show: true,
-          position: "inside",
-          fontSize: 14
-        },
-        itemStyle: {
-          opacity: 0.7
-        }
-      },
-      children: [
-        {
-          name: "中心位置误差",
-          value: 4
-        },
-        {
-          name: "区域重叠度",
-          value: 4
-        },
-        {
-          name: "跟踪鲁棒性",
-          value: 5
-        }
-      ]
-    },
-
-    {
-      name: "遥感",
-      dataType: "remote",
-      emphasis: {
-        label: {
-          show: true,
-          position: "inside",
-          fontSize: 14
-        },
-        itemStyle: {
-          opacity: 0.7
-        }
-      },
-      label: {
-        fontWeight: "bold",
-        fontSize: 12
-      },
-      children: [
-        {
-          name: "F1-score",
-          value: 4
-        },
-        {
-          name: "mAP",
-          value: 4
-        },
-        {
-          name: "mar",
-          value: 5
-        }
-      ]
-    },
-    {
-      name: "语音",
-      dataType: "voice",
-      emphasis: {
-        label: {
-          show: true,
-          position: "inside",
-          fontSize: 14
-        },
-        itemStyle: {
-          opacity: 0.7
-        }
-      },
-      label: {
-        fontWeight: "bold",
-        fontSize: 12
-      },
-      children: [
-        {
-          name: "字错误率",
-          value: 4
-        },
-        {
-          name: "句错误率",
-          value: 4
-        }
-      ]
-    }
-  ];
 
   const data2 = [
     {
@@ -381,25 +249,21 @@ const Sunburst: FC<Iprops> = (props) => {
       dispatch(
         getImgAction({ workIndex: 1, pageScene: "navigate", sceneNum: 2 })
       );
-      if (
-        seletcedScene === "navigate" ||
-        seletcedScene === "guide" ||
-        seletcedScene === "remote" ||
-        seletcedScene === "voice"
-      ) {
-        dispatch(changeSceneAction(seletcedScene));
-        dispatch(changeSceneNumAction(selectedSceneNum));
-        dispatch(changeSelectedSceneAction(true));
-        dispatch(getAlogListAction());
-        navigate("/profile/config");
-      } else {
-        // params.event.cancelBubble = false;
-        // params.event.stop();
-        // params.event.defaultPrevented = true;
-        console.log("我想让你不要动！", params.data.parent);
+      if (seletcedScene !== scene) {
+        if (
+          seletcedScene === "navigate" ||
+          seletcedScene === "guide" ||
+          seletcedScene === "remote" ||
+          seletcedScene === "voice"
+        ) {
+          dispatch(changeSceneAction(seletcedScene));
+          dispatch(changeSceneNumAction(selectedSceneNum));
+          dispatch(getAlogListAction());
+          dispatch(changeCurModuleAction(""));
+        }
       }
-
-      console.log("hi", params);
+      dispatch(changeSelectedSceneAction(true));
+      navigate("/profile/config");
     }
 
     // 其他事件处理函数...

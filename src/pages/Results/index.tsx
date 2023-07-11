@@ -17,6 +17,7 @@ import Bar from "@/components/bar";
 import { Slider } from "antd";
 import { IbasicRes } from "@/type";
 import { SliderMarks } from "antd/es/slider";
+import Line from "@/components/line";
 
 interface Iprops {
   children?: ReactNode;
@@ -31,6 +32,12 @@ interface Ipie {
   name: string;
 }
 
+interface Iline {
+  type: string;
+  data: number[];
+  name: string;
+}
+
 const Results: FC<Iprops> = (props) => {
   const {
     scene,
@@ -39,7 +46,10 @@ const Results: FC<Iprops> = (props) => {
     checkList,
     abliRes,
     basic_result,
-    abiliPop
+    adaptPop,
+    trustPop,
+    whiteScore,
+    blackScore
   } = useAppSelector((state) => ({
     scene: state.basicConfig.scene,
     sceneNum: state.basicConfig.sceneNum,
@@ -47,13 +57,22 @@ const Results: FC<Iprops> = (props) => {
     checkList: state.adaptAbili.checkList,
     abliRes: state.adaptAbili.runResult,
     basic_result: state.basicEffect,
-    abiliPop: state.adaptAbili.populstion_score
+    adaptPop: state.adaptAbili.populstion_score,
+    trustPop: state.trustAbili.population_score,
+    whiteScore: state.trustAbili.white,
+    blackScore: state.trustAbili.black
   }));
-  const { model_name, author, key_word, dataType } = curAlgo;
+  const { model_name } = curAlgo;
 
   const basicPop = basic_result.population_score;
   const basicRate = Math.floor(basicPop / 20 + 1);
-  const abiliRate = Math.floor(abiliPop / 20 + 1);
+  const adaptRate = Math.floor(adaptPop / 20 + 1);
+  const trustRate = Math.floor(trustPop / 20 + 1);
+
+  const trustScore = {
+    white: whiteScore,
+    black: blackScore
+  };
 
   const curName = basicResList[sceneNum];
   const workName = checkList[sceneNum].map((item: boolean, index) => {
@@ -76,13 +95,13 @@ const Results: FC<Iprops> = (props) => {
   //根据curName的长度定义一个初始化的slider
   const iniSlider = new Array(curName.length).fill(5);
   //当然要定义一个状态啦，不然怎么更新页面
-  const [pieValue, setPieValue] = useState(curResult);
+  const [pie1Value, setPie1Value] = useState(curResult);
   //还有slider的个数未知
   const [slider, setSlider] = useState(iniSlider);
 
-  const bar_data = score_list.map((item, index) => {
+  const bar1_data = score_list.map((item, index) => {
     const curIndex = item;
-    const curData: number[] = adaptAbli.map((item) => item[curIndex] * 100);
+    const curData: number[] = adaptAbli.map((item) => item[curIndex]);
     return {
       name: curName[index],
       data: curData,
@@ -90,15 +109,22 @@ const Results: FC<Iprops> = (props) => {
     };
   });
 
-  const pie_data: Ipie[] = [];
+  const pie1_data: Ipie[] = [];
   curName.forEach((item, index) => {
-    pie_data.push({ value: pieValue[index] * 100, name: curName[index] });
+    pie1_data.push({ value: pie1Value[index], name: curName[index] });
   });
+
+  const line1_data: Iline[] = [];
+  Object.entries(trustScore).forEach((item) => {
+    line1_data.push({ data: item[1], name: item[0], type: "bar" });
+  });
+
+  console.log("line_data", line1_data);
 
   const sliderChangeHandle = (value: number, index: number) => {
     console.log("value_________", value);
     console.log("index_________", index);
-    let curPie = [...pieValue];
+    let curPie = [...pie1Value];
     const curSlider = [...slider];
     curSlider[index] = value;
     const curAll = curSlider.reduce((pre, cur) => pre + cur);
@@ -106,27 +132,15 @@ const Results: FC<Iprops> = (props) => {
 
     curPie = curPie.map((item, index) => item * (curSlider[index] / curAll));
     console.log("curPie_________________", curPie);
-    setPieValue(curPie);
+    setPie1Value(curPie);
   };
 
   const echarts = [
-    <Pie key={0} data={pie_data} />,
-    <Bar key={1} workName={workName} value={bar_data} />,
-    <Radar
-      key={2}
-      result={[
-        {
-          basic: 70,
-          adapt: 40,
-          trust: 90,
-          abstract: 50,
-          collaAware: 80,
-          selfLearn: 73
-        }
-      ]}
-    />,
-    <Pie key={3} data={pie_data} />,
-    <Bar key={4} workName={workName} value={bar_data} />,
+    <Pie key={0} data={pie1_data} />,
+    <Bar key={1} workName={workName} value={bar1_data} />,
+    <Line key={2} value={line1_data} category={curName} />,
+    <Pie key={3} data={pie1_data} />,
+    <Bar key={4} workName={workName} value={bar1_data} />,
 
     <Radar
       key={5}
@@ -198,11 +212,11 @@ const Results: FC<Iprops> = (props) => {
             <Model_score name={res_measurement[0]} score={basicRate}>
               {` 在无干扰的理想情况下,智能体拥有${basicRate}级智能`}
             </Model_score>
-            <Model_score name={res_measurement[1]} score={abiliRate}>
-              {`加入实况中可能遇到的特情,智能体拥有${abiliRate}级智能`}
+            <Model_score name={res_measurement[1]} score={adaptRate}>
+              {`加入实况中可能遇到的特情,智能体拥有${adaptRate}级智能`}
             </Model_score>
-            <Model_score name={res_measurement[2]} score={4}>
-              对抗攻击,智能体可信赖能力表现为4级智能
+            <Model_score name={res_measurement[2]} score={trustRate}>
+              对抗攻击,智能体可信赖能力表现为{trustRate}级智能
             </Model_score>
             <Model_score name={res_measurement[3]} score={2}>
               特情瞬息万变,智能体自学习能力表现为2级智能
@@ -212,6 +226,9 @@ const Results: FC<Iprops> = (props) => {
             </Model_score>
             <Model_score name={res_measurement[5]} score={3}>
               高级语义理解,智能体抽象感知能力表现为3级智能
+            </Model_score>
+            <Model_score name={res_measurement[6]} score={3}>
+              模型总体性能评估,表现为3级智能
             </Model_score>
           </div>
         </div>

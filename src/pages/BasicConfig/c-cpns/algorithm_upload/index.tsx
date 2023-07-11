@@ -7,13 +7,12 @@ import {
   changeCurModuleAction,
   changeStatusCommAction,
   getAftDelAlgListAction,
-  getAlogListAction,
   getDockerAction,
   getSystemAction
 } from "../../store";
-import { changeStatusBeAction } from "@/pages/BasicWork/store";
 import Upload from "../upload";
 import { DeleteFilled, DeleteOutlined } from "@ant-design/icons";
+import { changeBasicStatusAction } from "@/pages/BasicWork/store";
 
 interface Iprops {
   children?: ReactNode;
@@ -76,7 +75,7 @@ const AlgorithmUpload: FC<Iprops> = (props) => {
     dispatch(changeCurAlgoAction(curAlgo));
     dispatch(getSystemAction(value));
     dispatch(changeStatusCommAction(-1));
-    dispatch(changeStatusBeAction(-1));
+    dispatch(changeBasicStatusAction(-1));
   };
 
   function inputHandleClick() {

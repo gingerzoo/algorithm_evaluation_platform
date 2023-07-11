@@ -30,16 +30,7 @@ const AppSide: FC<Iprops> = (props) => {
     navigate(e.key);
   }
 
-  function getNav() {
-    const [config, effect, adapt, , , ,] = sideNav;
-    let result = null;
-    if (sceneNum === 3) result = [config, effect, adapt];
-    else result = [...sideNav];
-
-    return result;
-  }
-
-  const items: MenuItem[] = getNav().map((item) => {
+  const items: MenuItem[] = sideNav.map((item) => {
     // return getItem(item.title, item.link, item.icon, item.sub);
     return getItem(item.title, item.link, item.icon);
   });

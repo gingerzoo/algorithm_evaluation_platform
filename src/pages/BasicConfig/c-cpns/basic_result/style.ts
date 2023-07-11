@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const BasicResWrap = styled.div`
   /* padding: 20px 5px; */
-  margin: 20px 0;
+  margin: 3vw 0 2vw 0;
   .result .content {
     display: flex;
     width: 100%;

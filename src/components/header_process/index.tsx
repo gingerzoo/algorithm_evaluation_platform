@@ -10,10 +10,10 @@ interface Iprops {
 }
 
 const HeaderProcess: FC<Iprops> = (props) => {
-  const { nowProcess, system, sceneNum, isSelected } = useAppSelector(
+  const { nowProcess, sceneNum, isSelected, curModule } = useAppSelector(
     (state) => ({
       nowProcess: state.basicConfig.nowProcess,
-      system: state.basicConfig.system,
+      curModule: state.basicConfig.currentModule,
       sceneNum: state.basicConfig.sceneNum,
       isSelected: state.basicConfig.selected
     })
@@ -25,9 +25,7 @@ const HeaderProcess: FC<Iprops> = (props) => {
     <ProcessWrap>
       <MenuOutlined style={{ fontSize: "22px ", color: "white" }} />
 
-      <h3 className="title">
-        {system.model_name ? `${system.model_name}` : "我的项目名称"}
-      </h3>
+      <h3 className="title">{curModule ? `${curModule}` : "我的项目名称"}</h3>
       <div className="left">
         <div className="process">
           {nowProcess.map((item, index) => {

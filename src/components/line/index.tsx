@@ -7,17 +7,18 @@ interface Ires {
   type: string;
   data: number[];
 }
+
 interface Iprops {
   children?: ReactNode;
   key: number;
   value: Ires[];
-  workName: string[];
+  category: string[];
 }
 
-const Bar: FC<Iprops> = ({ value, workName }) => {
+const Line: FC<Iprops> = ({ value, category }) => {
   function getOption() {
     return {
-      color: ["#FCCA00", "#73C0DE", "#5470C6", "#EE6666"], // 这是一个雷达图渲染的线的颜色
+      color: ["#5470C6", "#73C0DE", "#FCCA00", "#EE6666"], // 这是一个雷达图渲染的线的颜色
       tooltip: {
         trigger: "axis",
         axisPointer: {
@@ -36,19 +37,32 @@ const Bar: FC<Iprops> = ({ value, workName }) => {
         bottom: "3%",
         containLabel: true
       },
+      //   toolbox: {
+      //     show: true,
+      //     feature: {
+      //       dataZoom: {
+      //         yAxisIndex: "none"
+      //       },
+      //       dataView: { readOnly: false },
+      //       magicType: { type: ["line", "bar"] },
+      //       restore: {},
+      //       saveAsImage: {}
+      //     }
+      //   },
       xAxis: {
-        type: "value",
-        boundaryGap: [0, 0.01]
+        type: "category",
+        boundaryGap: true,
+        data: category
       },
       yAxis: {
-        type: "category",
-        data: workName
+        type: "value"
       },
       series: value
     };
   }
 
   return (
+    // eslint-disable-next-line react/jsx-no-undef
     <ReactEcharts
       //   ref={chartRef}
       option={getOption()}
@@ -58,4 +72,4 @@ const Bar: FC<Iprops> = ({ value, workName }) => {
   );
 };
 
-export default memo(Bar);
+export default memo(Line);

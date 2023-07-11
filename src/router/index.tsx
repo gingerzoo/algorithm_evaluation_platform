@@ -7,11 +7,6 @@ const Basic_work = lazy(() => import("@/pages/BasicWork"));
 
 const Trust_Abil = lazy(() => import("@/pages/TrustAbil"));
 
-const WorkIntro = lazy(() => import("@/pages/BasicWork/c-cpns/Intro"));
-const WorkNav = lazy(() => import("@/pages/BasicWork/c-cpns/Nav"));
-const WorkRemote = lazy(() => import("@/pages/BasicWork/c-cpns/Remote"));
-const WorkVoice = lazy(() => import("@/pages/BasicWork/c-cpns/Voice"));
-
 const AdapIntro = lazy(() => import("@/pages/AdaptAbli/c-cpns/Intro"));
 const AdapNav = lazy(() => import("@/pages/AdaptAbli/c-cpns/Nav"));
 const AdapRemote = lazy(() => import("@/pages/AdaptAbli/c-cpns/Remote"));
@@ -66,29 +61,7 @@ const routes: RouteObject[] = [
       },
       {
         path: "basicwork",
-        element: <Basic_work />,
-        children: [
-          {
-            path: "basicwork",
-            element: <Navigate to="/profile/basicwork/intro" />
-          },
-          {
-            path: "guide",
-            element: <WorkIntro />
-          },
-          {
-            path: "navigate",
-            element: <WorkNav />
-          },
-          {
-            path: "remote",
-            element: <WorkRemote />
-          },
-          {
-            path: "voice",
-            element: <WorkVoice />
-          }
-        ]
+        element: <Basic_work />
       },
       {
         path: "adapt",

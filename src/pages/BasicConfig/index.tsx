@@ -1,14 +1,14 @@
 import React, { memo, useCallback, useEffect, useState } from "react";
 import { shallowEqual } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import type { FC, ReactNode } from "react";
 import { Input, message, Spin } from "antd";
-import { LoadingOutlined } from "@ant-design/icons";
-
 import Picture_show from "@/components/picture_show";
 import Algorithm_upload from "./c-cpns/algorithm_upload";
 import Dataset_upload from "./c-cpns/dataset_upload";
-import { changeStatusBeAction, getBasicEffectAction } from "../BasicWork/store";
+import {
+  changeBasicStatusAction,
+  getBasicEffectAction
+} from "../BasicWork/store";
 
 import Order from "./c-cpns/order";
 import { sceneToNum, subs } from "@/assets/data/local_data";
@@ -28,6 +28,7 @@ import {
 import Typewriter from "./c-cpns/typewriter";
 import Basic_result from "./c-cpns/basic_result";
 import { getResultPic } from "../BasicWork/service";
+import { IbasicRes } from "@/type";
 
 interface Iprops {
   children?: ReactNode;
@@ -42,7 +43,8 @@ const BasicConfig: FC<Iprops> = () => {
     commit_status,
     run_status,
     isPending,
-    curModule
+    curModule,
+    basic_result
   } = useAppSelector(
     (state) => ({
       scene: state.basicConfig.scene,
@@ -54,28 +56,21 @@ const BasicConfig: FC<Iprops> = () => {
       run_status: state.basicEffect.run_status,
       //   isAsure: state.basicConfig.isAsure,
       curModule: state.basicConfig.currentModule,
-      isPending: state.basicEffect.isPending
+      isPending: state.basicEffect.isPending,
+      basic_result: state.basicEffect
     }),
     shallowEqual
   );
+
+  const curResult = basic_result[scene] as IbasicRes;
 
   const sceneNum = sceneToNum[scene];
 
   //派发函数
   const dispatch = useAppDispatch();
-  //路由跳转函数
-  const navigate = useNavigate();
+
   //全局信息提示(校验信息)
   const [messageApi, contextHolder] = message.useMessage();
-
-  //转圈圈的图标
-  const antIcon = <LoadingOutlined style={{ fontSize: 24 }} spin />;
-
-  //场景选择的数据
-  const items = subs.map((item) => ({
-    key: item.link,
-    label: item.title
-  }));
 
   //是否点击了查看系统概况的按钮
   const [isSystem, setIsSystem] = useState(false);
@@ -137,7 +132,7 @@ const BasicConfig: FC<Iprops> = () => {
   function inputBlurHandle(e: React.FormEvent<HTMLInputElement>) {
     console.log("input框失去焦点");
     if (e.currentTarget.value) {
-      dispatch(changeStatusBeAction(-1));
+      dispatch(changeBasicStatusAction(-1));
       dispatch(changeStatusCommAction(-1));
     }
   }
@@ -146,7 +141,7 @@ const BasicConfig: FC<Iprops> = () => {
   function sceneClickHandle(key: string, domEvent: any) {
     const scene = key.slice(1);
     const sceneNum = Number(key.slice(0, 1));
-    dispatch(changeStatusBeAction(-1));
+    dispatch(changeBasicStatusAction(-1));
     dispatch(changeStatusCommAction(-1));
     dispatch(changeSceneAction(scene));
     dispatch(changeSceneNumAction(sceneNum));
@@ -155,7 +150,7 @@ const BasicConfig: FC<Iprops> = () => {
 
   //确认配置按钮处理函数
   function affirmBtnClick() {
-    dispatch(changeStatusBeAction(-1));
+    dispatch(changeBasicStatusAction(-1));
     dispatch(changeStatusCommAction(-1));
     messageApi.destroy();
     if (curModule) {
@@ -238,7 +233,13 @@ const BasicConfig: FC<Iprops> = () => {
         </div>
       </div>
       {isPending && <Typewriter />}
-      {run_status == 0 && <Basic_result />}
+      {run_status == 0 && (
+        <Basic_result
+          sceneNum={sceneNum}
+          curResult={curResult}
+          title="基础效能"
+        />
+      )}
       <div className="cover system">
         <App_cover btnClickHandle={systemCover} width={600}>
           <System_overview />

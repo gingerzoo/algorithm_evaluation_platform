@@ -8,8 +8,8 @@ import {
   getAlogListAction
 } from "../../store";
 
-import { changeStatusBeAction } from "@/pages/BasicWork/store";
 import Upload from "../upload";
+import { changeBasicStatusAction } from "@/pages/BasicWork/store";
 
 interface Iprops {
   children?: ReactNode;
@@ -82,7 +82,7 @@ const DataUpload: FC<Iprops> = (props) => {
           e.stopPropagation();
           dispatch(changeDataSetAction(index));
           dispatch(changeStatusCommAction(-1));
-          dispatch(changeStatusBeAction(-1));
+          dispatch(changeBasicStatusAction(-1));
         }}
       >
         {item}

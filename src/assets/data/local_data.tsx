@@ -270,9 +270,20 @@ export const datasetInfos = [
 
 export const basicResList = [
   ["中心位置误差", "区域重叠度", "跟踪鲁棒性"],
-  ["相关性", "互信息", "定位精度"],
+  ["互信息", "相关性", "定位精度"],
   ["F1-score", "mAP", "mAR"],
   ["字错误率", "句错误率"]
+];
+
+export const basicResInfoList = [
+  ["错误率预计为5%以下", "区域重叠度", "稳定跟踪比例为80%以上"],
+  ["错误率预计为5%以下", "阈值预计为50%以上", "稳定跟踪比例为80%以上"],
+  [
+    "IOU阈值设置为0.75时,分数不低于0.8",
+    "IOU设置为0.5到0.95时,分数不低于0.6",
+    "平均查全率分数不低于0.8"
+  ],
+  ["阈值预计为50%以上", "阈值预计为50%以上"]
 ];
 
 export const res_measurement = [
@@ -281,21 +292,31 @@ export const res_measurement = [
   "可信赖能力",
   "自学习能力",
   "协同感知能力",
-  "抽象感知能力"
+  "抽象感知能力",
+  "总体性能"
 ];
 
 export const attackWhite = [
-  "基于白盒的攻击方法",
-  " 快速梯度方法（二范数）",
-  "快速梯度符号攻击方法",
-  "投影梯度下降算法(无穷范数)",
-  "投影棵度下降算法(二范数)",
-  "基础法代攻击(二范数)",
-  "基础法代攻击",
-  "DeepFool(一范数)",
+  "Boundary Attack",
+  "Basic Iterative Method",
+  "Box-constrained L-BFGS attack",
+
+  "Elastic-net Attacks to DNNs",
   " DeepFool",
-  "Carlini & Wagner攻击(二范数)",
+  "Carlini & Wagner Attack",
   "Newtonfool Attack"
+];
+
+export const attackBlack = [
+  "Random Least Likely Class Attack",
+  "OPTMARGIN attack",
+  "RAND-FGSM",
+
+  "Nature Evolutionary Strategies",
+
+  "Projected Gradient descent",
+
+  " Hop Skip Jump Attack "
 ];
 
 export const model_desribe = [

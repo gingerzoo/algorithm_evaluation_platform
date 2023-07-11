@@ -4,33 +4,21 @@ import { BasicResWrap } from "./style";
 import { useAppDispatch, useAppSelector } from "@/store";
 import { changeNextPathAction, changeNowProcessAction } from "../../store";
 import { useNavigate } from "react-router-dom";
-import Typewriter from "../typewriter";
 import { basicResList } from "@/assets/data/local_data";
 import { Progress, Space } from "antd";
 import { IbasicRes } from "@/type";
-// import WorkIntro from "../../../";
-// import WorkNav from "../BasicWork/c-cpns/Nav";
-// import WorkRemote from "../BasicWork/c-cpns/Remote";
-// import WorkVoice from "../BasicWork/c-cpns/Voice";
 
 interface Iprops {
   children?: ReactNode;
+
+  curResult: IbasicRes;
+  sceneNum: number;
+  title: string;
 }
 
-const BasicResult: FC<Iprops> = (props) => {
-  const { run_status, sceneNum, scene, isPending, basic_result } =
-    useAppSelector((state) => ({
-      run_status: state.basicEffect.run_status,
-      sceneNum: state.basicConfig.sceneNum,
-      isPending: state.basicEffect.isPending,
-      scene: state.basicConfig.scene,
-      basic_result: state.basicEffect
-    }));
-
-  const curResult = basic_result[scene] as IbasicRes;
-  const curScore = curResult.score.map(
-    (item) => parseFloat(item.toFixed(2)) * 100
-  );
+const BasicResult: FC<Iprops> = ({ curResult, sceneNum, title }) => {
+  //   const curResult = basic_result[scene] as IbasicRes;
+  const curScore = curResult.score;
   const resLen = curScore.length;
 
   const dispatch = useAppDispatch();
@@ -48,7 +36,7 @@ const BasicResult: FC<Iprops> = (props) => {
   return (
     <BasicResWrap>
       <div className="result">
-        <h4 className="header">基础效能测试结果</h4>
+        <h4 className="header">{title}测试结果</h4>
         <div className="content">
           <div className="left">
             {basicResList[sceneNum].map((item, index) => (
@@ -60,10 +48,6 @@ const BasicResult: FC<Iprops> = (props) => {
                     curResult["status"][index] == 0 ? "success" : "exception"
                   }
                   showInfo={true}
-                  //   strokeColor={{
-                  //     from: color[index * 2],
-                  //     to: color[index * 2 + 1]
-                  //   }}
                   strokeColor={color[index]}
                   format={(percent) => `${percent}`}
                   strokeWidth={12}
@@ -87,11 +71,7 @@ const BasicResult: FC<Iprops> = (props) => {
       </div>
 
       <div className="next">
-        <button
-          className="next btn"
-          onClick={nextBtnClick}
-          disabled={run_status != 0}
-        >
+        <button className="btn" onClick={nextBtnClick}>
           <span>下一步</span>
         </button>
       </div>

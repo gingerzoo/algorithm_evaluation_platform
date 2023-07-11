@@ -12,8 +12,6 @@ import store, { IrootState } from "@/store";
 import { message } from "antd";
 import { sceneToNum } from "@/assets/data/local_data";
 import { FulfilledAction, Iwork, IworkResult, RejectedAction } from "@/type";
-import { adaptAsyncState } from "@/utils/getItem";
-import { getResultImgsAction } from "@/pages/BasicWork/store";
 
 //这是干啥的？？？返回的不同场景下condition的列表
 type Icondition = {
@@ -669,35 +667,10 @@ const adaptSlice = createSlice({
       .addCase(getWorkResultAction.rejected, (state) => {
         updateIsTesting(state, false);
       });
-    //   .addMatcher(isPendingAction, (state) => {
-    //     const sceneNum = sceneToNum[state.pageScene];
-    //     const myState = [...state.genIsPending];
-    //     myState[sceneNum] = false;
-    //     console.log("rejected和fullied状态");
-    //     state.genIsPending = myState;
-    //   });
-
-    // builder
-    //   .addCase(getWorkR.esultAction.pending, (state) => {
-    //     state.testIsPending = true;
-    //   })
-    //   .addCase(getWorkResultAction.fulfilled, (state) => {
-    //     state.testIsPending = false;
-    //   })
-    //   .addCase(getWorkResultAction.rejected, (state) => {
-    //     state.testIsPending = false;
-    //   });
   }
 });
 
 export default adaptSlice.reducer;
-
-// export {
-//   navigateAdaptReducer,
-//   remoteAdaptReducer,
-//   voiceAdaptReducer,
-//   guideAdaptReducer
-// };
 
 export const {
   changeWorkConditionAction,

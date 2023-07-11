@@ -1,19 +1,17 @@
 import React, { memo, useEffect, useState } from "react";
 import type { FC, ReactNode } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { WorkWrap } from "./style";
 import { useAppDispatch, useAppSelector } from "@/store";
 import {
   changeNextPathAction,
   changeNowProcessAction
 } from "../BasicConfig/store";
-import { Button, Drawer, Space } from "antd";
-import WorkIntro from "./c-cpns/Intro";
-import WorkNav from "./c-cpns/Nav";
-import WorkRemote from "./c-cpns/Remote";
-import WorkVoice from "./c-cpns/Voice";
-import MyCarousel from "@/components/carousel";
-import My_drawer from "@/components/my_drawer";
+import { Button } from "antd";
+
+import Table1 from "./c-cpns/table1";
+import { basicResInfoList, basicResList } from "@/assets/data/local_data";
+import { IbasicRes } from "@/type";
 
 interface Iprops {
   children?: ReactNode;
@@ -22,11 +20,16 @@ interface Iprops {
 const BasicWork: FC<Iprops> = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { scene, sceneNum, nowProcess } = useAppSelector((state) => ({
-    scene: state.basicConfig.scene,
-    sceneNum: state.basicConfig.sceneNum,
-    nowProcess: state.basicConfig.nowProcess
-  }));
+  const { scene, sceneNum, nowProcess, basicResult } = useAppSelector(
+    (state) => ({
+      scene: state.basicConfig.scene,
+      sceneNum: state.basicConfig.sceneNum,
+      nowProcess: state.basicConfig.nowProcess,
+      basicResult: state.basicEffect
+    })
+  );
+
+  const { score, status } = basicResult[scene] as IbasicRes;
 
   function next() {
     const nextPath = `/profile/adapt/${scene}`;
@@ -37,12 +40,24 @@ const BasicWork: FC<Iprops> = () => {
     );
   }
 
+  const curResult = basicResList[sceneNum].map((item, index) => ({
+    name: item,
+    assess: basicResInfoList[sceneNum][index],
+    score: score[index],
+    result: status[index]
+  }));
+
   return (
     <WorkWrap>
-      {sceneNum == 0 && <WorkIntro />}
+      {/* {sceneNum == 0 && <WorkIntro />}
       {sceneNum == 1 && <WorkNav />}
       {sceneNum == 2 && <WorkRemote />}
-      {sceneNum == 3 && <WorkVoice />}
+      {sceneNum == 3 && <WorkVoice />} */}
+      <Table1
+        secIndex={curResult}
+        population_result={status[status.length - 1]}
+        population_score={score[score.length - 1]}
+      />
       <div className="next">
         <Button onClick={next} type="primary" className="btn">
           进行可适应性评估

@@ -5,13 +5,11 @@ import { CheckCircleFilled, CloseCircleFilled } from "@ant-design/icons";
 import { useAppDispatch, useAppSelector } from "@/store";
 import { datasets, subs } from "@/assets/data/local_data";
 import My_drawer from "@/components/my_drawer";
-import { getResultPic } from "../../service";
-import { changeResImgsAction, getResultImgsAction } from "../../store";
-import { message } from "antd";
+import { getResultImgsAction } from "../../store";
+
 interface Isecindex {
   name: string;
   assess: string;
-  weight: number;
   score: number;
   result: number;
 }
@@ -25,25 +23,15 @@ interface Iprops {
 
 const MyTable: FC<Iprops> = (props) => {
   const { secIndex, population_result, population_score } = props;
-  const {
-    module_names,
-    sceneNum,
-    dataset,
-    scene,
-    curModel,
-    data_tupe,
-    resImgs,
-    basic_runStatus
-  } = useAppSelector((state) => ({
-    module_names: state.basicConfig.modelNames,
-    sceneNum: state.basicConfig.sceneNum,
-    dataset: state.basicConfig.dataSet,
-    scene: state.basicConfig.scene,
-    curModel: state.basicConfig.currentModule,
-    data_tupe: state.basicConfig.dataSet,
-    resImgs: state.basicEffect.resImgs,
-    basic_runStatus: state.basicEffect.run_status
-  }));
+  const { module_names, sceneNum, dataset, scene, curModel, resImgs } =
+    useAppSelector((state) => ({
+      module_names: state.basicConfig.modelNames,
+      sceneNum: state.basicConfig.sceneNum,
+      dataset: state.basicConfig.dataSet,
+      scene: state.basicConfig.scene,
+      curModel: state.basicConfig.currentModule,
+      resImgs: state.basicEffect.resImgs
+    }));
 
   const pageScene = location.hash.split("/").pop();
   const nowModelName = module_names[`${pageScene}Name`];
@@ -87,7 +75,7 @@ const MyTable: FC<Iprops> = (props) => {
               <td
                 className={["score", item.result ? "noPass" : "pass"].join(" ")}
               >
-                {(item.score * 100).toFixed(2)}
+                {item.score}
               </td>
               <td>
                 {item.result ? (
@@ -106,7 +94,7 @@ const MyTable: FC<Iprops> = (props) => {
         <tr>
           <td className="row-sub-header">总体分数</td>
           <td colSpan={3} className="population">
-            {(population_score * 100).toFixed(2)}
+            {population_score}
           </td>
           <td>
             {population_result ? (

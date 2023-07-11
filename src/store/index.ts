@@ -4,6 +4,7 @@ import sceneReducer from "@/pages/BasicConfig/store";
 import effectReducer from "@/pages/BasicWork/store";
 import adaptReducer from "@/pages/AdaptAbli/store";
 import datasetReducer from "@/pages/Dataset/store";
+import trustReducer from "@/pages/TrustAbil/store";
 // import {
 //   guideAdaptReducer,
 //   navigateAdaptReducer,
@@ -15,12 +16,9 @@ const store = configureStore({
   reducer: {
     basicConfig: sceneReducer,
     basicEffect: effectReducer,
-    // guideAdapt: guideAdaptReducer,
-    // navigateAdapt: navigateAdaptReducer,
-    // remoteAdapt: remoteAdaptReducer,
-    // voiceAdapt: voiceAdaptReducer
     adaptAbili: adaptReducer,
-    datasetMan: datasetReducer
+    datasetMan: datasetReducer,
+    trustAbili: trustReducer
   }
 });
 
