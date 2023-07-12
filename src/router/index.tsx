@@ -20,6 +20,7 @@ const Profile = lazy(() => import("@/pages/Profile"));
 const Dataset = lazy(() => import("@/pages/Dataset"));
 const PDFviewer = lazy(() => import("@/components/PDFviewer"));
 const Results = lazy(() => import("@/pages/Results"));
+const Annotation = lazy(() => import("@/pages/Annotation"));
 
 //路由表映射
 const routes: RouteObject[] = [
@@ -30,6 +31,10 @@ const routes: RouteObject[] = [
   {
     path: "/home",
     element: <Home />
+  },
+  {
+    path: "/annotation",
+    element: <Annotation />
   },
   {
     path: "/all",

@@ -81,15 +81,13 @@ const LibraryMap: FC<Iprops> = ({ curIndex }) => {
   if (curIndex === 0) {
     ruleItemData = rule_Data.concat(standard_Data);
   } else if (curIndex === 1) {
-    ruleItemData = rule_Data;
-  } else {
     ruleItemData = standard_Data;
   }
 
   return (
     <LibraryMapWrap>
       <div className="library_content">
-        {ruleItemData.map((item, index) => {
+        {ruleItemData?.map((item, index) => {
           return (
             <LibraryItem
               key={index}

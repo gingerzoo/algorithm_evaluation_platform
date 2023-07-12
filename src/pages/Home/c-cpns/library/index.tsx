@@ -3,17 +3,20 @@ import type { FC, ReactNode } from "react";
 import { LibraryWrap } from "./style";
 import LibraryMap from "@/components/libraryMap";
 import classNames from "classnames";
+import { useNavigate } from "react-router-dom";
 
 interface Iprops {
   children?: ReactNode;
 }
 
 const Library: FC<Iprops> = (props) => {
-  const names = ["全部", "文件库", "标准库"];
   const [curIndex, setCurIndex] = useState(0);
+  const navigate = useNavigate();
+  const names = ["文件库", "标准库", "查看全部"];
 
   function navHandleClick(index: number) {
     if (index !== curIndex) setCurIndex(index);
+    if (index == 2) navigate("/annotation");
   }
 
   return (
@@ -33,6 +36,7 @@ const Library: FC<Iprops> = (props) => {
           );
         })}
       </div>
+
       <LibraryMap curIndex={curIndex} />
     </LibraryWrap>
   );

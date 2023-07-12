@@ -71,7 +71,7 @@ const Home: FC<Iprops> = (props) => {
           <div className="opeBar">
             <button onClick={useBtnClick}>立即使用</button>
 
-            <a href="http://101.42.40.81:8080/guidance_info/label_format.pdf">
+            <a href="http://10.2.12.63:8080/guidance_info/label_format.pdf">
               技术文档
             </a>
             {/* </button> */}
