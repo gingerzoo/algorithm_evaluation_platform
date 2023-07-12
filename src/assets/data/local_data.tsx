@@ -17,6 +17,7 @@ import {
   ShareAltOutlined
 } from "@ant-design/icons";
 import { getItem } from "@/utils/getItem";
+import { IruleData } from "@/type";
 
 interface Iscene {
   [index: string]: number;
@@ -327,17 +328,6 @@ export const model_desribe = [
   "多模态感知是智能体进行精准打击的有效手段，我们通过多波段融合与多目标协同测试智能体的协同感知能力。",
   "从不同维度分析场景态势"
 ];
-
-export type IruleData = {
-  category: string;
-  title: string;
-  country: string;
-  time: string;
-  website: string;
-  introduction: string;
-  publisher: string;
-  scenario: string;
-};
 
 export const rules_Data: IruleData[] = [
   {

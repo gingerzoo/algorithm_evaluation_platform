@@ -3,7 +3,8 @@ import type { FC, ReactNode } from "react";
 import { AnnotationWrap } from "./style";
 import Menu from "./c-cpns/Menu";
 import { rules_Data } from "@/assets/data/local_data";
-import RuleItem from "./c-cpns/RuleItem";
+import Menu_item from "./c-cpns/menu_item";
+import { useNavigate } from "react-router-dom";
 
 interface Iprops {
   children?: ReactNode;
@@ -11,6 +12,7 @@ interface Iprops {
 
 const Annotation: FC<Iprops> = (props) => {
   const [category, setCategory] = useState("policy-china");
+  const navigate = useNavigate();
 
   const alinkHandle = useCallback(
     (curCategory: string) => {
@@ -25,19 +27,18 @@ const Annotation: FC<Iprops> = (props) => {
         {rules_Data.map(
           (item) =>
             category == item.category && (
-              <div className="rule_item" key={item.title}>
-                <a href={item.website} target="_blank" rel="noreferrer">
-                  {item.title}
-                </a>
-                <p>时间：{item.time}</p>
-                <p>国家：{item.country}</p>
-                <p>应用场景：{item.scenario}</p>
-                <p>发布方：{item.publisher}</p>
-                <p>简介：{item.introduction}</p>
-              </div>
+              <Menu_item info={item} key={item.title} />
             )
         )}
       </div>
+      <button
+        className="back_home"
+        onClick={() => {
+          navigate("/home");
+        }}
+      >
+        <span>返回首页</span>
+      </button>
     </AnnotationWrap>
   );
 };

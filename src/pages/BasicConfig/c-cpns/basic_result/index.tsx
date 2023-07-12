@@ -14,9 +14,10 @@ interface Iprops {
   curResult: IbasicRes;
   sceneNum: number;
   title: string;
+  nextPath: string;
 }
 
-const BasicResult: FC<Iprops> = ({ curResult, sceneNum, title }) => {
+const BasicResult: FC<Iprops> = ({ curResult, sceneNum, title, nextPath }) => {
   //   const curResult = basic_result[scene] as IbasicRes;
   const curScore = curResult.score;
   const resLen = curScore.length;
@@ -27,7 +28,7 @@ const BasicResult: FC<Iprops> = ({ curResult, sceneNum, title }) => {
 
   //下一步按钮点击处理函数
   function nextBtnClick() {
-    const nextPath = `/profile/basicwork`;
+    // const nextPath = `/profile/basicwork`;
     dispatch(changeNextPathAction(nextPath));
     dispatch(changeNowProcessAction(["基础设置", "基础效能"]));
 

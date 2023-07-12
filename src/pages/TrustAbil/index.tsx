@@ -39,29 +39,28 @@ const TrustAbil: FC<Iprops> = () => {
       <Attack_detail />
 
       <div className="exec">
-        <button className="btn">
-          <span
-            onClick={() => {
-              dispatch(getTrustEffectAction()).then((res) => {
-                if (getTrustEffectAction.fulfilled.match(res)) {
-                  if (!res.payload.status) {
-                    message.success({
-                      content: "可信赖性测试成功",
-                      duration: 2
-                    });
-                  } else {
-                    // failed(res.payload.info);
-                    message.error({
-                      content: "可信赖性测试失败",
-                      duration: 2
-                    });
-                  }
+        <button
+          className="btn"
+          onClick={() => {
+            dispatch(getTrustEffectAction()).then((res) => {
+              if (getTrustEffectAction.fulfilled.match(res)) {
+                if (!res.payload.status) {
+                  message.success({
+                    content: "可信赖性测试成功",
+                    duration: 2
+                  });
+                } else {
+                  // failed(res.payload.info);
+                  message.error({
+                    content: "可信赖性测试失败",
+                    duration: 2
+                  });
                 }
-              });
-            }}
-          >
-            执行测试
-          </span>
+              }
+            });
+          }}
+        >
+          <span>执行测试</span>
         </button>
 
         <Spin spinning={isPending} size="large" />
@@ -71,6 +70,7 @@ const TrustAbil: FC<Iprops> = () => {
           sceneNum={sceneNum}
           curResult={curResult}
           title="可信赖能力"
+          nextPath={`/profile/selflearning`}
         />
       )}
     </TrustWrap>

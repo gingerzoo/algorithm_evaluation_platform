@@ -48,10 +48,9 @@ export const TrustWrap = styled.div`
     align-items: center;
   }
   button.btn {
-    height: 3.8vw;
-    line-height: 3.8vw;
     margin-right: 3vw;
-    padding: 0 2.2vw;
+    padding: 1vw 2vw;
+    font-weight: 700;
     ${(props) => props.theme.mixin.btnHover}
   }
 `;

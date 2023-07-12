@@ -111,6 +111,17 @@ export type IworkResult = {
 
 type GenericAsyncThunk = AsyncThunk<unknown, unknown, any>;
 
+export type IruleData = {
+  category: string;
+  title: string;
+  country: string;
+  time: string;
+  website: string;
+  introduction: string;
+  publisher: string;
+  scenario: string;
+};
+
 // export interface PendingAction<ThunkArg> {
 //   type: string;
 //   payload: undefined;

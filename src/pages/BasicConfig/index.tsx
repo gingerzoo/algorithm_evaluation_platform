@@ -238,6 +238,7 @@ const BasicConfig: FC<Iprops> = () => {
           sceneNum={sceneNum}
           curResult={curResult}
           title="基础效能"
+          nextPath={`/profile/basicwork`}
         />
       )}
       <div className="cover system">

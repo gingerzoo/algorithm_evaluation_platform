@@ -8,21 +8,12 @@ export const AnnotationWrap = styled.div`
 
   .annaotaion_body {
     padding: 3.2vw;
-
-    .rule_item {
-      margin: 50px 0;
-
-      a {
-        font-size: 20px;
-        color: royalblue;
-        &:visited {
-          font-size: 20px;
-          color: royalblue;
-        }
-      }
-      p {
-        margin: 8px 0;
-      }
-    }
+  }
+  .back_home {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 0.8vw 1.6vw;
+    ${(props) => props.theme.mixin.btnHover}
   }
 `;

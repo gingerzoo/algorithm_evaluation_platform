@@ -12,6 +12,7 @@ import {
   getAlogListAction
 } from "@/pages/BasicConfig/store";
 import { changePageSceneAction, getImgAction } from "@/pages/AdaptAbli/store";
+import { changeBasicStatusAction } from "@/pages/BasicWork/store";
 
 interface Iitem {
   [key: string]: number;
@@ -259,6 +260,7 @@ const Sunburst: FC<Iprops> = (props) => {
           dispatch(changeSceneAction(seletcedScene));
           dispatch(changeSceneNumAction(selectedSceneNum));
           dispatch(getAlogListAction());
+          dispatch(changeBasicStatusAction(-1));
           dispatch(changeCurModuleAction(""));
         }
       }
