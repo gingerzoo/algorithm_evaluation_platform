@@ -55,6 +55,8 @@ type Iscene = {
   currentModule: string;
   modelNames: Iname;
   curAlgo: Ialgo;
+  user_name: string;
+  canLogin: boolean;
 };
 const initialState: Iscene = {
   scene: "remote",
@@ -93,7 +95,9 @@ const initialState: Iscene = {
     scene: 0,
     author: ""
   },
-  currentModule: ""
+  currentModule: "",
+  user_name: "",
+  canLogin: false
 };
 
 export const getSystemAction = createAsyncThunk<
@@ -319,6 +323,12 @@ const sceneSlice = createSlice({
     },
     changeCurAlgoAction(state, { payload }) {
       state.curAlgo = payload;
+    },
+    changeUserNameAction(state, { payload }) {
+      state.user_name = payload;
+    },
+    changeCanLoginAction(state, { payload }) {
+      state.canLogin = payload;
     }
   }
 });
@@ -342,7 +352,9 @@ export const {
   changeRemoteModelNameAction,
   changeVoiceModelNameAction,
   changeSelectedSceneAction,
-  changeCurAlgoAction
+  changeCurAlgoAction,
+  changeUserNameAction,
+  changeCanLoginAction
 } = sceneSlice.actions;
 
 export default sceneSlice.reducer;

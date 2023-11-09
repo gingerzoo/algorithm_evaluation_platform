@@ -3,7 +3,6 @@ import type { FC, ReactNode } from "react";
 import { useNavigate } from "react-router-dom";
 import { HomeWrapper } from "./style";
 import Radar from "@/components/radar";
-import EChartsReact from "echarts-for-react";
 
 import {
   AlertOutlined,
@@ -11,51 +10,28 @@ import {
   RadarChartOutlined
 } from "@ant-design/icons";
 import Sunburst from "@/components/sunburst";
-import { useAppDispatch } from "@/store";
+import { useAppDispatch, useAppSelector } from "@/store";
 import Library from "./c-cpns/library";
 import { getWorkDefaultAction } from "../AdaptAbli/store";
+
+import useCanLogin from "@/hooks/useCanLogin";
 interface Iprops {
   children?: ReactNode;
 }
 
 const Home: FC<Iprops> = (props) => {
-  const navigate = useNavigate();
+  //   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  //   const chartRef = useRef<EChartsReact>(null);
+  const canIlogin = useCanLogin();
 
   function useBtnClick() {
-    navigate(`/profile`);
+    canIlogin(`/profile`);
   }
 
   useEffect(() => {
     dispatch(getWorkDefaultAction());
     console.log("在首页拿默认工况");
   }, []);
-
-  const options = {
-    radar: {
-      indicator: [
-        { name: "维度1", max: 100 },
-        { name: "维度2", max: 100 },
-        { name: "维度3", max: 100 },
-        { name: "维度4", max: 100 },
-        { name: "维度5", max: 100 },
-        { name: "维度6", max: 100 }
-      ],
-      splitNumber: 5 // 设置每个维度轴线的分割段数为 4
-    },
-
-    series: [
-      {
-        type: "radar",
-        data: [
-          {
-            value: [60, 73, 85, 40, 62]
-          }
-        ]
-      }
-    ]
-  };
 
   return (
     <HomeWrapper>

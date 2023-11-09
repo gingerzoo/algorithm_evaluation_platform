@@ -239,18 +239,6 @@ const basicEffectSlice = createSlice({
   name: "basicEffectSlice",
   initialState,
   reducers: {
-    // changeBaiscGuideAction(state, { payload }) {
-    //   state.guideBe = payload;
-    // },
-    // changeBasicNavigateAction(state, { payload }) {
-    //   state.navigateBe = payload;
-    // },
-    // changeBasicRemoAction(state, { payload }) {
-    //   state.remoteBe = payload;
-    // },
-    // changeBasicVoiceAction(state, { payload }) {
-    //   state.voiceBe = payload;
-    // },
     changeBasicStatusAction(state, { payload }) {
       state.run_status = payload;
     },

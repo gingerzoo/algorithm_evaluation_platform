@@ -13,6 +13,8 @@ import {
 } from "@/pages/BasicConfig/store";
 import { changePageSceneAction, getImgAction } from "@/pages/AdaptAbli/store";
 import { changeBasicStatusAction } from "@/pages/BasicWork/store";
+import { message } from "antd";
+import EChartsReact from "echarts-for-react";
 
 interface Iitem {
   [key: string]: number;
@@ -33,12 +35,16 @@ interface Iprops {
 // }
 
 const Sunburst: FC<Iprops> = (props) => {
-  const { scene } = useAppSelector((state) => ({
-    scene: state.basicConfig.scene
+  const { scene, canLogin } = useAppSelector((state) => ({
+    scene: state.basicConfig.scene,
+    canLogin: state.basicConfig.canLogin
   }));
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  //   const sunburstRef = useRef(Object<EChartsReact>);
+  //   console.log("ts-echarts", sunburstRef);
+  //   const chartInstance = sunburstRef.current.getEchartsInstance();
 
   const labels = new Array(7).fill(0).map((item, index) => {
     const radius1 = index == 1 ? 20 : 70 + (index - 2) * 18;
@@ -244,28 +250,40 @@ const Sunburst: FC<Iprops> = (props) => {
     click: (params: any) => {
       // 判断点击的元素是否为祖先元素
       //   params.event.preventDefault();
-      const seletcedScene = params.data.dataType;
-      dispatch(changePageSceneAction(seletcedScene));
-      const selectedSceneNum = sceneToNum[seletcedScene];
-      dispatch(
-        getImgAction({ workIndex: 1, pageScene: "navigate", sceneNum: 2 })
-      );
-      if (seletcedScene !== scene) {
-        if (
-          seletcedScene === "navigate" ||
-          seletcedScene === "guide" ||
-          seletcedScene === "remote" ||
-          seletcedScene === "voice"
-        ) {
-          dispatch(changeSceneAction(seletcedScene));
-          dispatch(changeSceneNumAction(selectedSceneNum));
-          dispatch(getAlogListAction());
-          dispatch(changeBasicStatusAction(-1));
-          dispatch(changeCurModuleAction(""));
+      console.log("params", params);
+
+      if (canLogin) {
+        console.log("点我能跳转");
+        const seletcedScene = params.data.dataType;
+        dispatch(changePageSceneAction(seletcedScene));
+        const selectedSceneNum = sceneToNum[seletcedScene];
+        dispatch(
+          getImgAction({ workIndex: 1, pageScene: "navigate", sceneNum: 2 })
+        );
+        if (seletcedScene !== scene) {
+          if (
+            seletcedScene === "navigate" ||
+            seletcedScene === "guide" ||
+            seletcedScene === "remote" ||
+            seletcedScene === "voice"
+          ) {
+            dispatch(changeSceneAction(seletcedScene));
+            dispatch(changeSceneNumAction(selectedSceneNum));
+            dispatch(getAlogListAction());
+            dispatch(changeBasicStatusAction(-1));
+            dispatch(changeCurModuleAction(""));
+          }
         }
+        dispatch(changeSelectedSceneAction(true));
+        navigate("/profile/config");
+      } else {
+        // params.event.preventDefault();
+        console.log("点我不能跳转", canLogin);
+        message.open({
+          type: "error",
+          content: "请先登录！"
+        });
       }
-      dispatch(changeSelectedSceneAction(true));
-      navigate("/profile/config");
     }
 
     // 其他事件处理函数...
@@ -317,8 +335,8 @@ const Sunburst: FC<Iprops> = (props) => {
 
   return (
     <ReactEcharts
-      //   ref={chartRef}
       option={getOption()}
+      //   ref={sunburstRef}
       notMerge={true}
       //   lazyUpdate={true}
       //   onEvents={}

@@ -25,10 +25,10 @@ const App_header: FC<Iprops> = (props) => {
       <div className="left" onClick={backToHome}>
         <div className="logo"></div>
         {/* <span className="divider">|</span> */}
-        <h3 className="algor">
+        <h2 className="algor">
           {/* <RadarChartOutlined style={{ color: "#5692FC" }} /> */}
           &nbsp; 感知分级算法评估平台
-        </h3>
+        </h2>
       </div>
 
       <div className="right">
