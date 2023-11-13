@@ -323,12 +323,6 @@ const sceneSlice = createSlice({
     },
     changeCurAlgoAction(state, { payload }) {
       state.curAlgo = payload;
-    },
-    changeUserNameAction(state, { payload }) {
-      state.user_name = payload;
-    },
-    changeCanLoginAction(state, { payload }) {
-      state.canLogin = payload;
     }
   }
 });
@@ -352,9 +346,7 @@ export const {
   changeRemoteModelNameAction,
   changeVoiceModelNameAction,
   changeSelectedSceneAction,
-  changeCurAlgoAction,
-  changeUserNameAction,
-  changeCanLoginAction
+  changeCurAlgoAction
 } = sceneSlice.actions;
 
 export default sceneSlice.reducer;

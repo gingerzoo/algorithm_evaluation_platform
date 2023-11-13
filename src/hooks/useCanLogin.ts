@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function useCanLogin() {
   const { canLogin } = useAppSelector((state) => ({
-    canLogin: state.basicConfig.canLogin
+    canLogin: state.home.can_login
   }));
   const navigate = useNavigate();
   //   const [messageApi, contextHolder] = message.useMessage();

@@ -40,5 +40,12 @@ export const LoginWrap = styled.div`
       cursor: pointer;
       margin-left: 5px;
     }
+    .curUserName {
+    flex:1
+      white-space: nowrap; /* 防止文本换行 */
+      overflow: hidden; /* 隐藏文本溢出部分 */
+      text-overflow: ellipsis; /* 使用省略号来表示溢出的文本 */
+      margin-left:5px;
+    }
   }
 `;

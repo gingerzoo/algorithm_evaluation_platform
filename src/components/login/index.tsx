@@ -5,7 +5,9 @@ import { LoginWrap } from "./style";
 import { Modal } from "antd";
 import Login_modal from "../login_modal";
 import Register from "../Register";
-import { changeUserNameAction } from "@/pages/BasicConfig/store";
+import { changeCanLoginAction, changeUserNameAction } from "@/pages/Home/store";
+import { useNavigate } from "react-router-dom";
+import { getCanLogout } from "@/pages/Home/services";
 
 interface Iprops {
   children?: ReactNode;
@@ -13,12 +15,13 @@ interface Iprops {
 
 const Login: FC<Iprops> = (props) => {
   const { user_name } = useAppSelector((state) => ({
-    user_name: state.basicConfig.user_name
+    user_name: state.home.user_name
   }));
   const [IsLogin, setIsLogin] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
   const [isRegiModalOpen, setIsRegiModalOpen] = useState(false);
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const loginClick = () => {
     setIsLogin(!IsLogin);
@@ -29,16 +32,16 @@ const Login: FC<Iprops> = (props) => {
     setIsLoginModalOpen(false);
   };
 
-  const handleLoginCancel = () => {
-    setIsLoginModalOpen(false);
-  };
+  //   const handleLoginCancel = () => {
+  //     setIsLoginModalOpen(false);
+  //   };
 
   const handleReigiOk = () => {
     setIsRegiModalOpen(false);
   };
-  const handleRegiCancel = () => {
-    setIsRegiModalOpen(false);
-  };
+  //   const handleRegiCancel = () => {
+  //     setIsRegiModalOpen(false);
+  //   };
 
   const registerBtnClick = () => {
     setIsLoginModalOpen(!isLoginModalOpen);
@@ -46,12 +49,18 @@ const Login: FC<Iprops> = (props) => {
   };
 
   const logoutClick = () => {
-    dispatch(changeUserNameAction(""));
+    // dispatch(changeUserNameAction(""));
+
+    dispatch(changeCanLoginAction(false));
+    /* 这里要判断一下目前处在在哪个页面！！！！！*/
+    getCanLogout();
+    navigate(`/home`);
     setIsLoginModalOpen(true);
   };
+
   const loginedBtn = (
     <div className="user_info common-login">
-      <span className="curUserName">{user_name}</span>
+      <div className="curUserName">{user_name}</div>
 
       <span className="logout" onClick={logoutClick}>
         退出
@@ -74,11 +83,15 @@ const Login: FC<Iprops> = (props) => {
         title="帐号登录"
         open={isLoginModalOpen}
         onOk={handleLoginOk}
-        onCancel={handleLoginCancel}
-        okText="确认"
-        cancelText="取消"
+        onCancel={handleLoginOk}
+        // okText="确认"
+        // cancelText="取消"
+        footer={null}
       >
-        <Login_modal registerHandle={registerBtnClick} />
+        <Login_modal
+          registerHandle={registerBtnClick}
+          loginSucessHandle={handleLoginOk}
+        />
       </Modal>
 
       <Modal
@@ -86,9 +99,10 @@ const Login: FC<Iprops> = (props) => {
         title="帐号注册"
         open={isRegiModalOpen}
         onOk={handleReigiOk}
-        onCancel={handleRegiCancel}
+        onCancel={handleReigiOk}
         okText="确认"
         cancelText="取消"
+        footer={null}
       >
         <Register registerHandle={registerBtnClick} />
       </Modal>

@@ -1,26 +1,93 @@
 import React, { memo, useState } from "react";
 import type { FC, ReactNode } from "react";
-import { Button, Checkbox, Form, Input } from "antd";
+import { Button, Checkbox, Form, Input, message } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { LoginModalWrap } from "./style";
-import { useAppDispatch } from "@/store";
+import { useAppDispatch, useAppSelector } from "@/store";
 import {
   changeCanLoginAction,
+  changePasswordAction,
+  changeRememberAction,
   changeUserNameAction
-} from "@/pages/BasicConfig/store";
+} from "@/pages/Home/store";
+
+import { getCanLogin, getCanLogout } from "@/pages/Home/services";
 
 interface Iprops {
   children?: ReactNode;
   registerHandle: () => void;
+  loginSucessHandle: () => void;
 }
 
+type IuserInfo = {
+  username: string;
+  password: string;
+  remember: boolean;
+};
+
+type FieldType = {
+  username?: string;
+  password?: string;
+  remember?: boolean;
+};
+
 const LoginModal: FC<Iprops> = (props) => {
+  const { username, password } = useAppSelector((state) => ({
+    username: state.home.user_name,
+    password: state.home.password
+  }));
   const dispatch = useAppDispatch();
-  const onFinish = (values: any) => {
+  const onFinish = (values: IuserInfo) => {
     /* 这里应当有个登录接口的调用 如果成功则将用户名存入store中*/
-    dispatch(changeUserNameAction(values.username));
-    dispatch(changeCanLoginAction(true));
-    console.log("表单数据", values);
+
+    const { username, password, remember } = values;
+    console.log("login,login", values);
+
+    // const password = values.password;
+    try {
+      getCanLogout();
+      getCanLogin(username, password).then((res) => {
+        console.log("调用登录接口成功！", res);
+        if (res.emsg === "success") {
+          dispatch(changeUserNameAction(values.username));
+          dispatch(changeCanLoginAction(true));
+          if (remember) {
+            dispatch(changeRememberAction(true));
+            dispatch(changePasswordAction(password));
+          } else {
+            dispatch(changeRememberAction(false));
+          }
+          props.loginSucessHandle();
+        } else {
+          message.error({
+            content: res.emsg
+          });
+        }
+      });
+    } catch (err) {
+      console.log("网络发生了错误", err);
+    }
+  };
+
+  //   const formItemLayout = {
+  //     labelCol: {
+  //       xs: { span: 24 },
+  //       sm: { span: 8 }
+  //     },
+  //     wrapperCol: {
+  //       xs: { span: 24 },
+  //       sm: { span: 16 }
+  //     }
+  //   };
+
+  const usernameChangeHandle = (e: any) => {
+    console.log("input框在变化", e.target.value);
+    dispatch(changeUserNameAction(e.target.value));
+  };
+
+  const passwordChangeHandle = (e: any) => {
+    console.log("input框在变化", e.target.value);
+    dispatch(changePasswordAction(e.target.value));
   };
 
   return (
@@ -28,11 +95,15 @@ const LoginModal: FC<Iprops> = (props) => {
       <Form
         name="normal_login"
         className="login-form"
+        // {...formItemLayout}
+        labelCol={{ span: 5 }}
+        wrapperCol={{ span: 16 }}
         initialValues={{ remember: true }}
         onFinish={onFinish}
       >
-        <Form.Item
+        <Form.Item<FieldType>
           name="username"
+          label="用户名"
           rules={[
             { required: true, message: "Please input your Username!" },
             { min: 3, message: "请输入至少三个字符" },
@@ -50,10 +121,15 @@ const LoginModal: FC<Iprops> = (props) => {
           <Input
             prefix={<UserOutlined className="site-form-item-icon" />}
             placeholder="请输入用户名"
+            value={username}
+            onChange={(e) => {
+              usernameChangeHandle(e);
+            }}
           />
         </Form.Item>
-        <Form.Item
+        <Form.Item<FieldType>
           name="password"
+          label="密码"
           rules={[
             { required: true, message: "Please input your Password!" },
             { min: 6, message: "请输入至少六个字符" }
@@ -66,23 +142,29 @@ const LoginModal: FC<Iprops> = (props) => {
           ]}
           validateTrigger="onBlur"
         >
-          <Input
+          <Input.Password
             prefix={<LockOutlined className="site-form-item-icon" />}
-            type="password"
             placeholder="请输入密码"
+            value={password}
+            onChange={(e) => {
+              passwordChangeHandle(e);
+            }}
           />
         </Form.Item>
-        <Form.Item>
-          <Form.Item name="remember" valuePropName="checked" noStyle>
-            <Checkbox>记住密码</Checkbox>
-          </Form.Item>
+
+        <Form.Item
+          name="remember"
+          valuePropName="checked"
+          wrapperCol={{ offset: 5, span: 16 }}
+        >
+          <Checkbox>记住密码</Checkbox>
 
           {/* <a className="login-form-forgot" href="">
             Forgot password
           </a> */}
         </Form.Item>
 
-        <Form.Item>
+        <Form.Item wrapperCol={{ offset: 5, span: 16 }}>
           <Button
             type="primary"
             htmlType="submit"

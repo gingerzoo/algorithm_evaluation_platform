@@ -1,52 +1,57 @@
 import React, { memo } from "react";
 import type { FC, ReactNode } from "react";
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, message } from "antd";
 import form from "antd/es/form";
+import { getCanRegister } from "@/pages/Home/services";
+import { useAppDispatch } from "@/store";
+import { changePasswordAction, changeUserNameAction } from "@/pages/Home/store";
 
 interface Iprops {
   children?: ReactNode;
   registerHandle: () => void;
 }
 
+type Iregister = {
+  nickname: string;
+  password: string;
+  confirm: string;
+};
+
 const Register: FC<Iprops> = (props) => {
-  const [form] = Form.useForm();
-  const formItemLayout = {
-    labelCol: {
-      xs: { span: 24 },
-      sm: { span: 8 }
-    },
-    wrapperCol: {
-      xs: { span: 24 },
-      sm: { span: 16 }
-    }
-  };
+  //   const [form] = Form.useForm();
+  const dispatch = useAppDispatch();
 
-  const tailFormItemLayout = {
-    wrapperCol: {
-      xs: {
-        span: 24,
-        offset: 0
-      },
-      sm: {
-        span: 16,
-        offset: 8
+  const onFinish = (value: Iregister) => {
+    const { nickname: username, password } = { ...value };
+    // getCanRegister()
+    getCanRegister(username, password).then((res) => {
+      console.log("调用注册成功");
+      if (res.emsg === "success") {
+        console.log("完成注册", username, password);
+        console.log(res);
+        dispatch(changeUserNameAction(username));
+        dispatch(changePasswordAction(password));
+
+        props.registerHandle();
+      } else {
+        message.error({
+          content: res.emsg
+        });
       }
-    }
-  };
-
-  const onReigisterFinish = (value: any) => {
-    console.log("完成注册", value);
+    });
   };
   return (
     <Form
-      {...formItemLayout}
-      form={form}
+      //   {...formItemLayout}
+      labelCol={{ span: 5 }}
+      wrapperCol={{ span: 16 }}
+      //   form={form}
       name="register"
-      onFinish={props.registerHandle}
+      onFinish={onFinish}
       style={{ maxWidth: 600 }}
       scrollToFirstError
     >
-      <Form.Item
+      {/* <Form.Item
         name="email"
         label="邮箱"
         rules={[
@@ -61,7 +66,7 @@ const Register: FC<Iprops> = (props) => {
         ]}
       >
         <Input />
-      </Form.Item>
+      </Form.Item> */}
       <Form.Item
         name="nickname"
         label="用户名"
@@ -71,6 +76,12 @@ const Register: FC<Iprops> = (props) => {
             required: true,
             message: "请输入用户名!",
             whitespace: true
+          },
+          { min: 3, message: "请输入至少三个字符" },
+          { max: 10, message: "不要超过十个字符" },
+          {
+            pattern: new RegExp("^[a-zA-Z]+[0-9a-zA-Z_]+$", "g"),
+            message: "用户名只能以字母开头，并由字母数字和下划线组成"
           }
         ]}
       >
@@ -84,7 +95,8 @@ const Register: FC<Iprops> = (props) => {
           {
             required: true,
             message: "请输入密码!"
-          }
+          },
+          { min: 6, message: "请输入至少六个字符" }
         ]}
         hasFeedback
       >
@@ -114,8 +126,12 @@ const Register: FC<Iprops> = (props) => {
         <Input.Password />
       </Form.Item>
 
-      <Form.Item {...tailFormItemLayout}>
-        <Button type="primary" htmlType="submit">
+      <Form.Item wrapperCol={{ offset: 5, span: 16 }}>
+        <Button
+          type="primary"
+          htmlType="submit"
+          style={{ width: "100%", marginTop: "12px" }}
+        >
           注册
         </Button>
       </Form.Item>

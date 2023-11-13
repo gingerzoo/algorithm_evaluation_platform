@@ -7,7 +7,7 @@ export const HeaderWrap = styled.div`
   align-items: center;
 
   height: 4.8vw;
-  padding: 0 11vw 0 4.8vw;
+  padding: 0 12vw 0 4.8vw;
 
   .btn:hover {
     cursor: pointer;

@@ -5,6 +5,7 @@ import effectReducer from "@/pages/BasicWork/store";
 import adaptReducer from "@/pages/AdaptAbli/store";
 import datasetReducer from "@/pages/Dataset/store";
 import trustReducer from "@/pages/TrustAbil/store";
+import homeReducer from "@/pages/Home/store";
 // import {
 //   guideAdaptReducer,
 //   navigateAdaptReducer,
@@ -18,7 +19,8 @@ const store = configureStore({
     basicEffect: effectReducer,
     adaptAbili: adaptReducer,
     datasetMan: datasetReducer,
-    trustAbili: trustReducer
+    trustAbili: trustReducer,
+    home: homeReducer
   }
 });
 
