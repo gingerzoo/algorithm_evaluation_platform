@@ -4,6 +4,12 @@ import { AttackDetWrap } from "./style";
 import { TreeSelect } from "antd";
 
 import { attackBlack, attackWhite } from "@/assets/data/local_data";
+import { useAppDispatch, useAppSelector } from "@/store";
+import {
+  changeTrustBlackNamesAction,
+  changeTrustWhiteAction,
+  changeTrustWhiteNamesAction
+} from "../../store";
 
 interface Iprops {
   children?: ReactNode;
@@ -16,16 +22,21 @@ interface Idata {
 }
 
 const AttackDetail: FC<Iprops> = (props) => {
+  //   const { blackNames, whiteNames } = useAppSelector((state) => ({
+  //     blackNames: state.trustAbili.blackNames,
+  //     whiteNames: state.trustAbili.whiteNames
+  //   }));
+  const dispatch = useAppDispatch();
   const whiteChild: Idata[] = attackWhite.map((item, index) => ({
     title: item,
-    value: item,
-    key: item
+    value: `w${item}`,
+    key: `w${item}`
   }));
 
   const blackChild: Idata[] = attackBlack.map((item, index) => ({
     title: item,
-    value: item,
-    key: item
+    value: `b${item}`,
+    key: `b${item}`
   }));
   const treeData = [
     {
@@ -42,11 +53,27 @@ const AttackDetail: FC<Iprops> = (props) => {
     }
   ];
 
-  const [value, setValue] = useState<string>();
+  const [value, setValue] = useState<string[]>();
 
-  const onChange = (newValue: string) => {
-    console.log(newValue);
+  const onChange = (newValue: string[]) => {
+    console.log("白盒黑盒", typeof newValue);
+    const whiteNames: string[] = [];
+    const blackNames: string[] = [];
+
+    newValue.forEach((item) => {
+      if (item.startsWith("w")) {
+        whiteNames.push(item.slice(1));
+      } else {
+        blackNames.push(item.slice(1));
+      }
+    });
+    dispatch(changeTrustBlackNamesAction(blackNames));
+    dispatch(changeTrustWhiteNamesAction(whiteNames));
     setValue(newValue);
+    // if(newValue.startsWith("w"){
+    //     dispatch
+
+    // })
   };
 
   return (

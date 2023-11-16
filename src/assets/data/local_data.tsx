@@ -297,28 +297,9 @@ export const res_measurement = [
   "总体性能"
 ];
 
-export const attackWhite = [
-  "Boundary Attack",
-  "Basic Iterative Method",
-  "Box-constrained L-BFGS attack",
+export const attackWhite = ["Optim", "Mim", "Bim", "PGD"];
 
-  "Elastic-net Attacks to DNNs",
-  " DeepFool",
-  "Carlini & Wagner Attack",
-  "Newtonfool Attack"
-];
-
-export const attackBlack = [
-  "Random Least Likely Class Attack",
-  "OPTMARGIN attack",
-  "RAND-FGSM",
-
-  "Nature Evolutionary Strategies",
-
-  "Projected Gradient descent",
-
-  " Hop Skip Jump Attack "
-];
+export const attackBlack = ["Optim", "Mim", "Bim", "PGD"];
 
 export const model_desribe = [
   "首先要有基本指标，该基础指标为基础效能，即无干扰情况下的准确率，或者存在多个评价准则，最后加权得到的基础效能分数。",

@@ -10,7 +10,7 @@ export const Table2Wrapper = styled.div`
     ${(props) => props.theme.mixin.btnHover}
     border: none;
 
-    padding: 0 4vw;
+    padding: 0 5vw;
     font-size: 1.3vw;
     color: white;
   }

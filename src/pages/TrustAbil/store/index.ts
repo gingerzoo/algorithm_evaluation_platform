@@ -84,6 +84,9 @@ export const getTrustEffectAction = createAsyncThunk<
   const blackNames: string[] = getState().trustAbili.blackNames;
   const whiteNames: string[] = getState().trustAbili.whiteNames;
 
+  console.log("发送的whiteNames", whiteNames);
+  console.log("发送的blackNames", blackNames);
+
   try {
     const res = await runTrustEffect(model_name, sceneNum, data_type, {
       white: whiteNames,
@@ -265,6 +268,12 @@ export const trustAbiliSlice = createSlice({
     },
     changeTrustBlackAction(state, { payload }) {
       state.black = payload;
+    },
+    changeTrustWhiteNamesAction(state, { payload }) {
+      state.whiteNames = payload;
+    },
+    changeTrustBlackNamesAction(state, { payload }) {
+      state.blackNames = payload;
     }
   },
   extraReducers(builder) {
@@ -291,7 +300,9 @@ export const {
   changeTrustVoiceAction,
   changeTrustBlackAction,
   changeTrustPopulaAction,
-  changeTrustWhiteAction
+  changeTrustWhiteAction,
+  changeTrustBlackNamesAction,
+  changeTrustWhiteNamesAction
 } = trustAbiliSlice.actions;
 
 export default trustAbiliSlice.reducer;
