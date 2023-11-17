@@ -1,6 +1,6 @@
-import React, { memo, useState } from "react";
+import React, { memo, useEffect, useRef, useState } from "react";
 import type { FC, ReactNode } from "react";
-import { Button, Checkbox, Form, Input, message } from "antd";
+import { Button, Checkbox, Form, Input, InputRef, message } from "antd";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { LoginModalWrap } from "./style";
 import { useAppDispatch, useAppSelector } from "@/store";
@@ -32,20 +32,30 @@ type FieldType = {
 };
 
 const LoginModal: FC<Iprops> = (props) => {
-  const { username, password } = useAppSelector((state) => ({
-    username: state.home.user_name,
+  const { user_name, password } = useAppSelector((state) => ({
+    user_name: state.home.user_name,
     password: state.home.password
   }));
-  const dispatch = useAppDispatch();
-  const onFinish = (values: IuserInfo) => {
-    /* 这里应当有个登录接口的调用 如果成功则将用户名存入store中*/
+  const [nameValue, setNameValue] = useState("yangpeng");
+  const [passwordValue, setPasswordValue] = useState("yangpeng");
+  useEffect(() => {
+    console.log("login页面重新渲染");
+    if (nameRef.current) {
+      console.log("现在input的value值", nameRef.current.input);
+    }
 
+    // setNameValue(user_name);
+    // setPasswordValue(password);
+  });
+
+  const nameRef = useRef<InputRef>(null);
+  const dispatch = useAppDispatch();
+
+  const onFinish = (values: IuserInfo) => {
     const { username, password, remember } = values;
     console.log("login,login", values);
 
-    // const password = values.password;
     try {
-      getCanLogout();
       getCanLogin(username, password).then((res) => {
         console.log("调用登录接口成功！", res);
         if (res.emsg === "success") {
@@ -64,8 +74,13 @@ const LoginModal: FC<Iprops> = (props) => {
           });
         }
       });
-    } catch (err) {
-      console.log("网络发生了错误", err);
+    } catch (err: any) {
+      console.log("接口不可以调用");
+      message.open({
+        type: "error",
+        content: "网络错误",
+        duration: 2
+      });
     }
   };
 
@@ -82,6 +97,7 @@ const LoginModal: FC<Iprops> = (props) => {
 
   const usernameChangeHandle = (e: any) => {
     console.log("input框在变化", e.target.value);
+    // setNameValue(e.target.value);
     dispatch(changeUserNameAction(e.target.value));
   };
 
@@ -98,7 +114,11 @@ const LoginModal: FC<Iprops> = (props) => {
         // {...formItemLayout}
         labelCol={{ span: 5 }}
         wrapperCol={{ span: 16 }}
-        initialValues={{ remember: true }}
+        initialValues={{
+          remember: true,
+          username: user_name,
+          password
+        }}
         onFinish={onFinish}
       >
         <Form.Item<FieldType>
@@ -114,14 +134,15 @@ const LoginModal: FC<Iprops> = (props) => {
             }
           ]}
           //   validateStatus="error"
-          validateTrigger="onBlur"
+          validateTrigger="onChange"
 
           //   help="用户不存在"
         >
           <Input
+            ref={nameRef}
             prefix={<UserOutlined className="site-form-item-icon" />}
             placeholder="请输入用户名"
-            value={username}
+            value={nameValue}
             onChange={(e) => {
               usernameChangeHandle(e);
             }}
@@ -140,13 +161,13 @@ const LoginModal: FC<Iprops> = (props) => {
             //   message: "密码必须包含至少一个字母,一个数字和一个特殊字符"
             // }
           ]}
-          validateTrigger="onBlur"
+          validateTrigger="onChange"
         >
           <Input.Password
             prefix={<LockOutlined className="site-form-item-icon" />}
             placeholder="请输入密码"
-            value={password}
-            onChange={(e) => {
+            value={passwordValue}
+            onBlur={(e) => {
               passwordChangeHandle(e);
             }}
           />

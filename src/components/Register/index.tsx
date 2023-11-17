@@ -1,8 +1,7 @@
-import React, { memo } from "react";
+import React, { memo, useEffect } from "react";
 import type { FC, ReactNode } from "react";
 import { Button, Form, Input, message } from "antd";
-import form from "antd/es/form";
-import { getCanRegister } from "@/pages/Home/services";
+import { getCanLogout, getCanRegister } from "@/pages/Home/services";
 import { useAppDispatch } from "@/store";
 import { changePasswordAction, changeUserNameAction } from "@/pages/Home/store";
 
@@ -21,19 +20,31 @@ const Register: FC<Iprops> = (props) => {
   //   const [form] = Form.useForm();
   const dispatch = useAppDispatch();
 
+  useEffect(() => {
+    getCanLogout();
+    console.log("登出！！");
+  }, []);
+
+  const registerNameChange = (e: any) => {
+    console.log("register name变了变了", e.target.value);
+    dispatch(changeUserNameAction(e.target.value));
+  };
+
   const onFinish = (value: Iregister) => {
     const { nickname: username, password } = { ...value };
     // getCanRegister()
+    dispatch(changeUserNameAction(username));
     getCanRegister(username, password).then((res) => {
       console.log("调用注册成功");
       if (res.emsg === "success") {
         console.log("完成注册", username, password);
         console.log(res);
-        dispatch(changeUserNameAction(username));
+        // dispatch(changeUserNameAction(username));
         dispatch(changePasswordAction(password));
 
         props.registerHandle();
       } else {
+        console.log("注册失败");
         message.error({
           content: res.emsg
         });
@@ -85,7 +96,7 @@ const Register: FC<Iprops> = (props) => {
           }
         ]}
       >
-        <Input />
+        <Input onChange={(e) => registerNameChange(e)} />
       </Form.Item>
 
       <Form.Item

@@ -14,8 +14,9 @@ interface Iprops {
 }
 
 const Login: FC<Iprops> = (props) => {
-  const { user_name } = useAppSelector((state) => ({
-    user_name: state.home.user_name
+  const { user_name, canLogin } = useAppSelector((state) => ({
+    user_name: state.home.user_name,
+    canLogin: state.home.can_login
   }));
   const [IsLogin, setIsLogin] = useState(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState(false);
@@ -24,6 +25,8 @@ const Login: FC<Iprops> = (props) => {
   const navigate = useNavigate();
 
   const loginClick = () => {
+    getCanLogout();
+    navigate("/home");
     setIsLogin(!IsLogin);
     setIsLoginModalOpen(true);
   };
@@ -32,16 +35,9 @@ const Login: FC<Iprops> = (props) => {
     setIsLoginModalOpen(false);
   };
 
-  //   const handleLoginCancel = () => {
-  //     setIsLoginModalOpen(false);
-  //   };
-
   const handleReigiOk = () => {
     setIsRegiModalOpen(false);
   };
-  //   const handleRegiCancel = () => {
-  //     setIsRegiModalOpen(false);
-  //   };
 
   const registerBtnClick = () => {
     setIsLoginModalOpen(!isLoginModalOpen);
@@ -76,16 +72,14 @@ const Login: FC<Iprops> = (props) => {
 
   return (
     <LoginWrap>
-      {user_name ? loginedBtn : notLoginBtn}
+      {canLogin ? loginedBtn : notLoginBtn}
 
       <Modal
         centered={true}
         title="帐号登录"
         open={isLoginModalOpen}
-        onOk={handleLoginOk}
+        // onOk={handleLoginOk}
         onCancel={handleLoginOk}
-        // okText="确认"
-        // cancelText="取消"
         footer={null}
       >
         <Login_modal
@@ -98,10 +92,8 @@ const Login: FC<Iprops> = (props) => {
         centered={true}
         title="帐号注册"
         open={isRegiModalOpen}
-        onOk={handleReigiOk}
+        // onOk={handleReigiOk}
         onCancel={handleReigiOk}
-        okText="确认"
-        cancelText="取消"
         footer={null}
       >
         <Register registerHandle={registerBtnClick} />

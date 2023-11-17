@@ -3,7 +3,7 @@ export const BASE_URL = "http://10.2.12.63:5500";
 
 // export const BASE_URL = "http://127.0.01:8000";
 
-export const TIMEOUT = 1000000;
+export const TIMEOUT = 10000000;
 
 /* 如何区分开发环境和生产环境
 

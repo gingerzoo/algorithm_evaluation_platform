@@ -14,7 +14,6 @@ export function runTrustEffect(
   return lxrequest.request({
     url: "/attacker/run_attacker",
     method: "post",
-    timeout: 100000,
     data: {
       model_name,
       scene,

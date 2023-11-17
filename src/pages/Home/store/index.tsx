@@ -9,10 +9,10 @@ type Ihome = {
 };
 
 const initialState: Ihome = {
-  user_name: "",
+  user_name: "yangpeng",
   can_login: false,
   remember: true,
-  password: ""
+  password: "yangpeng"
 };
 
 // const getUsernameAction=createAsyncThunk("")

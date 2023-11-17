@@ -31,7 +31,7 @@ export function getCanRegister(username: string, password: string) {
 
 export function getCanLogout() {
   return lxrequest.request({
-    url: `/register`,
+    url: `/logout`,
     method: "get"
   });
 }

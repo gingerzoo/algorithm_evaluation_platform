@@ -63,8 +63,8 @@ const initialState: Iprops = {
   run_status: -1,
   run_info: "",
   isPending: false,
-  blackNames: [""],
-  whiteNames: [""],
+  blackNames: [],
+  whiteNames: [],
   black: [47, 66, 30],
   white: [55, 40, 62],
   population_score: 0

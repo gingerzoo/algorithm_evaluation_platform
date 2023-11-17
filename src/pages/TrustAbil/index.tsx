@@ -7,22 +7,30 @@ import Basic_result from "../BasicConfig/c-cpns/basic_result";
 import { useAppDispatch, useAppSelector } from "@/store";
 import { IbasicRes } from "@/type";
 import { message, Spin } from "antd";
-import { useDispatch } from "react-redux";
 import { getTrustEffectAction } from "./store";
-// import attack from "@/assets/images/attack.png";
+
 interface Iprops {
   children?: ReactNode;
 }
 
 const TrustAbil: FC<Iprops> = () => {
-  const { sceneNum, trust_result, scene, run_status, isPending } =
-    useAppSelector((state) => ({
-      scene: state.basicConfig.scene,
-      sceneNum: state.basicConfig.sceneNum,
-      trust_result: state.trustAbili,
-      run_status: state.trustAbili.run_status,
-      isPending: state.trustAbili.isPending
-    }));
+  const {
+    sceneNum,
+    trust_result,
+    scene,
+    run_status,
+    isPending,
+    whiteNames,
+    blackNames
+  } = useAppSelector((state) => ({
+    scene: state.basicConfig.scene,
+    sceneNum: state.basicConfig.sceneNum,
+    trust_result: state.trustAbili,
+    run_status: state.trustAbili.run_status,
+    isPending: state.trustAbili.isPending,
+    whiteNames: state.trustAbili.whiteNames,
+    blackNames: state.trustAbili.blackNames
+  }));
   const curResult = trust_result[scene] as IbasicRes;
   const dispatch = useAppDispatch();
   return (
@@ -59,22 +67,30 @@ const TrustAbil: FC<Iprops> = () => {
         <button
           className="btn"
           onClick={() => {
-            dispatch(getTrustEffectAction()).then((res) => {
-              if (getTrustEffectAction.fulfilled.match(res)) {
-                if (!res.payload.status) {
-                  message.success({
-                    content: "可信赖性测试成功",
-                    duration: 2
-                  });
-                } else {
-                  // failed(res.payload.info);
-                  message.error({
-                    content: "可信赖性测试失败",
-                    duration: 2
-                  });
+            if (!whiteNames.length && !blackNames.length) {
+              message.error({
+                content: "请选择至少一个攻击对抗方法",
+                duration: 2
+              });
+            } else {
+              dispatch(getTrustEffectAction()).then((res) => {
+                console.log("可信赖能力的接口调用成功并返回结果", res);
+                if (getTrustEffectAction.fulfilled.match(res)) {
+                  if (!res.payload.status) {
+                    message.success({
+                      content: "可信赖性测试成功",
+                      duration: 2
+                    });
+                  } else {
+                    // failed(res.payload.info);
+                    message.error({
+                      content: "可信赖性测试失败",
+                      duration: 2
+                    });
+                  }
                 }
-              }
-            });
+              });
+            }
           }}
         >
           <span>执行测试</span>

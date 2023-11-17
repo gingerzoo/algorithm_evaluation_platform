@@ -37,7 +37,7 @@ interface Iprops {
 const Sunburst: FC<Iprops> = (props) => {
   const { scene, canLogin } = useAppSelector((state) => ({
     scene: state.basicConfig.scene,
-    canLogin: state.basicConfig.canLogin
+    canLogin: state.home.can_login
   }));
 
   const navigate = useNavigate();
