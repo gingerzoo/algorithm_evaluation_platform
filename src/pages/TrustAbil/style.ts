@@ -39,7 +39,10 @@ export const TrustWrap = styled.div`
       font-family: "SimSun";
       line-height: 22px;
       text-align: justify;
-      margin-bottom: 0.8vw;
+      margin-bottom: 1vw;
+      span {
+        display: block;
+      }
     }
   }
 

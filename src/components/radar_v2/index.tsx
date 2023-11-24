@@ -1,42 +1,23 @@
 import React, { memo } from "react";
 import type { FC, ReactNode } from "react";
 import ReactEcharts from "echarts-for-react";
-import { resultName } from "@/assets/data/local_data";
+type Idata = {
+  value: number[];
+  name: string;
+};
 
-interface Iitem {
-  [key: string]: number;
-  adapt: number;
-  basic: number;
-  trust: number;
-  selfLearn: number;
-  abstract: number;
-  collaAware: number;
-}
-
+type Iindicater = {
+  name: string;
+  max: number;
+};
 interface Iprops {
   children?: ReactNode;
-  result: Iitem[];
-  key?: number;
+  data: Idata[];
+  indicator: Iindicater[];
 }
 
-const Radar: FC<Iprops> = (props) => {
-  const { result } = props;
-  const resLen = result.length;
-
-  //   const chartRef = useRef<EChartsReact>(null);
-
-  // 这是雷达图展示的每个点的数据
-  const indicator = resultName.map((item) => ({
-    name: item.ch,
-    // value: result[item.en],
-    max: 100
-  }));
-
-  const data = result.map((item, index) => ({
-    value: Object.values(item),
-    name: resLen == 1 ? "" : `算法${index + 1}`
-  }));
-
+const RadarV2: FC<Iprops> = (props) => {
+  const { data, indicator } = props;
   function getOption() {
     // 这里是通过props把参数传进来，并且进行判断
     // if (!item) {
@@ -44,8 +25,13 @@ const Radar: FC<Iprops> = (props) => {
     // }
     return {
       //   backgroundColor: "#161627",
-      color:
-        resLen == 1 ? "#7496d2" : ["#FCCA00", "#73C0DE", "#26C3BE", "#FFE434"], // 这是一个雷达图渲染的线的颜色
+      color: [
+        "#205eca",
+        "#FFE434",
+        "rgb(54, 178, 227)",
+        "#e75f3d",
+        "rgb(27, 191, 131)"
+      ], // 这是一个雷达图渲染的线的颜色
       //点击提示标签
       // tooltip: {},
       legend: {
@@ -55,9 +41,9 @@ const Radar: FC<Iprops> = (props) => {
         //图例背景颜色
         backgroundColor: "transparent",
         // 图例标记的图形宽度。[ default: 25 ]
-        itemWidth: 30,
+        itemWidth: 40,
         // 图例标记的图形高度。[ default: 14 ]
-        itemHeight: 18,
+        itemHeight: 24,
         //图例之间的间距
         itemGap: 15
         // data: ["算法1", "算法2"]
@@ -66,35 +52,26 @@ const Radar: FC<Iprops> = (props) => {
         trigger: "item"
       },
       radar: {
-        // shape: "circle",
         indicator: indicator,
         splitNumber: 5,
-        center: resLen == 1 ? ["50%", "50%"] : ["50%", "56%"],
-        radius: "72%",
+        center: ["50%", "50%"],
+        radius: "85%",
         //指示器名称和指示器轴的距离。[ default: 15 ]
         axisNameGap: 6,
         triggerEvent: true,
         // 设置雷达图中间射线的颜色
         axisLine: {
           lineStyle: {
-            // color: "rgba(238, 197, 102, 0.5)"
-            color:
-              resLen == 1 ? "rgba(10, 62, 122,0.7)" : "rgba(10, 62, 122,0.2)"
+            color: "rgba(10, 62, 122,0.4)"
           }
         },
         splitLine: {
           lineStyle: {
-            color:
-              resLen == 1 ? "rgba(238, 197, 102, 0.5)" : "rgba(10, 62, 122,0.2)"
+            color: "rgba(10, 62, 122,0.4)"
           }
         },
-        // textStyle: {
-        //   color: "red",
-        //   fontSize: 14
-        // },
-        //这个是设置每根射线的名称的样式
         axisName: {
-          color: resLen == 1 ? "black" : "rgba(10, 62, 122,0.7)",
+          color: "rgba(10, 62, 122,0.5)",
           //   color: "rgba(78, 76, 76,0.8)",
           textStyle: {
             fontSize: 16 // 设置字体大小
@@ -106,14 +83,11 @@ const Radar: FC<Iprops> = (props) => {
       // center: ['50%'],
       //雷达图背景的颜色，在这儿随便设置了一个颜色，完全不透明度为0，就实现了透明背景
 
-      grid: {
-        top: "60px"
-      },
       series: [
         {
           id: "one",
           type: "radar",
-          areaStyle: { opacity: resLen == 1 ? 0.9 : 0.5 },
+          areaStyle: { opacity: 0.5 },
           //显示雷达图选中背景
           // data中的对象就是雷达图中的每一组数据，若是只有一组数据默认雷达图的线数据只有一条
           data: data
@@ -121,13 +95,6 @@ const Radar: FC<Iprops> = (props) => {
       ]
     };
   }
-
-  //   useEffect(() => {
-  //     if (chartRef.current) {
-  //       chartRef.current.getEchartsInstance().setOption(getOption());
-  //     }
-  //   }, []);
-
   return (
     <ReactEcharts
       //   ref={chartRef}
@@ -137,13 +104,9 @@ const Radar: FC<Iprops> = (props) => {
       //   onEvents={}
       // onChartReady={onChartReady}
 
-      style={
-        resLen == 1
-          ? { width: "90%", height: "25vw" }
-          : { width: "100%", height: "25vw" }
-      }
+      style={{ width: "100%", height: "30vw" }}
     />
   );
 };
 
-export default memo(Radar);
+export default memo(RadarV2);

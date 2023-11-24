@@ -10,7 +10,7 @@ export const AdaptWraper = styled.div<Istate>`
     display: flex;
     /* justify-content: flex-end; */
     padding-left: 3.2vw;
-    margin-top: 2vw;
+    margin: 2vw 0 3.5vw 0;
 
     .spinning {
       margin: 0 3vw 0 2vw;

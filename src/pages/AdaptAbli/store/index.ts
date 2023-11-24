@@ -2,6 +2,7 @@ import { AnyAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 import {
   getAdaptResultImgs,
+  getCompareResList,
   getViewPic,
   getWorkCondition,
   getWorkDataset,
@@ -32,7 +33,8 @@ export interface Iadapt {
     | boolean[][]
     | boolean[]
     | Iwork
-    | (number | undefined)[];
+    | (number | undefined)[]
+    | number[][];
   guide: Iwork[];
   navigate: Iwork[];
   remote: Iwork[];
@@ -60,6 +62,8 @@ export interface Iadapt {
   pageScene: string;
   populstion_score: number;
   resultImgs: string[];
+  compareRes: number[][];
+  overAll: string;
 }
 
 export const getWorkCondiAction = createAsyncThunk(
@@ -160,8 +164,12 @@ export const getWorkResultAction = createAsyncThunk<
   console.log("要被执行的工况", newInter);
   if (newInter.length > 0) {
     try {
-      const res = await getWorkResult(sceneNum, date_type, newInter);
-      console.log("返回的测试结果", res);
+      const res: IworkResult = await getWorkResult(
+        sceneNum,
+        date_type,
+        newInter
+      );
+      console.log("可适应能力返回的测试结果", res);
       dispatch(changeRunResult(res));
       const populationAll = (
         100 *
@@ -170,6 +178,7 @@ export const getWorkResultAction = createAsyncThunk<
       ).toFixed(2);
       dispatch(changeAdaptPopulationAction(populationAll));
       if (res.status == 0) {
+        dispatch(changeAdaptOverAllAction(res.overall));
         let count = 0;
         checkList.forEach((item, index) => {
           if (item) {
@@ -185,6 +194,7 @@ export const getWorkResultAction = createAsyncThunk<
 
         console.log("real_score", realScore);
         console.log("真正的测试结果", realResult);
+        dispatch(getCompareResListAction());
         switch (scene) {
           case "guide": {
             dispatch(changeGuideResAction(realResult));
@@ -274,22 +284,17 @@ export const getImgAction = createAsyncThunk<
 
       imgUrlList = [...preImgUrlList];
       imgUrlList[par.picIndex] = res;
-      console.log("发送一张图片的网络请求！");
+      //   console.log("发送一张图片的网络请求！");
     } else {
       for (let i = 0; i < 5; i++) {
         const res = await getViewPic(sceneNum, date_type, i, sendCondition);
-        // console.log("发送一张图片的网络请求！", i);
-
         imgUrlList.push(res);
       }
-      //   console.log("发送五张图片的网络请求！");
     }
     dispatch(changeImgUrlAction(imgUrlList));
 
-    // console.log("图片数据类型:", typeof res);
     return { baseUrl: imgUrlList };
   } catch (err) {
-    // console.log("发送图片的请求网络错误！");
     return {
       baseUrl: [""]
     };
@@ -308,8 +313,52 @@ export const getAdaptResImgsAction = createAsyncThunk<
     const date_type = getState().basicConfig.dataSet;
     const model_name = getState().basicConfig.currentModule;
     const res = await getAdaptResultImgs(model_name, sceneNum, date_type, par);
-    console.log("结果返回的图片", res);
+    // console.log("结果返回的图片", res);
     dispatch(changeAdaptResImgsAction(res.images));
+  } catch (err) {
+    message.open({
+      type: "error",
+      content: "网络请求发生错误",
+      duration: 2
+    });
+  }
+});
+
+/* 拿到对比结果的列表 */
+export const getCompareResListAction = createAsyncThunk<
+  void,
+  void,
+  { state: IrootState }
+>("compareResList", (par, { dispatch, getState }) => {
+  try {
+    getCompareResList("adaptablity").then((res) => {
+      // console.log(res);
+      console.log("拿到可适应能力对比结果", res);
+
+      // dispatch(changeAdaptCompareResAction(res));
+      if (res.status) {
+        message.open({
+          type: "error",
+          content: "返回score_list错误",
+          duration: 2
+        });
+      } else {
+        const result: number[][] = res.result.map((items) => {
+          return items.map((item) => {
+            return parseFloat((item * 100).toFixed(0));
+          });
+        });
+        const scene = getState().basicConfig.scene;
+
+        const basicRes = getState().basicEffect[scene]?.score;
+        if (basicRes) {
+          result.push(basicRes);
+        }
+        console.log("处理好的caompare数据", result);
+
+        dispatch(changeAdaptCompareResAction(result));
+      }
+    });
   } catch (err) {
     message.open({
       type: "error",
@@ -541,7 +590,13 @@ const initialState: Iadapt = {
   picIndex: 0,
   pageScene: "remote",
   populstion_score: 0,
-  resultImgs: []
+  resultImgs: [],
+  compareRes: [
+    [77, 56, 23, 68],
+    [82, 80, 63, 76],
+    [77, 44, 88, 69]
+  ],
+  overAll: ""
 };
 const adaptSlice = createSlice({
   name: "adaptSlice",
@@ -621,6 +676,12 @@ const adaptSlice = createSlice({
     },
     changeAdaptResImgsAction(state, { payload }) {
       state.resultImgs = payload;
+    },
+    changeAdaptCompareResAction(state, { payload }) {
+      state.compareRes = payload;
+    },
+    changeAdaptOverAllAction(state, { payload }) {
+      state.overAll = payload;
     }
   },
   extraReducers: (builder) => {
@@ -697,5 +758,7 @@ export const {
   changeRemoteScore,
   changeVoiceScore,
   changeAdaptPopulationAction,
-  changeAdaptResImgsAction
+  changeAdaptResImgsAction,
+  changeAdaptCompareResAction,
+  changeAdaptOverAllAction
 } = adaptSlice.actions;

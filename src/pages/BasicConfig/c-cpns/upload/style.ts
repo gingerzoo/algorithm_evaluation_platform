@@ -2,6 +2,7 @@ import styled from "styled-components";
 
 export const UploadWrap = styled.div`
   text-align: center;
+  margin-bottom: 0.8vw;
   .big-box {
     position: relative;
     display: flex;
@@ -19,7 +20,7 @@ export const UploadWrap = styled.div`
     }
 
     .select {
-      height: 105px;
+      height: 8vw;
       width: 100%;
       display: flex;
       flex-direction: column;
@@ -28,6 +29,7 @@ export const UploadWrap = styled.div`
 
       box-sizing: border-box;
       padding: 15px 40px;
+      margin: 0.8vw 0;
 
       /* .docker-box {
         margin-bottom: 5px;
@@ -49,6 +51,15 @@ export const UploadWrap = styled.div`
           justify-content: space-between;
         } */
 
+        .ant-select .ant-select-selector {
+          height: 2.4vw;
+
+          vertical-align: center;
+          .ant-select-selection-placeholder {
+            line-height: 2.4vw;
+          }
+        }
+
         .ant-select-dropdown
           .ant-select-item
           .ant-select-item-option
@@ -68,14 +79,14 @@ export const UploadWrap = styled.div`
     button.false-input {
       display: flex;
       justify-content: space-between;
-      height: 30px;
+      height: 2.4vw;
       width: 100%;
-      line-height: 30px;
+      line-height: 2.4vw;
       box-sizing: border-box;
       box-shadow: 0 0 3px rgba(40, 123, 140, 0.8);
       background: #ffffff;
       color: rgba(0, 0, 0, 0.48);
-      font-size: 14px;
+
       overflow: hidden;
       /* border: 1px solid #d9d9d9; */
       border-radius: 6px;
@@ -106,10 +117,10 @@ export const UploadWrap = styled.div`
       justify-content: space-between;
       align-items: center;
       button.dataset-type {
-        padding: 6px;
+        height: 2.4vw;
+        padding: 0 0.84vw;
         color: white;
         font-size: 12px;
-
         background-color: ${(props) => props.theme.color.secondColor};
         border-radius: 3px;
         box-shadow: 0 0 4px ${(props) => props.theme.color.secondColor};
@@ -130,11 +141,10 @@ export const UploadWrap = styled.div`
     margin-top: 1.2vw;
     padding: 0.8vw 1.6vw;
     color: white;
-
-    ${(props) => props.theme.mixin.btnHover}
-
-    .ant-select-selector {
-      background-color: ${(props) => props.theme.color.greenColor};
-    }
+    ${(props) => props.theme.mixin.btnHover}/* ${(props) =>
+      props.theme.mixin.btnHover}.ant-select-selector {
+      height: 2.4vw;
+      line-height: 2.4vw;
+    } */
   }
 `;

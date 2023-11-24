@@ -1,6 +1,6 @@
-import React, { memo, MouseEventHandler, useRef, useState } from "react";
+import React, { memo, useRef } from "react";
 import type { FC, ReactNode } from "react";
-import { message, Select } from "antd";
+import { ConfigProvider, message, Select } from "antd";
 import { useAppDispatch, useAppSelector } from "@/store";
 import {
   changeCurAlgoAction,
@@ -143,7 +143,7 @@ const AlgorithmUpload: FC<Iprops> = (props) => {
       </button>
       <div className="select-box">
         <Select
-          style={{ width: "100%" }}
+          style={{ width: "100%", height: "2.4vw" }}
           placeholder="选择算法"
           onSelect={handleSelect}
           popupClassName={`select-item`}

@@ -15,6 +15,8 @@ import Library from "./c-cpns/library";
 import { getWorkDefaultAction } from "../AdaptAbli/store";
 
 import useCanLogin from "@/hooks/useCanLogin";
+import { getAlogListAction } from "../BasicConfig/store";
+
 interface Iprops {
   children?: ReactNode;
 }
@@ -26,11 +28,17 @@ const Home: FC<Iprops> = (props) => {
 
   function useBtnClick() {
     canIlogin(`/profile`);
+    console.log("拿到模型列表");
+    dispatch(getAlogListAction());
   }
 
   useEffect(() => {
     dispatch(getWorkDefaultAction());
     console.log("在首页拿默认工况");
+
+    // getTest().then((res) => {
+    //   console.log("测试", res);
+    // });
   }, []);
 
   return (

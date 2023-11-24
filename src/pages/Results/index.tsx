@@ -18,6 +18,7 @@ import { Slider } from "antd";
 import { IbasicRes } from "@/type";
 import { SliderMarks } from "antd/es/slider";
 import Line from "@/components/line";
+import useCalcWorkNum from "@/hooks/useCalcWorkNum";
 
 interface Iprops {
   children?: ReactNode;
@@ -75,10 +76,10 @@ const Results: FC<Iprops> = (props) => {
   };
 
   const curName = basicResList[sceneNum];
-  const workName = checkList[sceneNum].map((item: boolean, index) => {
-    if (item) return `工况${index + 1}`;
-  }) as string[];
-
+  //   const workName = checkList[sceneNum].map((item: boolean, index) => {
+  //     if (item) return `工况${index + 1}`;
+  //   }) as string[];
+  const workName = useCalcWorkNum();
   let score_list: string[] = [];
   const color = ["#FCCA00", "#73C0DE", "#5470C6", "#EE6666"];
 

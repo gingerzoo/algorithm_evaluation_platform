@@ -35,3 +35,10 @@ export function getCanLogout() {
     method: "get"
   });
 }
+
+// export function getTest() {
+//   return lxrequest.request({
+//     url: `/test_str`,
+//     method: "get"
+//   });
+// }

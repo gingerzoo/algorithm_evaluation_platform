@@ -4,12 +4,18 @@ export const SideWrap = styled.div`
   border-right: 2px solid #bbbbbb;
   width: 20vw;
   min-width: 200px;
-  /* max-width: 12.63px; */
-  background-color: rgba(245, 245, 245, 0.9);
+
+  background-color: rgba(87, 151, 149, 0.1);
+
+  /* background-color: rgba(0, 128, 128, 0.1); */
   ul.ant-menu {
-    font-size: 1.15vw;
-    background-color: rgba(245, 245, 245, 0.9);
+    font-size: 16px;
+
+    /* background-color: rgba(27, 145, 162, 0.1); */
   }
+
+  /* li.ant-menu-item.ant-menu-item-selected {
+  } */
 
   li.ant-menu-item,
   div.ant-menu-submenu-title {

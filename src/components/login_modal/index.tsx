@@ -32,9 +32,10 @@ type FieldType = {
 };
 
 const LoginModal: FC<Iprops> = (props) => {
-  const { user_name, password } = useAppSelector((state) => ({
+  const { user_name, password, canLogin } = useAppSelector((state) => ({
     user_name: state.home.user_name,
-    password: state.home.password
+    password: state.home.password,
+    canLogin: state.home.can_login
   }));
   const [nameValue, setNameValue] = useState("yangpeng");
   const [passwordValue, setPasswordValue] = useState("yangpeng");
@@ -46,7 +47,7 @@ const LoginModal: FC<Iprops> = (props) => {
 
     // setNameValue(user_name);
     // setPasswordValue(password);
-  });
+  }, [canLogin]);
 
   const nameRef = useRef<InputRef>(null);
   const dispatch = useAppDispatch();

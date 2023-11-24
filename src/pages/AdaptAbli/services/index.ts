@@ -25,6 +25,11 @@ type IRespic = {
   images: string[];
 };
 
+type IresList = {
+  status: number;
+  result: number[][];
+};
+
 export function getWorkCondition() {
   return lxrequset.request<Icondition>({
     url: "/adaptability/retType"
@@ -103,6 +108,16 @@ export function getAdaptResultImgs(
       scene,
       data_type,
       interference
+    }
+  });
+}
+
+export function getCompareResList(taskname: string) {
+  return lxrequset.request<IresList>({
+    url: "/result/score_list",
+    method: "post",
+    data: {
+      taskname
     }
   });
 }

@@ -89,6 +89,7 @@ const BasicConfig: FC<Iprops> = () => {
   //   }, [scene]);
 
   useEffect(() => {
+    console.log("在页面里拿模型列表");
     dispatch(getAlogListAction());
   }, [docker]);
 

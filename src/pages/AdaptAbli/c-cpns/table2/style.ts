@@ -10,7 +10,7 @@ export const Table2Wrapper = styled.div`
     ${(props) => props.theme.mixin.btnHover}
     border: none;
 
-    padding: 0 5vw;
+    padding: 0.7vw 8vw;
     font-size: 1.3vw;
     color: white;
   }
@@ -27,10 +27,35 @@ export const Table2Wrapper = styled.div`
         width: 3vw;
       }
       &.evaluation {
-        background-color: ${(props) => props.theme.color.greenColor};
+        text-align: left;
+        background-color: ${(props) => props.theme.color.forthColor};
+        padding: 12px 20px;
+        div {
+          color: #777;
+
+          display: -webkit-box;
+          -webkit-box-orient: vertical; /* 垂直方向 */
+          -webkit-line-clamp: 2; /* 显示两行 */
+          overflow: hidden; /* 溢出部分隐藏 */
+          text-align: justify; /* 两端对齐 */
+          line-height: 1.5em; /* 行高 */
+          /* &:hover {
+            -webkit-line-clamp: unset;
+            white-space: normal;
+            cursor: pointer;
+          } */
+        }
       }
       a.showPic {
+        font-weight: 400;
         cursor: pointer;
+        text-decoration: underline;
+      }
+
+      &.adaptRes span {
+        font-size: 18px;
+        font-weight: 700;
+        color: teal;
       }
 
       .preWork {

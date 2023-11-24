@@ -23,6 +23,9 @@ export const HomeWrapper = styled.div`
         display: inline-block;
         text-decoration: none;
         font-size: 100%;
+        &:last-of-type {
+          margin-left: 4vw;
+        }
       }
 
       button,
@@ -32,9 +35,7 @@ export const HomeWrapper = styled.div`
         background-color: transparent;
         border: 1px solid white;
         border-radius: 4px;
-        &:last-of-type {
-          margin-left: 4vw;
-        }
+
         &:hover {
           color: black;
           background-color: ${(props) => props.theme.color.greenColor};
@@ -49,6 +50,12 @@ export const HomeWrapper = styled.div`
 
       .top h5 {
         margin-top: 1.2vw;
+      }
+
+      .opeBar {
+        /* width: 100%; */
+        display: flex;
+        justify-content: space-between;
       }
     }
   }
@@ -80,7 +87,6 @@ export const HomeWrapper = styled.div`
 
         .icon {
           position: absolute;
-          /* margin-right: 2px; */
           height: 1.9vw;
           width: 1.9vw;
           left: -2.38vw;

@@ -76,6 +76,9 @@ body .ant-menu-light .ant-menu-item-selected {
   background-color: rgba(49, 156, 171, 0.2);
   color: #319cab;
 }
+body .ant-menu-light {
+  background: transparent;
+}
 body .ant-menu-light .ant-menu-submenu-selected > .ant-menu-submenu-title {
   background-color: rgba(49, 156, 171, 0.8);
   color: white;

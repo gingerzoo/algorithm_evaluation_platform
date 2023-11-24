@@ -1,7 +1,7 @@
 import React, { Fragment, memo, useEffect, useRef, useState } from "react";
 import type { FC, ReactNode } from "react";
 import { Table2Wrapper } from "./style";
-import { Button, Drawer, Modal, Space } from "antd";
+import { Button, Modal, Popover } from "antd";
 import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
 import { IbasicRes, Iconditon, Iwork } from "@/type";
 import { useAppDispatch, useAppSelector } from "@/store";
@@ -48,7 +48,8 @@ const MyTable2: FC<Iprops> = (props) => {
     iniCheckList,
     imgUrls,
     basicResult,
-    resImgs
+    resImgs,
+    overAll
   } = useAppSelector(
     (state) => ({
       scene: state.basicConfig.scene,
@@ -59,13 +60,14 @@ const MyTable2: FC<Iprops> = (props) => {
       iniCheckList: state.adaptAbili.checkList,
       imgUrls: state.adaptAbili.imgUrl,
       basicResult: state.basicEffect.population_score,
-      resImgs: state.adaptAbili.resultImgs
+      resImgs: state.adaptAbili.resultImgs,
+      overAll: state.adaptAbili.overAll
     }),
     shallowEqual
   );
   const { workConditions } = props;
 
-  console.log("workConditions", workConditions);
+  //   console.log("workConditions", workConditions);
 
   /* 获得该页面的场景 */
   //   const pageScene = location.hash.split("/").slice(-1)[0];
@@ -356,7 +358,7 @@ const MyTable2: FC<Iprops> = (props) => {
         </td> */}
         <td>{getNote[condition]}</td>
         {isFirst ? (
-          <td rowSpan={condiLen}>
+          <td rowSpan={condiLen} className="adaptRes">
             {sceneResult[workIndex] && (
               <span>
                 {sceneResult[workIndex]}{" "}
@@ -448,15 +450,15 @@ const MyTable2: FC<Iprops> = (props) => {
             <td colSpan={6} className="add-work">
               {
                 <>
-                  <Button
-                    type="primary"
+                  <button
+                    // type="primary"
                     className="newCondi"
                     onClick={() => {
                       setModal2Open(true);
                     }}
                   >
                     新建工况
-                  </Button>
+                  </button>
                   <Modal
                     title="新建工况"
                     centered
@@ -477,10 +479,18 @@ const MyTable2: FC<Iprops> = (props) => {
           <tr>
             <td>总体评价</td>
             <td colSpan={5} className="evaluation">
-              {` 基础效能检测分数为为${basicResult},智能等级为${Math.floor(
-                basicResult / 20 + 1
-              )}
-                 ,${adaptRes.join(",")}`}
+              <Popover
+                content={overAll}
+                title="对比结果"
+                placement="topRight"
+                overlayStyle={{ maxWidth: "18vw", color: "white" }}
+              >
+                <div>
+                  {` 基础效能检测分数为为${basicResult},智能等级为${Math.floor(
+                    basicResult / 20 + 1
+                  )}${overAll}`}
+                </div>
+              </Popover>
             </td>
           </tr>
         </tbody>

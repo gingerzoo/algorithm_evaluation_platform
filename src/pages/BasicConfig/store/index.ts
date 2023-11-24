@@ -38,7 +38,7 @@ interface Iname {
 }
 
 type Iscene = {
-  scene: "" | "guide" | "navigate" | "remote" | "voice";
+  scene: "guide" | "navigate" | "remote" | "voice";
   sceneNum: number;
   selected: boolean;
   nextPath: string;
@@ -62,7 +62,7 @@ const initialState: Iscene = {
   scene: "remote",
   selected: false,
   sceneNum: 2,
-  nextPath: "",
+  nextPath: "/profile/config",
   nowProcess: ["基础配置"],
   inputPlace: ``,
   dataSet: 0,

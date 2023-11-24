@@ -133,14 +133,16 @@ export const getBasicEffectAction = createAsyncThunk<
         dispatch(
           changeBasicNavReListAction({
             score: [
-              relevance_score,
               mutual_information_score,
+              relevance_score,
+
               positioning_accuracy_score,
               population_score
             ].map((item) => parseFloat((item * 100).toFixed(1))),
             status: [
-              relevance_result,
               mutual_information_result,
+              relevance_result,
+
               positioning_accuracy_result,
               population_result
             ]

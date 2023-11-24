@@ -1,22 +1,24 @@
 import React, { memo, useEffect, useState } from "react";
 import type { FC, ReactNode } from "react";
-import { Navigate, Outlet, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { AdaptWraper } from "./style";
 import { useAppDispatch, useAppSelector } from "@/store";
 import {
   changeConditionList,
   changeNewWorkObjAction,
   getWorkDataAction,
-  getWorkDefaultAction,
   getWorkResultAction
 } from "./store";
 import { Button, message, Spin } from "antd";
-import { sceneToNum } from "@/assets/data/local_data";
+import { basicAllResList, sceneToNum } from "@/assets/data/local_data";
 import WorkIntro from "./c-cpns/Intro";
 import WorkNav from "./c-cpns/Nav";
 import WorkRemote from "./c-cpns/Remote";
 import WorkVoice from "./c-cpns/Voice";
 import { changeNextPathAction } from "../BasicConfig/store";
+
+import Radar_v2 from "@/components/radar_v2";
+import useCalcWorkNum from "@/hooks/useCalcWorkNum";
 
 interface Iprops {
   children?: ReactNode;
@@ -29,8 +31,8 @@ const AdaptAbil: FC<Iprops> = () => {
     genData_status,
     needGenState,
     scene,
-    genIsPending,
-    run_status
+    run_status,
+    compareRes
   } = useAppSelector((state) => ({
     isGenPending: state.adaptAbili.genIsPending,
     isTestPending: state.adaptAbili.testIsPending,
@@ -38,7 +40,8 @@ const AdaptAbil: FC<Iprops> = () => {
     needGenState: state.adaptAbili.needGenData,
     scene: state.basicConfig.scene,
     genIsPending: state.adaptAbili.genIsPending,
-    run_status: state.adaptAbili.runResult.status
+    run_status: state.adaptAbili.runResult.status,
+    compareRes: state.adaptAbili.compareRes
   }));
 
   //拿到工况测试运行结果
@@ -54,8 +57,7 @@ const AdaptAbil: FC<Iprops> = () => {
   //     console.log("生成了一次默认数据");
   //   }, [scene]);
   useEffect(() => {
-    // dispatch(changePageSceneAction(scene));
-    console.log("genIs", genIsPending);
+    // console.log("genIs", genIsPending);
     dispatch(changeNewWorkObjAction({}));
     dispatch(changeConditionList([]));
   }, [scene]);
@@ -102,6 +104,23 @@ const AdaptAbil: FC<Iprops> = () => {
       }
     });
   };
+
+  const workName = useCalcWorkNum();
+  workName.push("基础效能");
+  //   console.log("workName", workName);
+
+  /* 传给雷达图的数据 */
+  const data = compareRes?.map((item, index) => ({
+    value: item,
+    name: workName[index]
+  }));
+
+  const indicator = basicAllResList[sceneNum].map((item) => ({
+    name: item,
+    // value: result[item.en],
+    max: 100
+  }));
+
   return (
     <AdaptWraper
       canTest={!needGenState || (needGenState && genData_status == 0)}
@@ -150,6 +169,8 @@ const AdaptAbil: FC<Iprops> = () => {
           评估可信赖能力
         </Button>
       </div>
+      {!run_status && <Radar_v2 data={data} indicator={indicator} />}
+      {/* <Radar_v2 data={data} indicator={indicator} /> */}
     </AdaptWraper>
   );
 };

@@ -148,8 +148,9 @@ export const getTrustEffectAction = createAsyncThunk<
           population_result
         } = res.score_info[0] as Inav;
         const score = [
-          relevance_score,
           mutual_information_score,
+          relevance_score,
+
           positioning_accuracy_score,
           population_score
         ].map((item) => parseFloat((item * 100).toFixed(1)));
@@ -158,8 +159,9 @@ export const getTrustEffectAction = createAsyncThunk<
           changeTrustNavigateAction({
             score,
             status: [
-              relevance_result,
               mutual_information_result,
+              relevance_result,
+
               positioning_accuracy_result,
               population_result
             ]

@@ -25,7 +25,7 @@ const Login: FC<Iprops> = (props) => {
   const navigate = useNavigate();
 
   const loginClick = () => {
-    getCanLogout();
+    // getCanLogout();
     navigate("/home");
     setIsLogin(!IsLogin);
     setIsLoginModalOpen(true);

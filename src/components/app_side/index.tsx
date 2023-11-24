@@ -2,7 +2,7 @@ import React, { memo } from "react";
 import type { FC, ReactNode } from "react";
 import { SideWrap } from "./style";
 import Sider from "antd/es/layout/Sider";
-import { Menu, MenuProps } from "antd";
+import { ConfigProvider, Menu, MenuProps } from "antd";
 import { getItem } from "@/utils/getItem";
 import { sideNav } from "@/assets/data/local_data";
 import { useNavigate } from "react-router-dom";
@@ -26,7 +26,7 @@ const AppSide: FC<Iprops> = (props) => {
 
   function linkBtnHandle(e: any) {
     dispatch(changeNextPathAction(e.key));
-    console.log(e.key);
+    console.log("选中菜单", e.key);
     navigate(e.key);
   }
 
@@ -37,10 +37,19 @@ const AppSide: FC<Iprops> = (props) => {
 
   return (
     <SideWrap>
+      {/* <ConfigProvider
+        theme={{
+          components: {
+            Menu: {
+              itemHeight: 50
+            }
+          }
+        }}
+      > */}
       <Sider width={"100%"}>
         <Menu
           mode="inline"
-          defaultSelectedKeys={["/config"]}
+          defaultSelectedKeys={["/profile/config"]}
           //   defaultOpenKeys={["sub1"]}
           style={{ height: "100%", borderRight: 0 }}
           items={items}
@@ -48,6 +57,7 @@ const AppSide: FC<Iprops> = (props) => {
           selectedKeys={[nextPath]}
         />
       </Sider>
+      {/* </ConfigProvider> */}
     </SideWrap>
   );
 };
