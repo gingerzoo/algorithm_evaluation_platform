@@ -15,7 +15,8 @@ const theme = {
   },
   textColor: {
     primaryColor: "#666666",
-    secondColor: "rgba(244,244,244,1)"
+    secondColor: "rgba(244,244,244,1)",
+    thirdColor: "#555555"
   },
   mixin: {
     btnHover: `

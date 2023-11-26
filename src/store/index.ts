@@ -6,6 +6,7 @@ import adaptReducer from "@/pages/AdaptAbli/store";
 import datasetReducer from "@/pages/Dataset/store";
 import trustReducer from "@/pages/TrustAbil/store";
 import homeReducer from "@/pages/Home/store";
+import noiceReducer from "@/pages/NoiseModel/store";
 // import {
 //   guideAdaptReducer,
 //   navigateAdaptReducer,
@@ -20,7 +21,8 @@ const store = configureStore({
     adaptAbili: adaptReducer,
     datasetMan: datasetReducer,
     trustAbili: trustReducer,
-    home: homeReducer
+    home: homeReducer,
+    noiseModel: noiceReducer
   }
 });
 

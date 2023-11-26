@@ -43,22 +43,22 @@ interface ValidationErrors {
 
 const initialState: Iprops = {
   guide: {
-    score: [80.5, 50, 70.2, 75],
+    score: [],
     status: [1, 2, 1, 1]
   },
 
   navigate: {
-    score: [47, 57, 62, 40],
+    score: [],
     status: [1, 1, 1, 1]
   },
 
   remote: {
-    score: [77, 44, 88, 69],
+    score: [],
     status: [1, 2, 1, 1]
   },
 
   voice: {
-    score: [55, 44, 30],
+    score: [],
     status: [1, 2, 1]
   },
   run_status: -1,

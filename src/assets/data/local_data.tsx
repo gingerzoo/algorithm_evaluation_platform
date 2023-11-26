@@ -787,3 +787,142 @@ export const trustDocument = [
   ` 4、PGD（Projected Gradient
    Descent），它使用投影梯度下降法来进行攻击。PGD的攻击效果非常好，但需要更多的时间和计算资源。（基于投影梯度下降方法）`
 ];
+
+export type noisePar = {
+  name: string;
+  min: number;
+  max: number;
+  curIndex: number;
+};
+
+export type noiseTableType = {
+  title: string;
+  parNum: number;
+  par: noisePar[];
+  log: string;
+};
+
+export const noiseTableData: noiseTableType[] = [
+  {
+    title: "散粒噪声",
+    parNum: 2,
+    par: [
+      {
+        name: "电流大小I(A)",
+        min: 0,
+        max: 100,
+        curIndex: 0
+      },
+      {
+        name: "带宽f1(kHz)",
+        min: 0,
+        max: 100,
+        curIndex: 1
+      }
+    ],
+    log: "散粒噪声是晶体管中少数载流子数目和速度起伏导致结电流的微小变化引起的\nN1=2*q*I*f1\nq是一个电子的电荷, I是流经节点的电流"
+  },
+  {
+    title: "光子散粒噪声",
+    parNum: 2,
+    par: [
+      {
+        name: "光照时间t(ms)",
+        min: 0,
+        max: 999,
+        curIndex: 2
+      },
+      {
+        name: "光粒子数n(M)",
+        min: 0,
+        max: 999,
+        curIndex: 3
+      }
+    ],
+    log: "光子散粒噪声是光电二极管内的光子数量变动引起的\nN2=n*t*e^(-n*t)\nt为光照时间, n为在t秒内的光粒子数"
+  },
+  {
+    title: "热噪声",
+    parNum: 3,
+    par: [
+      {
+        name: "温度T(K)",
+        min: 0,
+        max: 500,
+        curIndex: 4
+      },
+      {
+        name: "电阻R(kΩ)",
+        min: 1,
+        max: 999,
+        curIndex: 5
+      },
+      {
+        name: "带宽f2(kHz)",
+        min: 0,
+        max: 999,
+        curIndex: 6
+      }
+    ],
+    log: "热噪声存在于所有电子器件和传输介质中, 由于带电粒子热骚动而产生的\nN3=4*K*T*f2/R\nK是玻尔兹曼常数, T为绝对温度, R是电阻"
+  },
+  {
+    title: "量化噪声",
+    parNum: 1,
+    par: [
+      {
+        name: "最小量化单位q",
+        min: 0,
+        max: 100,
+        curIndex: 7
+      }
+    ],
+    log: "q为最低有效位可表示的最小单位"
+  },
+  {
+    title: "系统增益",
+    parNum: 2,
+    par: [
+      {
+        name: "K1",
+        min: 0,
+        max: 100,
+        curIndex: 8
+      },
+      {
+        name: "K2",
+        min: 0,
+        max: 100,
+        curIndex: 9
+      }
+    ],
+    log: "K1为系统的内增益, K2为系统的全增益"
+  }
+];
+
+export const NoiseArray = [
+  "current",
+  "bandwidth",
+  "exposureTime",
+  "photonCount",
+  "temperature",
+  "resistance",
+  "tbandwidth",
+  "mqUnit",
+  "gainK1",
+  "gainK2"
+];
+
+export const NoiseNum: { [key: string]: number } = {
+  "电流大小I(A)": 0,
+  "带宽f1(kHz)": 1,
+  "光照时间t(ms)": 2,
+  "光粒子数n(M)": 3,
+  "温度T(K)": 4,
+  "电阻R(kΩ)": 5,
+  "带宽f2(kHz)": 6,
+  最小量化单位q: 7,
+  K1: 8,
+  K2: 9,
+  originalImage: 10
+};

@@ -49,7 +49,8 @@ const MyTable2: FC<Iprops> = (props) => {
     imgUrls,
     basicResult,
     resImgs,
-    overAll
+    overAll,
+    basicStatus
   } = useAppSelector(
     (state) => ({
       scene: state.basicConfig.scene,
@@ -61,7 +62,8 @@ const MyTable2: FC<Iprops> = (props) => {
       imgUrls: state.adaptAbili.imgUrl,
       basicResult: state.basicEffect.population_score,
       resImgs: state.adaptAbili.resultImgs,
-      overAll: state.adaptAbili.overAll
+      overAll: state.adaptAbili.overAll,
+      basicStatus: state.basicEffect.run_status
     }),
     shallowEqual
   );
@@ -356,7 +358,7 @@ const MyTable2: FC<Iprops> = (props) => {
         {/* <td>
           <span> {workCondition.weight}</span>
         </td> */}
-        <td>{getNote[condition]}</td>
+        <td className="note">{getNote[condition]}</td>
         {isFirst ? (
           <td rowSpan={condiLen} className="adaptRes">
             {sceneResult[workIndex] && (
@@ -477,13 +479,14 @@ const MyTable2: FC<Iprops> = (props) => {
             </td>
           </tr>
           <tr>
-            <td>总体评价</td>
+            <td className="overall">总体评价</td>
             <td colSpan={5} className="evaluation">
               <Popover
                 content={overAll}
                 title="对比结果"
                 placement="topRight"
                 overlayStyle={{ maxWidth: "18vw", color: "white" }}
+                open={basicStatus === 0}
               >
                 <div>
                   {` 基础效能检测分数为为${basicResult},智能等级为${Math.floor(

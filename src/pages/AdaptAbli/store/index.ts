@@ -13,6 +13,7 @@ import store, { IrootState } from "@/store";
 import { message } from "antd";
 import { sceneToNum } from "@/assets/data/local_data";
 import { FulfilledAction, Iwork, IworkResult, RejectedAction } from "@/type";
+import { getVoiceWorkDataAction } from "@/pages/NoiseModel/store";
 
 //这是干啥的？？？返回的不同场景下condition的列表
 type Icondition = {
@@ -103,12 +104,13 @@ export const getWorkDataAction = createAsyncThunk<
     status: number;
     info: string;
   },
-  string,
+  void,
   { state: IrootState }
 >("genDataset", async (par, { dispatch, getState }) => {
-  const scene = par;
+  const scene = getState().basicConfig.scene;
   const sceneNum = sceneToNum[scene];
   const date_type = getState().basicConfig.dataSet;
+
   const checkList = getState().adaptAbili.checkList[sceneNum];
   const interference = getState().adaptAbili[scene] as Iwork[];
   const checkInterfer: Iwork[] = [];
@@ -116,15 +118,13 @@ export const getWorkDataAction = createAsyncThunk<
     if (item) checkInterfer.push(interference[index]);
   });
   //   console.log("要被执行的工况", newInter);
-  console.log("scene:", scene);
 
   try {
-    console.log(`${scene}请求工况`, checkInterfer);
     const timeStart = performance.now();
     const res = await getWorkDataset(sceneNum, date_type, interference);
     const timeEnd = performance.now();
     const timeDur = ((timeEnd - timeStart) / 1000).toFixed(3);
-    console.log(`${scene}场景对应数据集生成时间为：${timeDur}s`);
+
     dispatch(changeGenDataStatAction(res.status));
 
     return {
@@ -350,8 +350,8 @@ export const getCompareResListAction = createAsyncThunk<
         });
         const scene = getState().basicConfig.scene;
 
-        const basicRes = getState().basicEffect[scene]?.score;
-        if (basicRes) {
+        const basicRes = getState().basicEffect[scene].score;
+        if (basicRes.length) {
           result.push(basicRes);
         }
         console.log("处理好的caompare数据", result);

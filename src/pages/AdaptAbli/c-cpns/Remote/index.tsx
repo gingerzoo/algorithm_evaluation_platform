@@ -3,21 +3,27 @@ import type { FC, ReactNode } from "react";
 import MyTable2 from "../table2";
 import { useAppSelector } from "@/store";
 import { shallowEqual } from "react-redux";
+import NoiceModule from "@/pages/NoiseModel";
 
 interface Iprops {
   children?: ReactNode;
 }
 
 const AdapRemote: FC<Iprops> = (props) => {
-  const { workConditions } = useAppSelector(
+  const { workConditions, isCheckedFlag } = useAppSelector(
     (state) => ({
-      workConditions: state.adaptAbili.remote
+      workConditions: state.adaptAbili.remote,
+      isCheckedFlag: state.noiseModel.isCheckedFlag
     }),
     shallowEqual
   );
   return (
     <div>
-      <MyTable2 workConditions={workConditions} />
+      {isCheckedFlag ? (
+        <NoiceModule />
+      ) : (
+        <MyTable2 workConditions={workConditions} />
+      )}
     </div>
   );
 };

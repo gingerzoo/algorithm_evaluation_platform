@@ -26,6 +26,7 @@ export const Table2Wrapper = styled.div`
         display: inline-block;
         width: 3vw;
       }
+
       &.evaluation {
         text-align: left;
         background-color: ${(props) => props.theme.color.forthColor};
@@ -57,12 +58,21 @@ export const Table2Wrapper = styled.div`
         font-weight: 700;
         color: teal;
       }
+      &.overall {
+        font-weight: 700;
+      }
+
+      &.note {
+        font-size: 1.12vw;
+      }
 
       .preWork {
         display: flex;
         justify-content: center;
         .title {
           position: relative;
+          font-weight: 700;
+
           span.ant-checkbox {
             position: absolute;
             right: -15px;

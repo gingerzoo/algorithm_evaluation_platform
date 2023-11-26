@@ -10,7 +10,11 @@ import {
   getWorkResultAction
 } from "./store";
 import { Button, message, Spin } from "antd";
-import { basicAllResList, sceneToNum } from "@/assets/data/local_data";
+import {
+  basicAllResList,
+  basicResList,
+  sceneToNum
+} from "@/assets/data/local_data";
 import WorkIntro from "./c-cpns/Intro";
 import WorkNav from "./c-cpns/Nav";
 import WorkRemote from "./c-cpns/Remote";
@@ -19,6 +23,11 @@ import { changeNextPathAction } from "../BasicConfig/store";
 
 import Radar_v2 from "@/components/radar_v2";
 import useCalcWorkNum from "@/hooks/useCalcWorkNum";
+import {
+  changeNoiceIsCheckedFlagAction,
+  getVoiceWorkDataAction
+} from "@/pages/NoiseModel/store";
+import { CaretRightOutlined } from "@ant-design/icons";
 
 interface Iprops {
   children?: ReactNode;
@@ -32,7 +41,12 @@ const AdaptAbil: FC<Iprops> = () => {
     needGenState,
     scene,
     run_status,
-    compareRes
+    compareRes,
+    basicStatus,
+    isVoiceCheckedFlag,
+    isVoiceGenPending,
+    isVoiceTestPending,
+    noice_run_status
   } = useAppSelector((state) => ({
     isGenPending: state.adaptAbili.genIsPending,
     isTestPending: state.adaptAbili.testIsPending,
@@ -41,7 +55,13 @@ const AdaptAbil: FC<Iprops> = () => {
     scene: state.basicConfig.scene,
     genIsPending: state.adaptAbili.genIsPending,
     run_status: state.adaptAbili.runResult.status,
-    compareRes: state.adaptAbili.compareRes
+    compareRes: state.adaptAbili.compareRes,
+    basicStatus: state.basicEffect.run_status,
+    isVoiceCheckedFlag: state.noiseModel.isCheckedFlag,
+    isVoiceGenPending: state.noiseModel.noiceGenIsPending,
+    isVoiceTestPending: state.noiseModel.noiceTestIsPending,
+    noice_run_status: state.noiseModel.work_status,
+    noice_genData_status: state.noiseModel.gen_status
   }));
 
   //拿到工况测试运行结果
@@ -62,28 +82,31 @@ const AdaptAbil: FC<Iprops> = () => {
     dispatch(changeConditionList([]));
   }, [scene]);
 
-  const genWorkData = () => {
-    // if (!genData_status) dispatch(changeGenDataStatAction(-1));
-    console.log("pagescene", scene);
-    dispatch(getWorkDataAction(scene)).then((res) => {
-      if (getWorkDataAction.fulfilled.match(res)) {
-        if (res.payload.status == 0) {
-          message.open({
-            type: "success",
-            content: "生成工况数据成功",
-            duration: 2
-          });
-          console.log(`生成工况数据成功`);
-        } else {
-          message.open({
-            type: "error",
-            content: `${res.payload.info}`,
-            duration: 2
-          });
-          console.log("生成工况数据失败");
-        }
+  const genWorkData = async () => {
+    let res = null;
+    if (isVoiceCheckedFlag) {
+      res = await dispatch(getVoiceWorkDataAction());
+    } else {
+      res = await dispatch(getWorkDataAction());
+    }
+    // const res = await dispatch(getWorkDataAction());
+    if (getWorkDataAction.fulfilled.match(res)) {
+      if (res.payload.status == 0) {
+        message.open({
+          type: "success",
+          content: "生成工况数据成功",
+          duration: 2
+        });
+        console.log(`生成工况数据成功`);
+      } else {
+        message.open({
+          type: "error",
+          content: `${res.payload.info}`,
+          duration: 2
+        });
+        console.log("生成工况数据失败");
       }
-    });
+    }
   };
   const runWorkTest = () => {
     dispatch(getWorkResultAction()).then((res) => {
@@ -115,17 +138,34 @@ const AdaptAbil: FC<Iprops> = () => {
     name: workName[index]
   }));
 
-  const indicator = basicAllResList[sceneNum].map((item) => ({
+  const resList = basicStatus ? basicResList : basicAllResList;
+
+  const indicator = resList[sceneNum].map((item) => ({
     name: item,
     // value: result[item.en],
     max: 100
   }));
+
+  /* 页面切换按钮 */
+  const checkHandle = () => {
+    dispatch(changeNoiceIsCheckedFlagAction(!isVoiceCheckedFlag));
+  };
 
   return (
     <AdaptWraper
       canTest={!needGenState || (needGenState && genData_status == 0)}
       run_status={run_status}
     >
+      <div className="checkbox">
+        <Button
+          onClick={checkHandle}
+          className="check"
+          icon={<CaretRightOutlined />}
+          disabled={scene === "voice"}
+        >
+          {!isVoiceCheckedFlag ? "物理噪声模型" : "可适应能力"}
+        </Button>
+      </div>
       {sceneNum == 0 && <WorkIntro />}
       {sceneNum == 1 && <WorkNav />}
       {sceneNum == 2 && <WorkRemote />}
@@ -141,7 +181,12 @@ const AdaptAbil: FC<Iprops> = () => {
           生成工况数据
         </Button>
         <div className="spinning">
-          <Spin spinning={isGenPending[sceneNum]} size={"large"} />
+          <Spin
+            spinning={
+              isVoiceCheckedFlag ? isVoiceGenPending : isGenPending[sceneNum]
+            }
+            size={"large"}
+          />
         </div>
         {/* disabled={scene != pageScene || (needGenState && genData_status != 0)} */}
         <Button
@@ -150,16 +195,26 @@ const AdaptAbil: FC<Iprops> = () => {
           onClick={() => {
             runWorkTest();
           }}
-          disabled={needGenState && genData_status != 0}
+          //   disabled={needGenState && genData_status != 0}
+          disabled={
+            isVoiceCheckedFlag ? noice_run_status !== 0 : genData_status !== 0
+          }
         >
           进行工况测试
         </Button>
         <div className="spinning">
-          <Spin spinning={isTestPending[sceneNum]} size={"large"} />
+          <Spin
+            spinning={
+              isVoiceCheckedFlag ? isVoiceTestPending : isTestPending[sceneNum]
+            }
+            size={"large"}
+          />
         </div>
         <Button
           className="next btn"
-          disabled={run_status !== 0}
+          disabled={
+            isVoiceCheckedFlag ? noice_run_status !== 0 : run_status !== 0
+          }
           onClick={() => {
             const next_path = "/profile/trust";
             dispatch(changeNextPathAction(next_path));

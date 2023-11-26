@@ -31,6 +31,7 @@ export const HeaderWrap = styled.div`
     width: 3.2vw;
     text-align: center;
     /* font-size: 16px; */
+
     color: white;
     background: url(${logo}) 0 0 / contain no-repeat;
   }

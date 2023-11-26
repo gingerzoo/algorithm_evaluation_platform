@@ -6,6 +6,8 @@ type Istate = {
 };
 
 export const AdaptWraper = styled.div<Istate>`
+  font-size: 1.2vw;
+  color: ${(props) => props.theme.textColor.primaryColor};
   .operate {
     display: flex;
     /* justify-content: flex-end; */
@@ -32,5 +34,13 @@ export const AdaptWraper = styled.div<Istate>`
           props.run_status == 0 ? props.theme.color.primaryColor : "#C8C8C8"};
       }
     }
+  }
+
+  .checkbox {
+    display: flex;
+    justify-content: right;
+    margin: -20px 2vw 5px;
+
+    /* margin: 0.5; */
   }
 `;
