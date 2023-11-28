@@ -8,7 +8,7 @@ export const OrderWrap = styled.div`
   .title {
     color: ${(props) => props.theme.textColor.primaryColor};
     font-weight: 700;
-    font-size: 1.3vw;
+    font-size: 1.2vw;
     margin-right: 1.4vw;
   }
 

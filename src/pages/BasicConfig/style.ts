@@ -58,7 +58,8 @@ export const ConfigWrap = styled.div<Iprops>`
     }
   }
   button.btn {
-    height: 3.8vw;
+    font-size: 1.2vw;
+    height: 3.6vw;
     line-height: 3.8vw;
     margin-right: 4.8vw;
     padding: 0 2.2vw;

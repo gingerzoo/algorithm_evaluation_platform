@@ -79,7 +79,7 @@ const Results: FC<Iprops> = (props) => {
   //   const workName = checkList[sceneNum].map((item: boolean, index) => {
   //     if (item) return `工况${index + 1}`;
   //   }) as string[];
-  const workName = useCalcWorkNum();
+  const { workName } = useCalcWorkNum();
   let score_list: string[] = [];
   const color = ["#FCCA00", "#73C0DE", "#5470C6", "#EE6666"];
 

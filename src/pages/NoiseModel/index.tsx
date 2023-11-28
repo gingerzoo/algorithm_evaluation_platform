@@ -6,6 +6,8 @@ import { changeNoiseArray } from "./store";
 import { useDispatch } from "react-redux";
 
 import { useAppSelector } from "@/store";
+import Basic_result from "../BasicConfig/c-cpns/basic_result";
+import { IbasicRes } from "@/type";
 // import { Button } from "antd";
 
 interface Iprops {
@@ -25,7 +27,9 @@ const NoiseModel: FC<Iprops> = () => {
     thermalBandwidth,
     minQuantizationUnit,
     gainK1,
-    gainK2
+    gainK2,
+    run_res,
+    sceneNum
   } = useAppSelector((state) => ({
     current: state.noiseModel.current,
     bandwidth: state.noiseModel.bandwidth,
@@ -36,7 +40,9 @@ const NoiseModel: FC<Iprops> = () => {
     thermalBandwidth: state.noiseModel.tbandwidth,
     minQuantizationUnit: state.noiseModel.mqUnit,
     gainK1: state.noiseModel.gainK1,
-    gainK2: state.noiseModel.gainK2
+    gainK2: state.noiseModel.gainK2,
+    run_res: state.noiseModel.work_result,
+    sceneNum: state.basicConfig.sceneNum
   }));
 
   const noiseArray = [
@@ -56,31 +62,40 @@ const NoiseModel: FC<Iprops> = () => {
     console.log(noiseArray);
   };
 
+  let count = 0;
+
   return (
     <NoiseModelWrapper>
       <table>
         <tbody>
           <tr>
-            <th rowSpan={0} style={{ width: "8.5vw" }}>
+            <th rowSpan={11} style={{ width: "7.8vw" }}>
               物理噪声模型
             </th>
-            <th style={{ width: "9vw" }}>物理噪声</th>
-            <th style={{ width: "11vw" }}>物理参数(单位)</th>
-            <th style={{ width: "13vw" }}>参数输入</th>
+            <th style={{ width: "8.2vw" }}>噪声名称</th>
+            <th style={{ width: "10vw" }}>物理参数(单位)</th>
+            <th style={{ width: "12vw" }}>参数输入</th>
             <th>备注</th>
+            <th style={{ width: "3vw" }}>等级</th>
             {/* <th>等级</th> */}
           </tr>
           {noiseTableData.map((item, index) => {
+            count += item.parNum;
             return (
               <Fragment key={item.title}>
-                <tr>
+                {/* <tr>
                   <td rowSpan={item.parNum + 1}>{item.title}</td>
-                </tr>
+                </tr> */}
+                {/* <td rowSpan={item.parNum + 1}>{item.title}</td> */}
                 {item.par.map((subItem, subIndex) => {
                   const { name } = subItem;
                   const noiseNum = NoiseNum[name];
+
                   return (
                     <tr key={noiseNum}>
+                      {count == subItem.curIndex + item.parNum && (
+                        <td rowSpan={item.parNum}>{item.title}</td>
+                      )}
                       <td>{subItem.name}</td>
                       <td className="para">
                         <input
@@ -88,7 +103,7 @@ const NoiseModel: FC<Iprops> = () => {
                           id={subItem.name}
                           min={subItem.min}
                           max={subItem.max}
-                          defaultValue={0}
+                          //   defaultValue={subItem.defaultValue}
                           step={10}
                           value={noiseArray[subItem.curIndex]}
                           //  value={current}
@@ -110,12 +125,28 @@ const NoiseModel: FC<Iprops> = () => {
                           {item.log}
                         </td>
                       )}
+                      {subItem.curIndex === 0 && (
+                        <td rowSpan={10} className="rate bold">
+                          {run_res.condition_result[0]}
+                        </td>
+                      )}
+                      {/* <td colSpan={14}>A</td> */}
                     </tr>
                   );
                 })}
               </Fragment>
             );
           })}
+          <tr>
+            <td className="bold">得分</td>
+            <td>
+              {run_res.population_score[0]
+                ? (run_res.population_score[0] * 100).toFixed(0)
+                : ""}
+            </td>
+            <td className="bold">总体评价</td>
+            <td colSpan={3}>{run_res.overall}</td>
+          </tr>
         </tbody>
       </table>
       {/* <Button onClick={clickHandle}>提交</Button> */}

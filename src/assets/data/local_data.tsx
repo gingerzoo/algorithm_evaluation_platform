@@ -793,6 +793,7 @@ export type noisePar = {
   min: number;
   max: number;
   curIndex: number;
+  defaultValue: number;
 };
 
 export type noiseTableType = {
@@ -810,14 +811,16 @@ export const noiseTableData: noiseTableType[] = [
       {
         name: "电流大小I(A)",
         min: 0,
-        max: 100,
-        curIndex: 0
+        max: 10,
+        curIndex: 0,
+        defaultValue: 40
       },
       {
         name: "带宽f1(kHz)",
         min: 0,
-        max: 100,
-        curIndex: 1
+        max: 10,
+        curIndex: 1,
+        defaultValue: 60
       }
     ],
     log: "散粒噪声是晶体管中少数载流子数目和速度起伏导致结电流的微小变化引起的\nN1=2*q*I*f1\nq是一个电子的电荷, I是流经节点的电流"
@@ -830,13 +833,15 @@ export const noiseTableData: noiseTableType[] = [
         name: "光照时间t(ms)",
         min: 0,
         max: 999,
-        curIndex: 2
+        curIndex: 2,
+        defaultValue: 30
       },
       {
         name: "光粒子数n(M)",
         min: 0,
         max: 999,
-        curIndex: 3
+        curIndex: 3,
+        defaultValue: 50
       }
     ],
     log: "光子散粒噪声是光电二极管内的光子数量变动引起的\nN2=n*t*e^(-n*t)\nt为光照时间, n为在t秒内的光粒子数"
@@ -847,21 +852,24 @@ export const noiseTableData: noiseTableType[] = [
     par: [
       {
         name: "温度T(K)",
-        min: 0,
-        max: 500,
-        curIndex: 4
+        min: 250,
+        max: 400,
+        curIndex: 4,
+        defaultValue: 70
       },
       {
         name: "电阻R(kΩ)",
-        min: 1,
-        max: 999,
-        curIndex: 5
+        min: 0,
+        max: 10,
+        curIndex: 5,
+        defaultValue: 41
       },
       {
         name: "带宽f2(kHz)",
         min: 0,
-        max: 999,
-        curIndex: 6
+        max: 10,
+        curIndex: 6,
+        defaultValue: 100
       }
     ],
     log: "热噪声存在于所有电子器件和传输介质中, 由于带电粒子热骚动而产生的\nN3=4*K*T*f2/R\nK是玻尔兹曼常数, T为绝对温度, R是电阻"
@@ -873,8 +881,9 @@ export const noiseTableData: noiseTableType[] = [
       {
         name: "最小量化单位q",
         min: 0,
-        max: 100,
-        curIndex: 7
+        max: 1,
+        curIndex: 7,
+        defaultValue: 40
       }
     ],
     log: "q为最低有效位可表示的最小单位"
@@ -887,13 +896,15 @@ export const noiseTableData: noiseTableType[] = [
         name: "K1",
         min: 0,
         max: 100,
-        curIndex: 8
+        curIndex: 8,
+        defaultValue: 90
       },
       {
         name: "K2",
         min: 0,
         max: 100,
-        curIndex: 9
+        curIndex: 9,
+        defaultValue: 60
       }
     ],
     log: "K1为系统的内增益, K2为系统的全增益"

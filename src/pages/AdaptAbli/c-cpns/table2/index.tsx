@@ -50,7 +50,8 @@ const MyTable2: FC<Iprops> = (props) => {
     basicResult,
     resImgs,
     overAll,
-    basicStatus
+    basicStatus,
+    adapt_run_status
   } = useAppSelector(
     (state) => ({
       scene: state.basicConfig.scene,
@@ -63,7 +64,8 @@ const MyTable2: FC<Iprops> = (props) => {
       basicResult: state.basicEffect.population_score,
       resImgs: state.adaptAbili.resultImgs,
       overAll: state.adaptAbili.overAll,
-      basicStatus: state.basicEffect.run_status
+      basicStatus: state.basicEffect.run_status,
+      adapt_run_status: state.adaptAbili.run_status
     }),
     shallowEqual
   );
@@ -486,7 +488,7 @@ const MyTable2: FC<Iprops> = (props) => {
                 title="对比结果"
                 placement="topRight"
                 overlayStyle={{ maxWidth: "18vw", color: "white" }}
-                open={basicStatus === 0}
+                open={basicStatus === 0 && adapt_run_status === 0}
               >
                 <div>
                   {` 基础效能检测分数为为${basicResult},智能等级为${Math.floor(

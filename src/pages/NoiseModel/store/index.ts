@@ -3,7 +3,8 @@ import { IrootState } from "@/store";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { NoiseArray } from "@/assets/data/local_data";
 import { getWorkDataset, getWorkResult } from "@/pages/AdaptAbli/services";
-import { Iwork, IworkResult } from "@/type";
+import { Iguid, Inav, Iremo, Ivoice, Iwork, IworkResult } from "@/type";
+import { getCompareResListAction } from "@/pages/AdaptAbli/store";
 
 type INoiseModel = {
   current: number;
@@ -23,6 +24,9 @@ type INoiseModel = {
   gen_status: number;
   workCondition: Iwork[];
   work_result: IworkResult;
+  noice_compareRes: number[][];
+  //   scoreList: number[];
+  //   statusList: number[];
 };
 
 /* 噪声模型生成数据集 */
@@ -130,14 +134,123 @@ export const getVoiceWorkResAction = createAsyncThunk<
   });
 
   try {
+    console.log("运行噪声模型传递给后端的参数", {
+      scene: sceneNum,
+      data_type: date_type,
+      interference: [Object.fromEntries(interference)]
+    });
     const res: IworkResult = await getWorkResult(sceneNum, date_type, [
       Object.fromEntries(interference)
     ]);
-    console.log("可适应能力返回的测试结果", res);
+    console.log("噪声模型返回的测试结果", res);
     dispatch(changeNoiceWorkStatusAction(res.status));
     dispatch(changeNoiceWorkResAction(res));
-    // console.log("可适应能力返回的测试结果", res);
-    //   dispatch(changeRunResult(res));
+
+    // let scoreList = null;
+    // let statusList = null;
+    // switch (sceneNum) {
+    //   case 0: {
+    //     const {
+    //       center_position_error_score,
+    //       center_position_error_result,
+    //       iou_score,
+    //       iou_result,
+    //       robustness_score,
+    //       robustness_result,
+    //       population_score,
+    //       population_result
+    //     } = res.score_info[0] as Iguid;
+    //     scoreList = [
+    //       center_position_error_score,
+    //       iou_score,
+    //       robustness_score,
+    //       population_score
+    //     ].map((item) => parseFloat((item * 100).toFixed(1)));
+    //     statusList = [
+    //       center_position_error_result,
+    //       iou_result,
+    //       robustness_result,
+    //       population_result
+    //     ];
+
+    //     break;
+    //   }
+    //   case 1: {
+    //     const {
+    //       mutual_information_score,
+    //       mutual_information_result,
+    //       relevance_score,
+    //       relevance_result,
+    //       positioning_accuracy_score,
+    //       positioning_accuracy_result,
+    //       population_score,
+    //       population_result
+    //     } = res.score_info[0] as Inav;
+    //     scoreList = [
+    //       mutual_information_score,
+    //       relevance_score,
+
+    //       positioning_accuracy_score,
+    //       population_score
+    //     ].map((item) => parseFloat((item * 100).toFixed(1)));
+    //     statusList = [
+    //       mutual_information_result,
+    //       relevance_result,
+
+    //       positioning_accuracy_result,
+    //       population_result
+    //     ];
+
+    //     break;
+    //   }
+    //   case 2: {
+    //     const {
+    //       f1_score,
+    //       f1_result,
+    //       map_score,
+    //       map_result,
+    //       mar_score,
+    //       mar_result,
+    //       population_score,
+    //       population_result
+    //     } = res.score_info[0] as Iremo;
+    //     scoreList = [f1_score, map_score, mar_score, population_score].map(
+    //       (item) => parseFloat((item * 100).toFixed(1))
+    //     );
+    //     statusList = [f1_result, map_result, mar_result, population_result];
+
+    //     break;
+    //   }
+    //   case 3: {
+
+    //     const {
+    //       word_error_rate_score,
+    //       word_error_rate_result,
+    //       sentence_error_rate_score,
+    //       sentence_error_rate_result,
+    //       population_score,
+    //       population_result
+    //     } = res.score_info[0] as Ivoice;
+    //     scoreList = [
+    //       word_error_rate_score,
+    //       sentence_error_rate_score,
+    //       population_score
+    //     ].map((item) => parseFloat((item * 100).toFixed(1)));
+    //     statusList = [
+    //       word_error_rate_result,
+    //       sentence_error_rate_result,
+    //       population_result
+    //     ];
+
+    //     break;
+    //   }
+    //   default:
+    //     break;
+    // }
+
+    // dispatch(changeNoiceScoreListAction(scoreList));
+    // dispatch(changeNoiceStatusListAction(statusList));
+    dispatch(getCompareResListAction());
     return {
       status: res.status,
       info: res.info
@@ -151,16 +264,16 @@ export const getVoiceWorkResAction = createAsyncThunk<
 });
 
 const initialState: INoiseModel = {
-  current: 0,
-  bandwidth: 0,
-  exposureTime: 0,
-  photonCount: 0,
-  temperature: 0,
-  resistance: 0,
-  tbandwidth: 0,
-  mqUnit: 0,
-  gainK1: 0,
-  gainK2: 0,
+  current: 1,
+  bandwidth: 1,
+  exposureTime: 1,
+  photonCount: 1,
+  temperature: 1,
+  resistance: 1,
+  tbandwidth: 1,
+  mqUnit: 1,
+  gainK1: 1,
+  gainK2: 1,
   isCheckedFlag: false,
   noiceGenIsPending: false,
   noiceTestIsPending: false,
@@ -174,7 +287,10 @@ const initialState: INoiseModel = {
     info: "",
     population_score: [],
     score_info: []
-  }
+  },
+  noice_compareRes: []
+  //   scoreList: [],
+  //   statusList: []
 };
 
 const resultSlice = createSlice({
@@ -231,7 +347,16 @@ const resultSlice = createSlice({
     },
     changeNoiceGenStatusAction(state, { payload }) {
       state.gen_status = payload;
+    },
+    changeNoiceCompareResAction(state, { payload }) {
+      state.noice_compareRes = payload;
     }
+    // changeNoiceScoreListAction(state, { payload }) {
+    //   state.scoreList = payload;
+    // },
+    // changeNoiceStatusListAction(state, { payload }) {
+    //   state.statusList = payload;
+    // }
   },
   extraReducers: (builder) => {
     builder
@@ -273,7 +398,10 @@ export const {
   changeNoiceWorkStatusAction,
   changeNoiceWorkCondiAction,
   changeNoiceWorkResAction,
-  changeNoiceGenStatusAction
+  changeNoiceGenStatusAction,
+  changeNoiceCompareResAction
+  //   changeNoiceScoreListAction,
+  //   changeNoiceStatusListAction
 } = resultSlice.actions;
 
 export const changeNoiseArray = [

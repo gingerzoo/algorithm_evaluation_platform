@@ -6,6 +6,14 @@ interface Ires {
   model_name: Ialgo[];
 }
 
+export type IimgCoor = {
+  status: number;
+  info: string;
+  img: string;
+  coor: object;
+  num_all: number;
+};
+
 export function getDocker(docker: FormData) {
   return lxrequest.request<string>({
     url: "/baseConfig/uploaddocker",
@@ -63,6 +71,40 @@ export function getAfDelAlgoList(docker_name: string) {
     method: "post",
     data: {
       docker_name: docker_name
+    }
+  });
+}
+
+export function getDataSetImg(
+  scene: number,
+  data_type: string,
+  index_img: number
+) {
+  return lxrequest.request<IimgCoor>({
+    url: "/dataset/modify_coor",
+    method: "post",
+    data: {
+      scene,
+      data_type,
+      index_img
+    }
+  });
+}
+
+export function getChangeImgCoor(
+  scene: number,
+  data_type: string,
+  index_img: number,
+  coor: object
+) {
+  return lxrequest.request<Iresult>({
+    url: "/dataset/modify_coor",
+    method: "post",
+    data: {
+      scene,
+      data_type,
+      index_img,
+      coor
     }
   });
 }

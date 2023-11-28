@@ -9,7 +9,7 @@ export const SideWrap = styled.div`
 
   /* background-color: rgba(0, 128, 128, 0.1); */
   ul.ant-menu {
-    font-size: 16px;
+    font-size: 1.12vw;
 
     /* background-color: rgba(27, 145, 162, 0.1); */
   }
@@ -20,8 +20,8 @@ export const SideWrap = styled.div`
   li.ant-menu-item,
   div.ant-menu-submenu-title {
     height: 3vw;
-    min-height: 30px;
-    max-height: 60px;
+    min-height: 2.37vw;
+    max-height: 4.8vw;
     line-height: 3vw;
   }
 `;

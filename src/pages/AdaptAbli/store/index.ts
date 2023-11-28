@@ -13,7 +13,10 @@ import store, { IrootState } from "@/store";
 import { message } from "antd";
 import { sceneToNum } from "@/assets/data/local_data";
 import { FulfilledAction, Iwork, IworkResult, RejectedAction } from "@/type";
-import { getVoiceWorkDataAction } from "@/pages/NoiseModel/store";
+import {
+  changeNoiceCompareResAction,
+  getVoiceWorkDataAction
+} from "@/pages/NoiseModel/store";
 
 //这是干啥的？？？返回的不同场景下condition的列表
 type Icondition = {
@@ -59,6 +62,7 @@ export interface Iadapt {
   checkList: boolean[][];
   runResult: IworkResult;
   imgUrl: string[];
+  run_status: number;
   picIndex: number;
   pageScene: string;
   populstion_score: number;
@@ -177,6 +181,7 @@ export const getWorkResultAction = createAsyncThunk<
           res.population_score.length)
       ).toFixed(2);
       dispatch(changeAdaptPopulationAction(populationAll));
+      dispatch(changeAdaptRunStatusAction(res.status));
       if (res.status == 0) {
         dispatch(changeAdaptOverAllAction(res.overall));
         let count = 0;
@@ -330,6 +335,7 @@ export const getCompareResListAction = createAsyncThunk<
   void,
   { state: IrootState }
 >("compareResList", (par, { dispatch, getState }) => {
+  const isNoice = getState().noiseModel.isCheckedFlag;
   try {
     getCompareResList("adaptablity").then((res) => {
       // console.log(res);
@@ -345,7 +351,7 @@ export const getCompareResListAction = createAsyncThunk<
       } else {
         const result: number[][] = res.result.map((items) => {
           return items.map((item) => {
-            return parseFloat((item * 100).toFixed(0));
+            return parseFloat((item * 100).toFixed(2));
           });
         });
         const scene = getState().basicConfig.scene;
@@ -355,8 +361,11 @@ export const getCompareResListAction = createAsyncThunk<
           result.push(basicRes);
         }
         console.log("处理好的caompare数据", result);
-
-        dispatch(changeAdaptCompareResAction(result));
+        if (isNoice) {
+          dispatch(changeNoiceCompareResAction(result));
+        } else {
+          dispatch(changeAdaptCompareResAction(result));
+        }
       }
     });
   } catch (err) {
@@ -596,7 +605,8 @@ const initialState: Iadapt = {
     [82, 80, 63, 76],
     [77, 44, 88, 69]
   ],
-  overAll: ""
+  overAll: "",
+  run_status: -1
 };
 const adaptSlice = createSlice({
   name: "adaptSlice",
@@ -682,6 +692,9 @@ const adaptSlice = createSlice({
     },
     changeAdaptOverAllAction(state, { payload }) {
       state.overAll = payload;
+    },
+    changeAdaptRunStatusAction(state, { payload }) {
+      state.run_status = payload;
     }
   },
   extraReducers: (builder) => {
@@ -760,5 +773,6 @@ export const {
   changeAdaptPopulationAction,
   changeAdaptResImgsAction,
   changeAdaptCompareResAction,
-  changeAdaptOverAllAction
+  changeAdaptOverAllAction,
+  changeAdaptRunStatusAction
 } = adaptSlice.actions;

@@ -8,6 +8,17 @@ type Istate = {
 export const AdaptWraper = styled.div<Istate>`
   font-size: 1.2vw;
   color: ${(props) => props.theme.textColor.primaryColor};
+
+  .bold {
+    font-weight: 700;
+  }
+  .ant-btn.btn {
+    height: auto;
+    font-size: 1.3vw;
+    padding: 0.5vw 1.5vw;
+    ${(props) => props.theme.mixin.btnHover}
+  }
+
   .operate {
     display: flex;
     /* justify-content: flex-end; */
@@ -16,13 +27,6 @@ export const AdaptWraper = styled.div<Istate>`
 
     .spinning {
       margin: 0 3vw 0 2vw;
-    }
-
-    .ant-btn.btn {
-      height: auto;
-      font-size: 1.3vw;
-      padding: 0.5vw 1.5vw;
-      ${(props) => props.theme.mixin.btnHover}
     }
 
     .btn.next {
@@ -39,7 +43,11 @@ export const AdaptWraper = styled.div<Istate>`
   .checkbox {
     display: flex;
     justify-content: right;
-    margin: -20px 2vw 5px;
+    margin: -24px 2vw 8px;
+    .transfor {
+      font-size: 1vw;
+      padding: 0.4vw 1.2vw;
+    }
 
     /* margin: 0.5; */
   }

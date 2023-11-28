@@ -106,7 +106,7 @@ export const getBasicEffectAction = createAsyncThunk<
               iou_score,
               robustness_score,
               population_score
-            ].map((item) => parseFloat((item * 100).toFixed(1))),
+            ].map((item) => parseFloat((item * 100).toFixed(2))),
             status: [
               center_position_error_result,
               iou_result,
@@ -138,7 +138,7 @@ export const getBasicEffectAction = createAsyncThunk<
 
               positioning_accuracy_score,
               population_score
-            ].map((item) => parseFloat((item * 100).toFixed(1))),
+            ].map((item) => parseFloat((item * 100).toFixed(2))),
             status: [
               mutual_information_result,
               relevance_result,
@@ -166,7 +166,7 @@ export const getBasicEffectAction = createAsyncThunk<
         dispatch(
           changeBasicRemoteReListAction({
             score: [f1_score, map_score, mar_score, population_score].map(
-              (item) => parseFloat((item * 100).toFixed(1))
+              (item) => parseFloat((item * 100).toFixed(2))
             ),
             status: [f1_result, map_result, mar_result, population_result]
           })
@@ -190,7 +190,7 @@ export const getBasicEffectAction = createAsyncThunk<
               word_error_rate_score,
               sentence_error_rate_score,
               population_score
-            ].map((item) => parseFloat((item * 100).toFixed(1))),
+            ].map((item) => parseFloat((item * 100).toFixed(2))),
             status: [
               word_error_rate_result,
               sentence_error_rate_result,

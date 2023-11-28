@@ -134,6 +134,7 @@ const AlgorithmUpload: FC<Iprops> = (props) => {
       <button onClick={btnHandleClick} className={"false-input"}>
         <i ref={eContRef}> 选择docker包</i>
         <span
+          className="upload-button"
           onClick={(e) => {
             submmitBtnClick(e);
           }}

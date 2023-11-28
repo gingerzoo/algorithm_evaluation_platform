@@ -93,7 +93,7 @@ body .ant-menu-light.ant-menu-horizontal > .ant-menu-item.ant-menu-item-active::
   border-bottom-color: rgba(49, 156, 171, 0.9);
 }
 body .ant-select-single.ant-select-show-arrow .ant-select-selection-placeholder {
-  font-size: 12px;
+  font-size: 0.8vw;
   color: rgba(0, 0, 0, 0.48);
 }
 .ant-select-dropdown .ant-select-item.ant-select-item-option .ant-select-item-option-content .optionItem {

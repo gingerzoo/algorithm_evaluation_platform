@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { AdaptWraper } from "./style";
 import { useAppDispatch, useAppSelector } from "@/store";
 import {
+  changeAdaptRunStatusAction,
   changeConditionList,
   changeNewWorkObjAction,
   getWorkDataAction,
@@ -25,9 +26,12 @@ import Radar_v2 from "@/components/radar_v2";
 import useCalcWorkNum from "@/hooks/useCalcWorkNum";
 import {
   changeNoiceIsCheckedFlagAction,
-  getVoiceWorkDataAction
+  changeNoiceWorkStatusAction,
+  getVoiceWorkDataAction,
+  getVoiceWorkResAction
 } from "@/pages/NoiseModel/store";
 import { CaretRightOutlined } from "@ant-design/icons";
+import classNames from "classnames";
 
 interface Iprops {
   children?: ReactNode;
@@ -54,7 +58,7 @@ const AdaptAbil: FC<Iprops> = () => {
     needGenState: state.adaptAbili.needGenData,
     scene: state.basicConfig.scene,
     genIsPending: state.adaptAbili.genIsPending,
-    run_status: state.adaptAbili.runResult.status,
+    run_status: state.adaptAbili.run_status,
     compareRes: state.adaptAbili.compareRes,
     basicStatus: state.basicEffect.run_status,
     isVoiceCheckedFlag: state.noiseModel.isCheckedFlag,
@@ -84,9 +88,12 @@ const AdaptAbil: FC<Iprops> = () => {
 
   const genWorkData = async () => {
     let res = null;
+
     if (isVoiceCheckedFlag) {
+      dispatch(changeNoiceWorkStatusAction(-1));
       res = await dispatch(getVoiceWorkDataAction());
     } else {
+      dispatch(changeAdaptRunStatusAction(-1));
       res = await dispatch(getWorkDataAction());
     }
     // const res = await dispatch(getWorkDataAction());
@@ -108,46 +115,57 @@ const AdaptAbil: FC<Iprops> = () => {
       }
     }
   };
-  const runWorkTest = () => {
-    dispatch(getWorkResultAction()).then((res) => {
-      if (getWorkResultAction.fulfilled.match(res)) {
-        if (res.payload.status == 0) {
-          message.open({
-            type: "success",
-            content: "执行工况测试成功",
-            duration: 2
-          });
-        } else {
-          message.open({
-            type: "error",
-            content: `${res.payload.info}`,
-            duration: 2
-          });
-        }
+  const runWorkTest = async () => {
+    console.log("点击了执行工况！！！！！！");
+    let res = null;
+    if (isVoiceCheckedFlag) {
+      res = await dispatch(getVoiceWorkResAction());
+    } else {
+      res = await dispatch(getWorkResultAction());
+    }
+
+    if (getWorkResultAction.fulfilled.match(res)) {
+      if (res.payload.status == 0) {
+        message.open({
+          type: "success",
+          content: "执行工况测试成功",
+          duration: 2
+        });
+      } else {
+        message.open({
+          type: "error",
+          content: `${res.payload.info}`,
+          duration: 2
+        });
       }
-    });
+    }
   };
 
-  const workName = useCalcWorkNum();
-  workName.push("基础效能");
+  const { data, indicator, workName } = useCalcWorkNum();
+
   //   console.log("workName", workName);
 
   /* 传给雷达图的数据 */
-  const data = compareRes?.map((item, index) => ({
-    value: item,
-    name: workName[index]
-  }));
+  //   const data = compareRes?.map((item, index) => ({
+  //     value: item,
+  //     name: workName[index]
+  //   }));
 
-  const resList = basicStatus ? basicResList : basicAllResList;
+  //   const resList = basicStatus ? basicResList : basicAllResList;
 
-  const indicator = resList[sceneNum].map((item) => ({
-    name: item,
-    // value: result[item.en],
-    max: 100
-  }));
+  //   const indicator = resList[sceneNum].map((item) => ({
+  //     name: item,
+  //     max: 100
+  //   }));
 
   /* 页面切换按钮 */
   const checkHandle = () => {
+    // if (isVoiceCheckedFlag) {
+    //   dispatch(changeNoiceWorkStatusAction(-1));
+    // } else {
+    //   dispatch(changeAdaptRunStatusAction(-1));
+    // }
+
     dispatch(changeNoiceIsCheckedFlagAction(!isVoiceCheckedFlag));
   };
 
@@ -159,11 +177,11 @@ const AdaptAbil: FC<Iprops> = () => {
       <div className="checkbox">
         <Button
           onClick={checkHandle}
-          className="check"
+          className={classNames("btn", "transfor")}
           icon={<CaretRightOutlined />}
           disabled={scene === "voice"}
         >
-          {!isVoiceCheckedFlag ? "物理噪声模型" : "可适应能力"}
+          {!isVoiceCheckedFlag ? "物理噪声模型" : "自定义模型"}
         </Button>
       </div>
       {sceneNum == 0 && <WorkIntro />}
@@ -196,9 +214,9 @@ const AdaptAbil: FC<Iprops> = () => {
             runWorkTest();
           }}
           //   disabled={needGenState && genData_status != 0}
-          disabled={
-            isVoiceCheckedFlag ? noice_run_status !== 0 : genData_status !== 0
-          }
+          //   disabled={
+          //     isVoiceCheckedFlag ? noice_run_status !== 0 : genData_status !== 0
+          //   }
         >
           进行工况测试
         </Button>
@@ -224,8 +242,10 @@ const AdaptAbil: FC<Iprops> = () => {
           评估可信赖能力
         </Button>
       </div>
-      {!run_status && <Radar_v2 data={data} indicator={indicator} />}
-      {/* <Radar_v2 data={data} indicator={indicator} /> */}
+      {((isVoiceCheckedFlag && noice_run_status === 0) ||
+        (!isVoiceCheckedFlag && run_status === 0)) && (
+        <Radar_v2 data={data} indicator={indicator} />
+      )}
     </AdaptWraper>
   );
 };
