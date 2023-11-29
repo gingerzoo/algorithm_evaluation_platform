@@ -338,10 +338,7 @@ const Sunburst: FC<Iprops> = (props) => {
       option={getOption()}
       //   ref={sunburstRef}
       notMerge={true}
-      //   lazyUpdate={true}
-      //   onEvents={}
-      // onChartReady={onChartReady}
-      style={{ width: "100%", height: "28vw" }}
+      style={{ width: "100%", height: "25vw" }}
       onEvents={onEvents}
     />
   );

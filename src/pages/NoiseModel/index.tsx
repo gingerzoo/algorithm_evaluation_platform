@@ -104,7 +104,7 @@ const NoiseModel: FC<Iprops> = () => {
                           min={subItem.min}
                           max={subItem.max}
                           //   defaultValue={subItem.defaultValue}
-                          step={10}
+                          step={subItem.step}
                           value={noiseArray[subItem.curIndex]}
                           //  value={current}
 

@@ -1,13 +1,17 @@
 import { subs } from "@/assets/data/local_data";
 import { IrootState } from "@/store";
+import { failedMessage, successMessage } from "@/utils/message";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { message } from "antd";
 import {
   commitData,
   getAfDelAlgoList,
   getAlogrithmName,
+  getChangeImgCoor,
+  getDataSetImg,
   getDocker,
-  getSystemOverview
+  getSystemOverview,
+  IimgCoor
 } from "../service";
 
 export type Isystem = {
@@ -57,6 +61,8 @@ type Iscene = {
   curAlgo: Ialgo;
   user_name: string;
   canLogin: boolean;
+  pic_info: IimgCoor;
+  coordinate: number[];
 };
 const initialState: Iscene = {
   scene: "remote",
@@ -97,7 +103,15 @@ const initialState: Iscene = {
   },
   currentModule: "",
   user_name: "",
-  canLogin: false
+  canLogin: false,
+  pic_info: {
+    status: -1,
+    info: "",
+    img: "",
+    coor: [],
+    num_all: 0
+  },
+  coordinate: []
 };
 
 export const getSystemAction = createAsyncThunk<
@@ -123,11 +137,7 @@ export const getSystemAction = createAsyncThunk<
     // const scene = subs[res.scene].link.slice(1);
     dispatch(changeSceneAction(scene));
   } catch (err) {
-    message.open({
-      type: "error",
-      content: "网络请求发生错误",
-      duration: 2
-    });
+    failedMessage("网络请求发生错误");
     console.log(err);
   }
 });
@@ -260,6 +270,60 @@ export const getDockerAction = createAsyncThunk<
   }
 });
 
+export const getDataImgInfoAction = createAsyncThunk<
+  void,
+  number,
+  {
+    state: IrootState;
+  }
+>("delete_alogrithmList", async (par, { dispatch, getState }) => {
+  const sceneNum = getState().basicConfig.sceneNum;
+  const data_type = getState().basicConfig.dataName;
+
+  try {
+    const res = await getDataSetImg(sceneNum, data_type, par);
+    if (res.status === 0) {
+      dispatch(changeCoordinateAction(res.coor[0].bbox));
+      dispatch(changeDataImgInfoAction(res));
+    }
+  } catch (err) {
+    message.open({
+      type: "error",
+      content: "网络错误",
+      duration: 2
+    });
+  }
+});
+
+export const getChangeCoorAction = createAsyncThunk<
+  void,
+  {
+    imgIndex: number;
+    coor: number[];
+  },
+  {
+    state: IrootState;
+  }
+>("delete_alogrithmList", async (par, { dispatch, getState }) => {
+  const sceneNum = getState().basicConfig.sceneNum;
+  const data_type = getState().basicConfig.dataName;
+
+  try {
+    const res = await getChangeImgCoor(
+      sceneNum,
+      data_type,
+      par.imgIndex,
+      par.coor
+    );
+
+    if (res.status !== 0) {
+      failedMessage(`更改图片失败,失败原因：${res.info}`);
+    }
+  } catch (err) {
+    successMessage('网络错误"');
+  }
+});
+
 const sceneSlice = createSlice({
   name: "sceneslice",
   initialState,
@@ -323,6 +387,12 @@ const sceneSlice = createSlice({
     },
     changeCurAlgoAction(state, { payload }) {
       state.curAlgo = payload;
+    },
+    changeDataImgInfoAction(state, { payload }) {
+      state.pic_info = payload;
+    },
+    changeCoordinateAction(state, { payload }) {
+      state.coordinate = payload;
     }
   }
 });
@@ -346,7 +416,9 @@ export const {
   changeRemoteModelNameAction,
   changeVoiceModelNameAction,
   changeSelectedSceneAction,
-  changeCurAlgoAction
+  changeCurAlgoAction,
+  changeDataImgInfoAction,
+  changeCoordinateAction
 } = sceneSlice.actions;
 
 export default sceneSlice.reducer;

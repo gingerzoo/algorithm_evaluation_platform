@@ -22,9 +22,6 @@ const Picture: FC<Iprops> = (props) => {
   const carouselRef = useRef<CarouselRef>(null);
   return (
     <PictureWrap>
-      {/* <div className="desc">
-        <p>当前数据集类型：</p>
-      </div> */}
       <div className="slider">
         <Carousel afterChange={onChange} dots={false} ref={carouselRef}>
           {imgUrls.map((item) => {

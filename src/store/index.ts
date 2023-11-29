@@ -6,6 +6,9 @@ import adaptReducer from "@/pages/AdaptAbli/store";
 import datasetReducer from "@/pages/Dataset/store";
 import trustReducer from "@/pages/TrustAbil/store";
 import homeReducer from "@/pages/Home/store";
+import multiwaveReducer from "@/pages/MultiWave/store";
+import collaReducer from "@/pages/CollaAware/store";
+import selflearnReducer from "@/pages/SelfLearn/store";
 import noiceReducer from "@/pages/NoiseModel/store";
 // import {
 //   guideAdaptReducer,
@@ -22,6 +25,9 @@ const store = configureStore({
     datasetMan: datasetReducer,
     trustAbili: trustReducer,
     home: homeReducer,
+    multiwave: multiwaveReducer,
+    collaAware: collaReducer,
+    selfLearn: selflearnReducer,
     noiseModel: noiceReducer
   }
 });

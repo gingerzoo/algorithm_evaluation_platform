@@ -8,12 +8,18 @@ export const HeaderWrap = styled.div`
 
   height: 4.8vw;
   padding: 0 12vw 0 4.8vw;
-
-  .btn:hover {
-    cursor: pointer;
+  .btn {
+    font-size: 1.1vw;
+    &:hover {
+      cursor: pointer;
+    }
   }
+
   .left {
     cursor: pointer;
+    h2.algor {
+      font-size: 1.7vw;
+    }
   }
 
   .left,

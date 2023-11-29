@@ -24,6 +24,7 @@ import { createOneWork } from "@/utils/getItem";
 import { shallowEqual } from "react-redux";
 import { use } from "echarts";
 import My_drawer from "@/components/my_drawer";
+import { click } from "@testing-library/user-event/dist/click";
 
 interface Iprops {
   children?: ReactNode;
@@ -384,6 +385,15 @@ const MyTable2: FC<Iprops> = (props) => {
     );
   }
 
+  /* 点击结果说明的泡泡按钮 */
+  const [openPopover, setOpenPopover] = useState(false);
+  const popoverClick = () => {
+    setOpenPopover(false);
+  };
+  const popoverChangeHandle = (newOpen: boolean) => {
+    setOpenPopover(newOpen);
+  };
+
   return (
     <Table2Wrapper>
       <table className="table_v1 table_color">
@@ -483,19 +493,26 @@ const MyTable2: FC<Iprops> = (props) => {
           <tr>
             <td className="overall">总体评价</td>
             <td colSpan={5} className="evaluation">
-              <Popover
-                content={overAll}
-                title="对比结果"
-                placement="topRight"
-                overlayStyle={{ maxWidth: "18vw", color: "white" }}
-                open={basicStatus === 0 && adapt_run_status === 0}
-              >
+              {basicStatus === 0 && adapt_run_status === 0 ? (
+                <Popover
+                  content={overAll}
+                  title="对比结果"
+                  placement="topRight"
+                  overlayStyle={{ maxWidth: "18vw", color: "white" }}
+                >
+                  <div>
+                    {` 基础效能检测分数为为${basicResult},智能等级为${Math.floor(
+                      basicResult / 20 + 1
+                    )}${overAll}`}
+                  </div>
+                </Popover>
+              ) : (
                 <div>
                   {` 基础效能检测分数为为${basicResult},智能等级为${Math.floor(
                     basicResult / 20 + 1
-                  )}${overAll}`}
+                  )}`}
                 </div>
-              </Popover>
+              )}
             </td>
           </tr>
         </tbody>

@@ -13,7 +13,7 @@ export const ProcessWrap = styled.div`
   .title {
     box-sizing: border-box;
     width: 18vw;
-    /* font-size: 18px; */
+    font-size: 1.4vw;
     padding: 0 1vw;
     text-align: center;
     overflow: hidden;
@@ -31,5 +31,9 @@ export const ProcessWrap = styled.div`
     display: flex;
     justify-content: space-between;
     padding-right: 2.4vw;
+  }
+
+  .process-item {
+    font-size: 1.15vw;
   }
 `;

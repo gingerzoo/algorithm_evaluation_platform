@@ -6,11 +6,15 @@ interface Ires {
   model_name: Ialgo[];
 }
 
+interface Icoor {
+  bbox: number[];
+  class_name: string;
+}
 export type IimgCoor = {
   status: number;
   info: string;
   img: string;
-  coor: object;
+  coor: Icoor[];
   num_all: number;
 };
 
@@ -98,7 +102,7 @@ export function getChangeImgCoor(
   coor: object
 ) {
   return lxrequest.request<Iresult>({
-    url: "/dataset/modify_coor",
+    url: "/dataset/save_coor",
     method: "post",
     data: {
       scene,

@@ -42,20 +42,25 @@ export const HomeWrapper = styled.div`
         }
       }
 
-      .top h1 {
-        margin: 0;
-        /* padding-left: 30px; */
-        /* background: white url(${logo}) 0 0 / contain no-repeat; */
-      }
+      .top {
+        h5.desc {
+          margin-top: 1.2vw;
+          font-size: 1vw;
+        }
 
-      .top h5 {
-        margin-top: 1.2vw;
+        h1.page-name {
+          margin: 0;
+          font-size: 2.4vw;
+          /* padding-left: 30px; */
+          /* background: white url(${logo}) 0 0 / contain no-repeat; */
+        }
       }
 
       .opeBar {
         /* width: 100%; */
         display: flex;
         justify-content: space-between;
+        font-size: 1.2vw;
       }
     }
   }
@@ -97,6 +102,7 @@ export const HomeWrapper = styled.div`
 
         .title {
           display: block;
+          font-size: 1.6vw;
           padding-bottom: 5px;
           border-bottom: 3px solid #0763ac;
         }

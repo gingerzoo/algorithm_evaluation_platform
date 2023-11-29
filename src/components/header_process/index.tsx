@@ -30,14 +30,14 @@ const HeaderProcess: FC<Iprops> = (props) => {
         <div className="process">
           {nowProcess.map((item, index) => {
             return (
-              <span key={index}>
+              <span key={index} className="process-item">
                 {item}
                 <DoubleRightOutlined />
               </span>
             );
           })}
         </div>
-        <span>
+        <span className="process-item">
           {isSelected ? "已选场景" : "默认场景"} : {subs[sceneNum].title}
         </span>
       </div>

@@ -6,6 +6,7 @@ const Basic_Config = lazy(() => import("@/pages/BasicConfig"));
 const Basic_work = lazy(() => import("@/pages/BasicWork"));
 
 const Trust_Abil = lazy(() => import("@/pages/TrustAbil"));
+const Multi_Wave = lazy(() => import("@/pages/MultiWave"));
 
 const AdapIntro = lazy(() => import("@/pages/AdaptAbli/c-cpns/Intro"));
 const AdapNav = lazy(() => import("@/pages/AdaptAbli/c-cpns/Nav"));
@@ -110,6 +111,11 @@ const routes: RouteObject[] = [
         path: "absawareness",
         element: <AbstrAware />
       },
+      {
+        path: "multiwave",
+        element: <Multi_Wave />
+      },
+
       {
         path: "result",
         element: <Results />

@@ -32,14 +32,14 @@ const App_header: FC<Iprops> = (props) => {
       </div>
 
       <div className="right">
-        <div className="start btn" onClick={greenClickHandle}>
+        {/* <div className="start btn" onClick={greenClickHandle}>
           新手引导
         </div>
         <span className="divider">|</span>
         <div className="history btn">历史评估</div>
         <span className="divider">|</span>
         <div className="report btn">报表导出</div>
-        <span className="divider">|</span>
+        <span className="divider">|</span> */}
         <div className="backToHome btn" onClick={backToHome}>
           返回首页
         </div>

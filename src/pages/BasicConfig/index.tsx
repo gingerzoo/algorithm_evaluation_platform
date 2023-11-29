@@ -2,7 +2,7 @@ import React, { memo, useCallback, useEffect, useState } from "react";
 import { shallowEqual } from "react-redux";
 import type { FC, ReactNode } from "react";
 import { Input, message, Spin } from "antd";
-import Picture_show from "@/components/picture_show";
+import Picture_show from "@/components/picture_show_v2";
 import Algorithm_upload from "./c-cpns/algorithm_upload";
 import Dataset_upload from "./c-cpns/dataset_upload";
 import {
@@ -22,13 +22,14 @@ import {
   changeSceneNumAction,
   changeStatusCommAction,
   commitDataAction,
-  getAlogListAction
+  getAlogListAction,
+  getDataImgInfoAction
 } from "./store";
 
 import Typewriter from "./c-cpns/typewriter";
 import Basic_result from "./c-cpns/basic_result";
-import { getResultPic } from "../BasicWork/service";
 import { IbasicRes } from "@/type";
+import { failedMessage, successMessage } from "@/utils/message";
 
 interface Iprops {
   children?: ReactNode;
@@ -93,24 +94,6 @@ const BasicConfig: FC<Iprops> = () => {
     dispatch(getAlogListAction());
   }, [docker]);
 
-  //校验成功的提示信息
-  const success = (info: string) => {
-    return messageApi.open({
-      type: "success",
-      content: info,
-      duration: 3
-    });
-  };
-
-  //校验失败的提示信息
-  const failed = (info: string) => {
-    return messageApi.open({
-      type: "error",
-      content: info,
-      duration: 3
-    });
-  };
-
   //点击查看系统按钮的执行函数
   const systemCover = useCallback(() => {
     setIsSystem(!isSystem);
@@ -119,6 +102,12 @@ const BasicConfig: FC<Iprops> = () => {
 
   //点击浏览数据集样本按钮的执行函数
   const pictureCover = useCallback(() => {
+    // if (commit_status === 0) {
+    //   setIsPicture(!isPicture);
+    // } else {
+    //   failed("请先确认配置！");
+    // }
+    dispatch(getDataImgInfoAction(0));
     setIsPicture(!isPicture);
     // console.log("查看图片");
   }, [isPicture]);
@@ -158,12 +147,12 @@ const BasicConfig: FC<Iprops> = () => {
       dispatch(commitDataAction()).then((res) => {
         //类型谓词
         if (commitDataAction.fulfilled.match(res)) {
-          if (!res.payload.isAsure) success("配置成功");
-          else failed(res.payload.info);
+          if (!res.payload.isAsure) successMessage("配置成功");
+          else failedMessage(res.payload.info);
         }
       });
     } else {
-      failed("请加载完算法模型后再进行此步骤");
+      failedMessage("请加载完算法模型后再进行此步骤");
     }
   }
 
@@ -175,15 +164,15 @@ const BasicConfig: FC<Iprops> = () => {
         if (getBasicEffectAction.fulfilled.match(res)) {
           console.log(res.payload);
           if (!res.payload.status) {
-            success("执行成功");
+            successMessage("执行成功");
           } else {
             // failed(res.payload.info);
-            failed("算法运行失败");
+            failedMessage("算法运行失败");
           }
         }
       });
     } else {
-      failed("请确认配置");
+      failedMessage("请确认配置");
     }
   }
 
@@ -248,7 +237,7 @@ const BasicConfig: FC<Iprops> = () => {
         </App_cover>
       </div>
       <div className="picture cover">
-        <App_cover btnClickHandle={pictureCover} width={850}>
+        <App_cover btnClickHandle={pictureCover} width={800}>
           <Picture_show />
         </App_cover>
       </div>

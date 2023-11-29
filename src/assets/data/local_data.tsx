@@ -97,6 +97,11 @@ export const sideNav = [
     link: "/profile/absawareness"
   },
   {
+    icon: <NodeIndexOutlined />,
+    title: "多波段协同",
+    link: "/profile/multiwave"
+  },
+  {
     icon: <ContainerOutlined />,
     title: "测试结果总览",
     link: "/profile/result"
@@ -793,6 +798,8 @@ export type noisePar = {
   min: number;
   max: number;
   curIndex: number;
+
+  step: number;
   defaultValue: number;
 };
 
@@ -812,6 +819,7 @@ export const noiseTableData: noiseTableType[] = [
         name: "电流大小I(A)",
         min: 0,
         max: 10,
+        step: 1,
         curIndex: 0,
         defaultValue: 40
       },
@@ -820,6 +828,7 @@ export const noiseTableData: noiseTableType[] = [
         min: 0,
         max: 10,
         curIndex: 1,
+        step: 1,
         defaultValue: 60
       }
     ],
@@ -833,6 +842,7 @@ export const noiseTableData: noiseTableType[] = [
         name: "光照时间t(ms)",
         min: 0,
         max: 999,
+        step: 10,
         curIndex: 2,
         defaultValue: 30
       },
@@ -841,6 +851,7 @@ export const noiseTableData: noiseTableType[] = [
         min: 0,
         max: 999,
         curIndex: 3,
+        step: 10,
         defaultValue: 50
       }
     ],
@@ -854,6 +865,7 @@ export const noiseTableData: noiseTableType[] = [
         name: "温度T(K)",
         min: 250,
         max: 400,
+        step: 10,
         curIndex: 4,
         defaultValue: 70
       },
@@ -861,6 +873,7 @@ export const noiseTableData: noiseTableType[] = [
         name: "电阻R(kΩ)",
         min: 0,
         max: 10,
+        step: 1,
         curIndex: 5,
         defaultValue: 41
       },
@@ -868,6 +881,7 @@ export const noiseTableData: noiseTableType[] = [
         name: "带宽f2(kHz)",
         min: 0,
         max: 10,
+        step: 1,
         curIndex: 6,
         defaultValue: 100
       }
@@ -882,6 +896,7 @@ export const noiseTableData: noiseTableType[] = [
         name: "最小量化单位q",
         min: 0,
         max: 1,
+        step: 0.1,
         curIndex: 7,
         defaultValue: 40
       }
@@ -896,6 +911,7 @@ export const noiseTableData: noiseTableType[] = [
         name: "K1",
         min: 0,
         max: 100,
+        step: 10,
         curIndex: 8,
         defaultValue: 90
       },
@@ -903,6 +919,7 @@ export const noiseTableData: noiseTableType[] = [
         name: "K2",
         min: 0,
         max: 100,
+        step: 10,
         curIndex: 9,
         defaultValue: 60
       }

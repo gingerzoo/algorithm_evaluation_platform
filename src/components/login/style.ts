@@ -7,6 +7,7 @@ export const LoginWrap = styled.div`
     right: 5px;
     height: 4.8vw;
     /* padding: 0 4.8vw; */
+    font-size:1.15vw;
     width: 10vw;
     border-radius: 10px;
     background-color: transparent;
