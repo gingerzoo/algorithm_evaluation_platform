@@ -28,7 +28,7 @@ export const CreateTaskWraper = styled.div`
 `;
 
 export const CreateDataInput = styled.div`
-  margin-top: 5vw;
+  margin-top: 6.5vw;
   table {
     margin: 0 auto;
   }

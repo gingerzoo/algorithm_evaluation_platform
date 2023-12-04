@@ -44,6 +44,7 @@ export const getDatasetInfoAction = createAsyncThunk(
   "getdatasets",
   async (par, { dispatch }) => {
     const res = await getDatasetInfo();
+    console.log("数据库信息", res);
     dispatch(changeDatasetsInfoAction(res));
   }
 );
@@ -54,14 +55,19 @@ export const getUploadDatasetAction = createAsyncThunk<
   {
     state: IrootState;
   }
->("upload_dataset", async (par, { getState }) => {
+>("upload_dataset", async (par, { getState, dispatch }) => {
   try {
     const dataset_info = getState().datasetMan.buildData;
     const { data_name, data_type, scene, info } = dataset_info;
+
     const res0 = await getUploadDatasetInfo(data_name, data_type, scene, info);
+
+    dispatch(getDatasetInfoAction());
+
     const res = await getUploadDataset(par);
 
-    if (res == "success") {
+    console.log("数据集上传成功！！！！");
+    if (res0 == "success" && res == "success") {
       console.log("上传数据集成功");
       message.open({
         type: "success",

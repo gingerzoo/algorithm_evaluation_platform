@@ -9,14 +9,13 @@ import {
   message,
   Radio,
   RadioChangeEvent,
-  Select,
-  TreeSelect,
   Upload
 } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { useDispatch } from "react-redux";
 import { changeBuildDataAction, getUploadDatasetAction } from "../store";
 import { useAppDispatch } from "@/store";
+import { failedMessage } from "@/utils/message";
 
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
@@ -98,26 +97,30 @@ const Addset: FC<Iprops> = (props) => {
       dispatch(changeBuildDataAction({ data_type, data_name, scene, info }));
 
       //上传压缩包
-      if (upload.length > 1) {
-        message.open({
-          type: "error",
-          content: "请上传压缩包！",
-          duration: 2
-        });
-      } else {
-        const dataset = upload[0].originFileObj;
-        console.log("upload", dataset);
-        const formdata = new FormData();
-        formdata.append("dataset", dataset);
-        console.log("现在input框中被选中的压缩包", formdata);
-        //   console.log(formdata.get("dataset"));
-        //   console.log("upload_type", type of dataset);
-
-        //   dispatch(getUploadDatasetAction(formdata));
-        dispatch(getUploadDatasetAction(formdata));
-      }
+      const dataset = upload[0].originFileObj;
+      console.log("upload", dataset);
+      const formdata = new FormData();
+      formdata.append("dataset", dataset);
+      console.log("现在input框中被选中的压缩包", formdata);
+      dispatch(getUploadDatasetAction(formdata));
     }
   };
+
+  //   const uploadHandle = (file, fileList) => {
+  //     // const datasets = e.target?.files;
+  //     // console.log("当前文件", file);
+  //     const { file, fileList } = files;
+
+  //     if (
+  //       file.type === "application/x-zip-compressed" ||
+  //       file.type === "application/x-rar-compressed"
+  //     ) {
+  //       console.log("你上传的确实是压缩包");
+  //     } else {
+  //       failedMessage("只能上传压缩包文件");
+  //     }
+
+  //   };
   return (
     <AddsetWrap>
       <Form
@@ -189,8 +192,11 @@ const Addset: FC<Iprops> = (props) => {
           <Upload
             action="/upload.do"
             listType="picture-card"
-            maxCount={!uploadType ? 1 : 100}
-            directory={uploadType == 2 ? true : false}
+            maxCount={1}
+            // directory={uploadType == 2 ? true : false}
+            accept=".zip, .rar"
+            // beforeUpload={uploadHandle}
+            multiple={false}
           >
             <div>
               <PlusOutlined />

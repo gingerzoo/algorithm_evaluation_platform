@@ -1,9 +1,5 @@
 import React, { memo, useEffect, useRef } from "react";
 import type { FC, ReactNode } from "react";
-import ReactEcharts from "echarts-for-react";
-import echarts from "echarts";
-import { useLocation } from "react-router-dom";
-import { resultName } from "@/assets/data/local_data";
 import LibraryItem from "@/components/libraryItem/index";
 import { LibraryMapWrap } from "./style";
 

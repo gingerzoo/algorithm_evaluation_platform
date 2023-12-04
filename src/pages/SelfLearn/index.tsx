@@ -13,7 +13,7 @@ import Table1 from "./c-cpns/table1";
 import { basicResInfoList, basicResList } from "@/assets/data/local_data";
 import { IbasicRes } from "./type";
 import { getAlogListAction } from "../BasicConfig/store";
-import { getSelfLearnRunAction, getSelfLearnResImgsAction } from "./store";
+import { getBasicEffectAction, getResultImgsAction } from "./store";
 import { BASE_URL } from "src/services/config/index";
 
 interface Iprops {
@@ -53,7 +53,7 @@ const SelfLearn: FC<Iprops> = () => {
   const [test, setTest] = useState(info);
   const [docker, setDocker] = useState(0);
   const [messageApi, contextHolder] = message.useMessage();
-
+  console.log(test);
   function next() {
     const nextPath = `/profile/colawareness`;
     dispatch(changeNextPathAction(nextPath));
@@ -109,7 +109,7 @@ const SelfLearn: FC<Iprops> = () => {
   };
   const curResult = basicResList[sceneNum].map((item, index) => {
     let secondScore = 0;
-    if (test === "selflearn") {
+    if (info === "selflearn") {
       secondScore = score[index + status.length / 2];
     }
     return {
@@ -123,14 +123,15 @@ const SelfLearn: FC<Iprops> = () => {
   console.log(curResult);
   //执行测试按钮处理函数
   function runSelfLearnBtnClick() {
-    setTest("selflearn");
+    console.log("执行测试按钮处理函数");
     console.log(test);
-    dispatch(getSelfLearnRunAction()).then((res) => {
-      if (getSelfLearnRunAction.fulfilled.match(res)) {
+    dispatch(getBasicEffectAction()).then((res) => {
+      if (getBasicEffectAction.fulfilled.match(res)) {
         console.log(res.payload);
         if (!res.payload.status) {
+          // setTest(info);
           success("执行成功");
-          dispatch(getSelfLearnResImgsAction());
+          dispatch(getResultImgsAction());
         } else {
           // failed(res.payload.info);
           failed("算法运行失败");
@@ -173,17 +174,26 @@ const SelfLearn: FC<Iprops> = () => {
   }
   return (
     <WorkWrap>
-      <br />
       {contextHolder}
+      <p className="describe">
+        自学习能力指的是模型在新的样本数据中的学习能力。
+      </p>
+      <p className="describe">
+        在该页面点击下载数据集，可以获取到额外的相同类型的数据集以供训练，训练完成后可上传新的权重文件，最后点击自学习能力测试即可进行测试。
+      </p>
+      <p className="describe">
+        自学习能力所测试的指标与基础效能相同，通过得分的变化即可评判模型的自学习能力。
+      </p>
+      <br />
       <div className="top">
         <button className="btn" onClick={handleDownload}>
-          <span>点击下载数据集</span>
+          <span>①点击下载数据集</span>
         </button>
         <button className="btn" onClick={selectFile}>
-          <span>点击上传新的权重文件</span>
+          <span>②点击上传新的权重文件</span>
         </button>
         <button className="btn" onClick={runSelfLearnBtnClick}>
-          <span>自学习能力测试</span>
+          <span>③自学习能力测试</span>
         </button>
         <div className="spinning">
           <Spin spinning={isPending} size={"large"} />

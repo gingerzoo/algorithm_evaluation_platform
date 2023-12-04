@@ -68,7 +68,7 @@ const initialState: Iprops = {
   population_score: 0
 };
 
-export const getSelfLearnRunAction = createAsyncThunk<
+export const getBasicEffectAction = createAsyncThunk<
   Ipromise,
   void,
   {
@@ -83,12 +83,10 @@ export const getSelfLearnRunAction = createAsyncThunk<
     console.log(res);
     console.log("运行算法结束");
 
-    dispatch(changeSelfLearnStatusAction(res.status));
-    dispatch(changeSelfLearnInfoAction(res.info));
+    dispatch(changeBasicStatusAction(res.status));
+    dispatch(changeBasicInfoAction(res.info));
     dispatch(
-      changeSelfLearnPopulationAction(
-        Number(res.population_score.toFixed(2)) * 100
-      )
+      changeBasicPopulationAction(Number(res.population_score.toFixed(2)) * 100)
     );
     switch (scene) {
       case 0: {
@@ -112,7 +110,7 @@ export const getSelfLearnRunAction = createAsyncThunk<
           population_result_second
         } = res as Iguid;
         dispatch(
-          changeSelfLearnGuiReListAction({
+          changeBasicGuiReListAction({
             score: [
               center_position_error_score,
               iou_score,
@@ -159,7 +157,7 @@ export const getSelfLearnRunAction = createAsyncThunk<
         } = res as Inav;
 
         dispatch(
-          changeSelfLearnNavReListAction({
+          changeBasicNavReListAction({
             score: [
               relevance_score,
               mutual_information_score,
@@ -206,7 +204,7 @@ export const getSelfLearnRunAction = createAsyncThunk<
           population_result_second
         } = res as Iremo;
         dispatch(
-          changeSelfLearnRemoteReListAction({
+          changeBasicRemoteReListAction({
             score: [
               f1_score,
               map_score,
@@ -249,7 +247,7 @@ export const getSelfLearnRunAction = createAsyncThunk<
           population_result_second
         } = res as Ivoice;
         dispatch(
-          changeSelfLearnVoiReListAction({
+          changeBasicVoiReListAction({
             score: [
               word_error_rate_score,
               sentence_error_rate_score,
@@ -287,7 +285,7 @@ export const getSelfLearnRunAction = createAsyncThunk<
   }
 });
 
-export const getSelfLearnResImgsAction = createAsyncThunk<
+export const getResultImgsAction = createAsyncThunk<
   void,
   void,
   { state: IrootState }
@@ -297,7 +295,7 @@ export const getSelfLearnResImgsAction = createAsyncThunk<
     const sceneNum = getState().basicConfig.sceneNum;
     const data_type = getState().basicConfig.dataSet;
     const res = await getResultPic(model_name, sceneNum, data_type);
-    dispatch(changeSelfLearnResImgsAction(res.images));
+    dispatch(changeBasicResImgsAction(res.images));
   } catch (err) {
     message.open({
       type: "error",
@@ -307,8 +305,8 @@ export const getSelfLearnResImgsAction = createAsyncThunk<
   }
 });
 
-const selfLearnSlice = createSlice({
-  name: "selfLearnSlice",
+const basicEffectSlice = createSlice({
+  name: "basicEffectSlice",
   initialState,
   reducers: {
     // changeBaiscGuideAction(state, { payload }) {
@@ -323,55 +321,57 @@ const selfLearnSlice = createSlice({
     // changeBasicVoiceAction(state, { payload }) {
     //   state.voiceBe = payload;
     // },
-    changeSelfLearnStatusAction(state, { payload }) {
+    changeBasicStatusAction(state, { payload }) {
       state.run_status = payload;
     },
-    changeSelfLearnInfoAction(state, { payload }) {
+    changeBasicInfoAction(state, { payload }) {
       state.run_info = payload;
     },
-    changeSelfLearnGuiReListAction(state, { payload }) {
+    changeBasicGuiReListAction(state, { payload }) {
       state.slguide = payload;
     },
-    changeSelfLearnNavReListAction(state, { payload }) {
+    changeBasicNavReListAction(state, { payload }) {
       state.slnavigate = payload;
     },
-    changeSelfLearnRemoteReListAction(state, { payload }) {
+    changeBasicRemoteReListAction(state, { payload }) {
       state.slremote = payload;
     },
-    changeSelfLearnVoiReListAction(state, { payload }) {
+    changeBasicVoiReListAction(state, { payload }) {
       state.slvoice = payload;
     },
-    changeSelfLearnResImgsAction(state, { payload }) {
+    changeBasicResImgsAction(state, { payload }) {
       state.slresImgs = payload; //修改
     },
-    changeSelfLearnPopulationAction(state, { payload }) {
+    changeBasicPopulationAction(state, { payload }) {
       state.population_score = payload;
     }
   },
 
   extraReducers: (builder) => {
     builder
-      .addCase(getSelfLearnRunAction.pending, (state) => {
+      .addCase(getBasicEffectAction.pending, (state) => {
         state.isPending = true;
       })
-      .addCase(getSelfLearnRunAction.fulfilled, (state) => {
+      .addCase(getBasicEffectAction.fulfilled, (state) => {
         state.isPending = false;
       })
-      .addCase(getSelfLearnRunAction.rejected, (state) => {
+      .addCase(getBasicEffectAction.rejected, (state) => {
         state.isPending = false;
       });
   }
 });
 
 export const {
-  changeSelfLearnGuiReListAction,
-  changeSelfLearnInfoAction,
-  changeSelfLearnNavReListAction,
-  changeSelfLearnPopulationAction,
-  changeSelfLearnRemoteReListAction,
-  changeSelfLearnResImgsAction,
-  changeSelfLearnStatusAction,
-  changeSelfLearnVoiReListAction
-} = selfLearnSlice.actions;
+  changeBasicInfoAction,
+  changeBasicNavReListAction,
 
-export default selfLearnSlice.reducer;
+  changeBasicRemoteReListAction,
+  changeBasicResImgsAction,
+  changeBasicVoiReListAction,
+
+  changeBasicPopulationAction,
+  changeBasicGuiReListAction,
+  changeBasicStatusAction
+} = basicEffectSlice.actions;
+
+export default basicEffectSlice.reducer;

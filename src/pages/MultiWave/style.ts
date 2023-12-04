@@ -32,45 +32,44 @@ export const MultiWrap = styled.div`
       padding: 20px;
       background-color: #fff;
       gap: 40px; /* 调整图片之间的间距 */
-      
+
       .picture {
         display: flex;
         flex-direction: column;
         align-items: center;
-        
+
         img {
           width: 100%;
           border-radius: 5px;
           max-width: 300px; /* 图片的最大宽度，根据需要调整 */
         }
-        
+
         p {
-          margin-top:10px;
+          margin-top: 10px;
           text-align: center;
         }
       }
     }
+  }
 
-    }
-
-    .describe {
-      /* padding: 1vw 4vw; */
-      text-indent: 2em;
-      font-family: "SimSun";
-      line-height: 22px;
-      text-align: justify;
-      margin-bottom: 0.8vw;
-    }
+  .describe {
+    /* padding: 1vw 4vw; */
+    text-indent: 2em;
+    font-family: "SimSun";
+    line-height: 22px;
+    text-align: justify;
+    margin-bottom: 0.8vw;
   }
 
   .exec {
     display: flex;
     align-items: center;
-  }
-  button.btn {
-    margin-right: 3vw;
-    padding: 1vw 2vw;
-    font-weight: 700;
-    ${(props) => props.theme.mixin.btnHover}
+    button.btn {
+      margin-right: 3vw;
+      padding: 1vw 3vw;
+      font-weight: 700;
+      font-size: 1.2vw;
+      ${(props) => props.theme.mixin.btnHover}
+    }
   }
 `;

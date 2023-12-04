@@ -19,8 +19,6 @@ const HeaderProcess: FC<Iprops> = (props) => {
     })
   );
 
-  console.log("scene___num", sceneNum);
-
   return (
     <ProcessWrap>
       <MenuOutlined style={{ fontSize: "22px ", color: "white" }} />

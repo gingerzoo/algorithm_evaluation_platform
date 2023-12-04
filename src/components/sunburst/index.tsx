@@ -15,6 +15,7 @@ import { changePageSceneAction, getImgAction } from "@/pages/AdaptAbli/store";
 import { changeBasicStatusAction } from "@/pages/BasicWork/store";
 import { message } from "antd";
 import EChartsReact from "echarts-for-react";
+import { successMessage } from "@/utils/message";
 
 interface Iitem {
   [key: string]: number;
@@ -42,9 +43,6 @@ const Sunburst: FC<Iprops> = (props) => {
 
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  //   const sunburstRef = useRef(Object<EChartsReact>);
-  //   console.log("ts-echarts", sunburstRef);
-  //   const chartInstance = sunburstRef.current.getEchartsInstance();
 
   const labels = new Array(7).fill(0).map((item, index) => {
     const radius1 = index == 1 ? 20 : 70 + (index - 2) * 18;
@@ -143,7 +141,7 @@ const Sunburst: FC<Iprops> = (props) => {
     },
     {
       name: "协同感知",
-      dataType: "coin",
+      dataType: "colawareness",
       value: 6,
       emphasis: {
         label: {
@@ -253,36 +251,36 @@ const Sunburst: FC<Iprops> = (props) => {
       console.log("params", params);
 
       if (canLogin) {
-        console.log("点我能跳转");
         const seletcedScene = params.data.dataType;
-        dispatch(changePageSceneAction(seletcedScene));
-        const selectedSceneNum = sceneToNum[seletcedScene];
-        dispatch(
-          getImgAction({ workIndex: 1, pageScene: "navigate", sceneNum: 2 })
-        );
-        if (seletcedScene !== scene) {
-          if (
-            seletcedScene === "navigate" ||
-            seletcedScene === "guide" ||
-            seletcedScene === "remote" ||
-            seletcedScene === "voice"
-          ) {
-            dispatch(changeSceneAction(seletcedScene));
-            dispatch(changeSceneNumAction(selectedSceneNum));
-            dispatch(getAlogListAction());
-            dispatch(changeBasicStatusAction(-1));
-            dispatch(changeCurModuleAction(""));
+        if (seletcedScene === "colawareness") {
+          navigate("/colawareness");
+        } else {
+          dispatch(changePageSceneAction(seletcedScene));
+          const selectedSceneNum = sceneToNum[seletcedScene];
+          dispatch(
+            getImgAction({ workIndex: 1, pageScene: "navigate", sceneNum: 2 })
+          );
+          if (seletcedScene !== scene) {
+            if (
+              seletcedScene === "navigate" ||
+              seletcedScene === "guide" ||
+              seletcedScene === "remote" ||
+              seletcedScene === "voice"
+            ) {
+              dispatch(changeSceneAction(seletcedScene));
+              dispatch(changeSceneNumAction(selectedSceneNum));
+              dispatch(getAlogListAction());
+              dispatch(changeBasicStatusAction(-1));
+              dispatch(changeCurModuleAction(""));
+            }
           }
+          dispatch(changeSelectedSceneAction(true));
+          navigate("/profile/config");
         }
-        dispatch(changeSelectedSceneAction(true));
-        navigate("/profile/config");
       } else {
         // params.event.preventDefault();
-        console.log("点我不能跳转", canLogin);
-        message.open({
-          type: "error",
-          content: "请先登录！"
-        });
+
+        successMessage("请先登录！");
       }
     }
 

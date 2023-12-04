@@ -7,14 +7,14 @@ import jpg3 from "../images/3.jpg";
 import jpg4 from "../images/4.jpg";
 
 import {
+  BarChartOutlined,
   ContainerOutlined,
   FundProjectionScreenOutlined,
   LaptopOutlined,
   NodeIndexOutlined,
   PullRequestOutlined,
   SendOutlined,
-  SettingOutlined,
-  ShareAltOutlined
+  SettingOutlined
 } from "@ant-design/icons";
 import { getItem } from "@/utils/getItem";
 import { IruleData } from "@/type";
@@ -81,15 +81,11 @@ export const sideNav = [
     title: "可信赖能力",
     link: "/profile/trust"
   },
+
   {
-    icon: <FundProjectionScreenOutlined />,
-    title: "自学习能力",
-    link: "/profile/selflearning"
-  },
-  {
-    icon: <ShareAltOutlined />,
-    title: "协同感知能力",
-    link: "/profile/colawareness"
+    icon: <BarChartOutlined />,
+    title: "多波段协同",
+    link: "/profile/multiwave"
   },
   {
     icon: <NodeIndexOutlined />,
@@ -97,9 +93,9 @@ export const sideNav = [
     link: "/profile/absawareness"
   },
   {
-    icon: <NodeIndexOutlined />,
-    title: "多波段协同",
-    link: "/profile/multiwave"
+    icon: <FundProjectionScreenOutlined />,
+    title: "自学习能力",
+    link: "/profile/selflearning"
   },
   {
     icon: <ContainerOutlined />,
@@ -121,14 +117,9 @@ export const headerNav = [
     title: "基础效能",
     link: "/profile/basicwork"
   },
-
   {
     title: "自学习能力",
     link: "/profile/selflearning"
-  },
-  {
-    title: "协同感知能力",
-    link: "/profile/colawareness"
   },
   {
     title: "抽象感知能力",
@@ -298,16 +289,6 @@ export const basicResInfoList = [
     "平均查全率分数不低于0.8"
   ],
   ["阈值预计为50%以上", "阈值预计为50%以上"]
-];
-
-export const res_measurement = [
-  "基础效能",
-  "可适应能力",
-  "可信赖能力",
-  "自学习能力",
-  "协同感知能力",
-  "抽象感知能力",
-  "总体性能"
 ];
 
 export const attackWhite = ["Optim", "Mim", "Bim", "PGD"];
@@ -954,3 +935,21 @@ export const NoiseNum: { [key: string]: number } = {
   K2: 9,
   originalImage: 10
 };
+
+export const res_EnName = [
+  "basic_effectiveness",
+  "adaptablity",
+  "dependability",
+  "multiband",
+  "abstract",
+  "selflearn"
+];
+
+export const res_measurement = [
+  "基础效能",
+  "可适应能力",
+  "可信赖能力",
+  "多波段协同能力",
+  "抽象感知能力",
+  "自学习能力"
+];

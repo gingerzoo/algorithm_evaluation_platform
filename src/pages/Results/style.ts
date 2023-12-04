@@ -113,6 +113,7 @@ export const ResultsWrap = styled.div`
     &:nth-of-type(3) {
       position: relative;
       display: grid;
+      justify-content: center;
       grid-template-columns: 1fr 1fr;
       grid-column-gap: 1.6vw;
       grid-template-areas:
@@ -125,6 +126,12 @@ export const ResultsWrap = styled.div`
       }
       .chart2 {
         grid-area: chart2;
+        .echarts-for-react {
+          margin: 0 auto;
+          canvas {
+            width: 100%;
+          }
+        }
       }
       .chart3 {
         grid-area: chart3;

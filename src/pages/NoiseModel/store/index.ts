@@ -37,7 +37,7 @@ export const getVoiceWorkDataAction = createAsyncThunk<
   },
   void,
   { state: IrootState }
->("genDataset", async (par, { dispatch, getState }) => {
+>("noiceGenDataset", async (par, { dispatch, getState }) => {
   console.log("dispatch了getVoiceWorkDataAction！！！");
   const scene = getState().basicConfig.scene;
   const sceneNum: number = sceneToNum[scene];
@@ -100,7 +100,7 @@ export const getVoiceWorkResAction = createAsyncThunk<
   },
   void,
   { state: IrootState }
->("workResult", async (par, { dispatch, getState }) => {
+>("noiceWorkRun", async (par, { dispatch, getState }) => {
   //   const scene = getState().basicConfig.scene;
   const sceneNum: number = getState().basicConfig.sceneNum;
   const date_type = getState().basicConfig.dataSet;

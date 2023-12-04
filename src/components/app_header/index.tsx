@@ -22,17 +22,18 @@ const App_header: FC<Iprops> = (props) => {
   };
   return (
     <HeaderWrap>
-      <div className="left" onClick={backToHome}>
-        <div className="logo"></div>
-        {/* <span className="divider">|</span> */}
-        <h2 className="algor">
-          {/* <RadarChartOutlined style={{ color: "#5692FC" }} /> */}
-          &nbsp; 感知分级算法评估平台
-        </h2>
-      </div>
+      <div className="header-content">
+        <div className="left" onClick={backToHome}>
+          <div className="logo"></div>
+          {/* <span className="divider">|</span> */}
+          <h2 className="algor">
+            {/* <RadarChartOutlined style={{ color: "#5692FC" }} /> */}
+            &nbsp; 感知分级算法评估平台
+          </h2>
+        </div>
 
-      <div className="right">
-        {/* <div className="start btn" onClick={greenClickHandle}>
+        <div className="right">
+          {/* <div className="start btn" onClick={greenClickHandle}>
           新手引导
         </div>
         <span className="divider">|</span>
@@ -40,8 +41,9 @@ const App_header: FC<Iprops> = (props) => {
         <span className="divider">|</span>
         <div className="report btn">报表导出</div>
         <span className="divider">|</span> */}
-        <div className="backToHome btn" onClick={backToHome}>
-          返回首页
+          <div className="backToHome btn" onClick={backToHome}>
+            返回首页
+          </div>
         </div>
       </div>
     </HeaderWrap>

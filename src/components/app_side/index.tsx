@@ -8,6 +8,7 @@ import { sideNav } from "@/assets/data/local_data";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@/store";
 import { changeNextPathAction } from "@/pages/BasicConfig/store";
+import { getAllWorkResAction } from "@/pages/Home/store";
 
 interface Iprops {
   children?: ReactNode;
@@ -26,6 +27,9 @@ const AppSide: FC<Iprops> = (props) => {
 
   function linkBtnHandle(e: any) {
     dispatch(changeNextPathAction(e.key));
+    if (e.key === "/profile/result") {
+      dispatch(getAllWorkResAction());
+    }
     console.log("选中菜单", e.key);
     navigate(e.key);
   }

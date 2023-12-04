@@ -3,19 +3,19 @@ import type { FC, ReactNode } from "react";
 import ReactEcharts from "echarts-for-react";
 import { resultName } from "@/assets/data/local_data";
 
-interface Iitem {
+export interface Iradar {
   [key: string]: number;
-  adapt: number;
-  basic: number;
-  trust: number;
-  selfLearn: number;
+  basic_effectiveness: number;
+  adaptablity: number;
+  dependability: number;
+  multiband: number;
   abstract: number;
-  collaAware: number;
+  selflearn: number;
 }
 
 interface Iprops {
   children?: ReactNode;
-  result: Iitem[];
+  result: Iradar[];
   key?: number;
 }
 

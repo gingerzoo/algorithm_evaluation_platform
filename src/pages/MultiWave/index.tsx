@@ -1,7 +1,7 @@
 import React, { memo, useEffect } from "react";
 import type { FC, ReactNode } from "react";
 import { MultiWrap } from "./style";
-import Select_Data from "./c-cpns/attack_detail";
+import Select_Data from "./c-cpns/select";
 import { postMultiWaveAction } from "./service/index";
 
 import RGB_img from "@/assets/images/RGB_0.png";
@@ -152,19 +152,8 @@ const MultiWave: FC<Iprops> = () => {
           sceneNum={sceneNum}
           curResult={curResult}
           title="多波段协同"
-          nextPath={`/profile/selflearning`}
+          nextPath={`/profile/table`}
         />
-      )}
-      {run_status == 0 && (
-        <p
-          style={{
-            backgroundColor: "rgb(219, 232, 232)",
-            boxShadow: "0 2px 4px rgba(0, 0, 0, 0.25)",
-            padding: "10px"
-          }}
-        >
-          {info_ret}
-        </p>
       )}
     </MultiWrap>
   );

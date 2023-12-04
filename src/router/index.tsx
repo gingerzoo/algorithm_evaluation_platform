@@ -103,10 +103,7 @@ const routes: RouteObject[] = [
         path: "selflearning",
         element: <SelfLearn />
       },
-      {
-        path: "colawareness",
-        element: <CollaAware />
-      },
+
       {
         path: "absawareness",
         element: <AbstrAware />
@@ -125,6 +122,10 @@ const routes: RouteObject[] = [
   {
     path: "/pdfviewer",
     element: <PDFviewer />
+  },
+  {
+    path: "/colawareness",
+    element: <CollaAware />
   }
 ];
 

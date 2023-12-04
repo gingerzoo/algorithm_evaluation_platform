@@ -2,10 +2,11 @@ import styled from "styled-components";
 
 export const LoginWrap = styled.div`
   .common-login {
-    position: absolute;
+    position:fixed;
     top: 0;
     right: 5px;
     height: 4.8vw;
+    z-index:99;
     /* padding: 0 4.8vw; */
     font-size:1.15vw;
     width: 10vw;
@@ -21,6 +22,7 @@ export const LoginWrap = styled.div`
   }
 
   .user_info {
+
     /* font-size: 12px; */
     /* background-color: pink; */
     display: flex;
@@ -37,7 +39,7 @@ export const LoginWrap = styled.div`
       padding: 3px 5px;
       border-radius: 5px;
 
-      background-color: #bbb;
+      background-color: #999;
       cursor: pointer;
       margin-left: 5px;
     }

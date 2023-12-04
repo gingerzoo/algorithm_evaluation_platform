@@ -10,6 +10,8 @@ export const ProfileWrap = styled.div<Iprops>`
   /* 随意的测试 */
   .main {
     display: flex;
+    margin: 8.8vw 0 0 20vw;
+
     min-height: calc(100vh - 8.8vw);
     position: relative;
     .green-hand {

@@ -24,10 +24,14 @@ type Ipic = {
 type IRespic = {
   images: string[];
 };
-
+type IsingleScore = {
+  class: number;
+  rateScore: number;
+  scoreList: number[][];
+};
 type IresList = {
   status: number;
-  result: number[][];
+  result: IsingleScore;
 };
 
 export function getWorkCondition() {

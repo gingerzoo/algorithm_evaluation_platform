@@ -14,10 +14,11 @@ interface Iprops {
   children?: ReactNode;
   data: Idata[];
   indicator: Iindicater[];
+  isAll_res: boolean;
 }
 
 const RadarV2: FC<Iprops> = (props) => {
-  const { data, indicator } = props;
+  const { data, indicator, isAll_res } = props;
   function getOption() {
     // 这里是通过props把参数传进来，并且进行判断
     // if (!item) {
@@ -41,12 +42,12 @@ const RadarV2: FC<Iprops> = (props) => {
         //图例背景颜色
         backgroundColor: "transparent",
         // 图例标记的图形宽度。[ default: 25 ]
-        itemWidth: 40,
+        itemWidth: isAll_res ? 20 : 40,
         // 图例标记的图形高度。[ default: 14 ]
-        itemHeight: 24,
+        itemHeight: isAll_res ? 12 : 24,
         //图例之间的间距
-        itemGap: 15
-        // data: ["算法1", "算法2"]
+        itemGap: 15,
+        orient: isAll_res ? "vertical" : "'horizontal"
       },
       tooltip: {
         trigger: "item"
@@ -104,7 +105,12 @@ const RadarV2: FC<Iprops> = (props) => {
       //   onEvents={}
       // onChartReady={onChartReady}
 
-      style={{ width: "100%", height: "30vw" }}
+      //   style={{ width: "100%", height: "30vw" }}
+      style={
+        isAll_res
+          ? { width: "100%", height: "25vw" }
+          : { width: "100%", height: "30vw" }
+      }
     />
   );
 };

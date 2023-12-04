@@ -1,6 +1,5 @@
 import React, { memo, useEffect, useRef } from "react";
 import type { FC, ReactNode } from "react";
-import { useNavigate } from "react-router-dom";
 import { HomeWrapper } from "./style";
 import Radar from "@/components/radar";
 
@@ -10,12 +9,13 @@ import {
   RadarChartOutlined
 } from "@ant-design/icons";
 import Sunburst from "@/components/sunburst";
-import { useAppDispatch, useAppSelector } from "@/store";
+import { useAppDispatch } from "@/store";
 import Library from "./c-cpns/library";
 import { getWorkDefaultAction } from "../AdaptAbli/store";
 
 import useCanLogin from "@/hooks/useCanLogin";
 import { getAlogListAction } from "../BasicConfig/store";
+import { BASE_URL } from "@/services/config";
 
 interface Iprops {
   children?: ReactNode;
@@ -55,7 +55,10 @@ const Home: FC<Iprops> = (props) => {
           <div className="opeBar">
             <button onClick={useBtnClick}>立即使用</button>
 
-            <a href="http://10.2.12.63:8080/guidance_info/label_format.pdf">
+            <a
+              href={`${BASE_URL}/guidance_info/label_format.pdf`}
+              target={`_blank`}
+            >
               技术文档
             </a>
             {/* </button> */}
@@ -88,20 +91,20 @@ const Home: FC<Iprops> = (props) => {
           <Radar
             result={[
               {
-                basic: 70,
-                adapt: 40,
-                trust: 90,
-                abstract: 50,
-                collaAware: 80,
-                selfLearn: 73
+                basic_effectiveness: 70,
+                adaptablity: 40,
+                dependability: 90,
+                multiband: 50,
+                abstract: 80,
+                selflearn: 73
               },
               {
-                basic: 87,
-                adapt: 80,
-                trust: 50,
-                abstract: 70,
-                collaAware: 42,
-                selfLearn: 64
+                basic_effectiveness: 95,
+                adaptablity: 78,
+                dependability: 68,
+                multiband: 70,
+                abstract: 48,
+                selflearn: 66
               }
             ]}
           />

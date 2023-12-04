@@ -1,6 +1,10 @@
 import styled from "styled-components";
 
 export const SideWrap = styled.div`
+  position: fixed;
+  top: 8.8vw;
+  left: 0;
+  bottom: 0;
   border-right: 2px solid #bbbbbb;
   width: 20vw;
   min-width: 200px;

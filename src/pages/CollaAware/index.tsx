@@ -8,6 +8,7 @@ import { findDataAction, runpy1Action, runpy2Action } from "./store";
 import ZipUploader from "./c-cpn/uploadzip";
 import WeatherForm from "./c-cpn/form";
 import IntroductionHandle from "./c-cpn/formintroduction";
+import AppHeader from "@/components/app_header";
 
 interface IProps {
   children?: ReactNode;
@@ -40,6 +41,7 @@ const CollaAware: FC<IProps> = (props) => {
 
   return (
     <div>
+      <AppHeader greenClickHandle={() => null} />
       <CreateDataInput>
         <div>
           <table>

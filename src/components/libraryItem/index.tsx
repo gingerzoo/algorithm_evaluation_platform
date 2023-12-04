@@ -1,9 +1,6 @@
-import React, { memo, useEffect, useRef } from "react";
-import type { FC, ReactNode } from "react";
-import ReactEcharts from "echarts-for-react";
-import echarts from "echarts";
+import React, { memo } from "react";
+import type { FC } from "react";
 import { LibraryItemWrap } from "@/components/libraryItem/style";
-import { resultName } from "@/assets/data/local_data";
 import FilePdfTwoTone from "@ant-design/icons/lib/icons/FilePdfTwoTone";
 
 interface Iprops {

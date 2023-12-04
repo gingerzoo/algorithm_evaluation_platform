@@ -244,7 +244,7 @@ const AdaptAbil: FC<Iprops> = () => {
       </div>
       {((isVoiceCheckedFlag && noice_run_status === 0) ||
         (!isVoiceCheckedFlag && run_status === 0)) && (
-        <Radar_v2 data={data} indicator={indicator} />
+        <Radar_v2 data={data} indicator={indicator} isAll_res={false} />
       )}
     </AdaptWraper>
   );

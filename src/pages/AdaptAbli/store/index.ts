@@ -349,7 +349,7 @@ export const getCompareResListAction = createAsyncThunk<
           duration: 2
         });
       } else {
-        const result: number[][] = res.result.map((items) => {
+        const result: number[][] = res.result.scoreList.map((items) => {
           return items.map((item) => {
             return parseFloat((item * 100).toFixed(2));
           });
@@ -360,7 +360,7 @@ export const getCompareResListAction = createAsyncThunk<
         if (basicRes.length) {
           result.push(basicRes);
         }
-        console.log("处理好的caompare数据", result);
+        console.log("处理好的caompare数据!!!!!!!!!!", result);
         if (isNoice) {
           dispatch(changeNoiceCompareResAction(result));
         } else {

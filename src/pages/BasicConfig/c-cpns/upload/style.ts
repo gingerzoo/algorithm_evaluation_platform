@@ -62,6 +62,13 @@ export const UploadWrap = styled.div`
           }
         }
 
+        .ant-select-single
+          .ant-select-selector
+          .ant-select-selection-item
+          .optionItem-name {
+          line-height: 2.4vw;
+        }
+
         .ant-select-dropdown
           .ant-select-item
           .ant-select-item-option

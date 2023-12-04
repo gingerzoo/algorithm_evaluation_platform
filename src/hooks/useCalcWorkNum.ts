@@ -20,21 +20,23 @@ export default function useCalcWorkNum() {
     isNoiceModel,
     basic_run_status,
     adapt_compareRes,
-    noice_compareRes
+    noice_compareRes,
+    all_res
   } = useAppSelector((state) => ({
     checkList: state.adaptAbili.checkList,
     sceneNum: state.basicConfig.sceneNum,
     isNoiceModel: state.noiseModel.isCheckedFlag,
     basic_run_status: state.basicEffect.run_status,
     adapt_compareRes: state.adaptAbili.compareRes,
-    noice_compareRes: state.noiseModel.noice_compareRes
+    noice_compareRes: state.noiseModel.noice_compareRes,
+    all_res: state.home.all_res
   }));
 
   //   console.log("checkList", checkList);
   const resName: string[] = [];
   let data: Idata[] = [];
   let indicator: Iindicator[] = [];
-  const resList = basic_run_status !== 0 ? basicResList : basicAllResList;
+  const resList = basicAllResList;
   const compareList = isNoiceModel ? noice_compareRes : adapt_compareRes;
   if (!isNoiceModel) {
     checkList[sceneNum].forEach((item, index) => {
@@ -48,7 +50,9 @@ export default function useCalcWorkNum() {
     //   resName.push("基础效能");
     // }
   }
-  resName.push("基础效能");
+  if (all_res.basic_effectiveness.scoreList.length != 0) {
+    resName.push("基础效能");
+  }
   data = compareList?.map((item, index) => ({
     value: item,
     name: resName[index]
@@ -59,6 +63,9 @@ export default function useCalcWorkNum() {
     // value: result[item.en],
     max: 100
   }));
+
+  console.log("结果展示的data", data);
+  console.log("结果展示的indicator", indicator);
 
   return {
     data,

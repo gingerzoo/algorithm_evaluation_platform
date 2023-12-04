@@ -11,7 +11,7 @@ export const AnnotationWrap = styled.div`
   }
   .back_home {
     position: fixed;
-    top: 20px;
+    bottom: 20px;
     right: 20px;
     padding: 0.8vw 1.6vw;
     ${(props) => props.theme.mixin.btnHover}

@@ -1,10 +1,18 @@
 import styled from "styled-components";
 
 export const ProcessWrap = styled.div`
+  position: fixed;
+  top: 4.8vw;
+  left: 0;
+  right: 0;
+  height: 4vw;
+  z-index: 9;
+
   display: flex;
   align-items: center;
-  height: 4vw;
+
   color: white;
+  /* margin-top: 4.8vw; */
 
   /* text-align: center; */
   padding-left: 5px;

@@ -2,7 +2,7 @@ import React, { memo } from "react";
 import type { FC, ReactNode } from "react";
 import ReactEcharts from "echarts-for-react";
 
-interface Ires {
+export interface Ires {
   name: string;
   type: string;
   data: number[];

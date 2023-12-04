@@ -1,38 +1,27 @@
 import styled from "styled-components";
 
 export const WorkWrap = styled.div`
+  padding: 0 2vw;
+  .btn {
+    padding: 1vw 2vw;
+    font-size: 1.1vw;
+    font-weight: 700;
+    ${(props) => props.theme.mixin.btnHover}
+  }
   .next {
     display: flex;
     justify-content: flex-end;
-    padding-right: 1.5vw;
-    margin-top: 1.5vw;
+    margin-top: 2vw;
 
     .ant-btn.btn {
-      /* padding: 1vw 1.6vw;
-      border-radius: 8px; */
-      /* background-color: #79cc86; */
-      /* background-color: #1890ff;
-      color: white; */
-      padding: 0.6vw 1.6vw;
       height: auto;
-      font-size: 1.3vw;
-      /* background-color: ${(props) => props.theme.color.secondColor};
-      &:hover {
-        background-color: ${(props) => props.theme.color.primaryColor};
-      } */
-      ${(props) => props.theme.mixin.btnHover}
-    }
-    button.btn {
-      height: 3.8vw;
-      line-height: 3.8vw;
-      margin-right: 4.8vw;
-      padding: 0 2.2vw;
-      ${(props) => props.theme.mixin.btnHover}
+      font-size: 1.2vw;
     }
   }
   .top {
     display: flex;
-    padding-top: 0.5vw;
+    margin: 0.5vw 0;
+    gap: 3vw;
     .btn {
       justify-content: space-around;
       margin-bottom: 1.5vw;
@@ -42,12 +31,13 @@ export const WorkWrap = styled.div`
       margin: 0 4vw 0 -2.7vw;
       line-height: 4.3vw;
     }
-    button.btn {
-      height: 3.8vw;
-      line-height: 3.8vw;
-      margin-right: 4.8vw;
-      padding: 0 2.2vw;
-      ${(props) => props.theme.mixin.btnHover}
-    }
+  }
+  .describe {
+    /* padding: 1vw 4vw; */
+    text-indent: 2em;
+    font-family: "SimSun";
+    line-height: 22px;
+    text-align: justify;
+    margin-bottom: 0.8vw;
   }
 `;

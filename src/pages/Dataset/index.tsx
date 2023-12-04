@@ -26,7 +26,7 @@ const Dataset: FC<Iprops> = (props) => {
 
   useEffect(() => {
     dispatch(getDatasetInfoAction());
-  });
+  }, []);
 
   const showModal = () => {
     setIsModalOpen(true);
