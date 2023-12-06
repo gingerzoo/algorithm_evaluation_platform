@@ -112,20 +112,22 @@ export const getWorkDataAction = createAsyncThunk<
   { state: IrootState }
 >("genDataset", async (par, { dispatch, getState }) => {
   const scene = getState().basicConfig.scene;
-  const sceneNum = sceneToNum[scene];
+  const sceneNum = getState().basicConfig.sceneNum;
   const date_type = getState().basicConfig.dataSet;
 
   const checkList = getState().adaptAbili.checkList[sceneNum];
+  console.log("勾选了哪些工况", checkList);
   const interference = getState().adaptAbili[scene] as Iwork[];
+  console.log("现在的所有工况", interference);
   const checkInterfer: Iwork[] = [];
   checkList.forEach((item: boolean, index: number) => {
     if (item) checkInterfer.push(interference[index]);
   });
-  //   console.log("要被执行的工况", newInter);
+  console.log("要被执行的工况", checkInterfer);
 
   try {
     const timeStart = performance.now();
-    const res = await getWorkDataset(sceneNum, date_type, interference);
+    const res = await getWorkDataset(sceneNum, date_type, checkInterfer);
     const timeEnd = performance.now();
     const timeDur = ((timeEnd - timeStart) / 1000).toFixed(3);
 

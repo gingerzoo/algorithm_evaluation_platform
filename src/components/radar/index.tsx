@@ -1,7 +1,7 @@
 import React, { memo } from "react";
 import type { FC, ReactNode } from "react";
 import ReactEcharts from "echarts-for-react";
-import { resultName } from "@/assets/data/local_data";
+import { res_measurement } from "@/assets/data/local_data";
 
 export interface Iradar {
   [key: string]: number;
@@ -26,15 +26,15 @@ const Radar: FC<Iprops> = (props) => {
   //   const chartRef = useRef<EChartsReact>(null);
 
   // 这是雷达图展示的每个点的数据
-  const indicator = resultName.map((item) => ({
-    name: item.ch,
+  const indicator = res_measurement.map((item) => ({
+    name: item,
     // value: result[item.en],
     max: 100
   }));
 
   const data = result.map((item, index) => ({
     value: Object.values(item),
-    name: resLen == 1 ? "" : `算法${index + 1}`
+    name: resLen == 1 ? "总体评价" : `算法${index + 1}`
   }));
 
   function getOption() {

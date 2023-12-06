@@ -37,12 +37,14 @@ export const DatasetWrap = styled.div`
     }
     button {
       align-self: end;
-      padding: 10px 20px;
+      padding: 0.7vw 1.6vw;
       border-radius: 10px;
+      font-size: 1.1vw;
+      font-weight: 700;
       ${(props) => props.theme.mixin.btnHover}
       &.backToPrePage {
         align-self: stretch;
-        margin-top: 30px;
+        margin-top: 1vw;
       }
     }
   }

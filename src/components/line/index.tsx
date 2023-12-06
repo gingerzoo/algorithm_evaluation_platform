@@ -67,7 +67,7 @@ const Line: FC<Iprops> = ({ value, category }) => {
       //   ref={chartRef}
       option={getOption()}
       notMerge={true}
-      style={{ width: "90%", height: "25vw" }}
+      style={{ width: "80%", height: "25vw" }}
     />
   );
 };

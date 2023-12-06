@@ -20,6 +20,7 @@ export const ProfileWrap = styled.div<Iprops>`
   }
 
   .content {
+    box-sizing: border-box;
     /* position: relative; */
     width: calc(80vw - 2px);
     /* min-width: 990px; */

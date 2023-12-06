@@ -164,19 +164,19 @@ const CollaAware: FC<IProps> = (props) => {
             <tbody>
               <tr>
                 <td>
-                  <Button onClick={runPython1} className="createBtn">
+                  <button onClick={runPython1} className="createBtn">
                     运行算法组件1
-                  </Button>
+                  </button>
                 </td>
                 <td>
-                  <Button onClick={runPython2} className="createBtn">
+                  <button onClick={runPython2} className="createBtn">
                     运行算法组件2
-                  </Button>
+                  </button>
                 </td>
                 <td>
-                  <Button onClick={getDataHandle} className="createBtn">
+                  <button onClick={getDataHandle} className="createBtn">
                     生成报表
-                  </Button>
+                  </button>
                 </td>
               </tr>
             </tbody>

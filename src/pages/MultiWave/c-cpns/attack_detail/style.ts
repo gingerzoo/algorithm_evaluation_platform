@@ -4,18 +4,7 @@ import { url } from "inspector";
 
 export const AttackDetWrap = styled.div`
   height: 300px;
-  /* display: flex;
-  justify-content: center;
-  align-items: center; */
   position: relative;
-
-  /* .left,
-  .right {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  } */
   .box {
     width: 80%;
     position: absolute;

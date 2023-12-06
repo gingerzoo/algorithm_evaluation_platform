@@ -16,14 +16,18 @@ export const CooperWrap = styled.div`
 
 export const CreateTaskWraper = styled.div`
   table {
-    margin: 0 auto;
-  }
-  button.createBtn {
-    height: 3.8vw;
-    line-height: 3.8vw;
-    margin-right: 4.8vw;
-    padding: 0 2.2vw;
-    ${(props) => props.theme.mixin.btnHover}
+    /* margin: 0 auto; */
+    display: flex;
+    justify-content: center;
+    margin: 3vw 0;
+
+    button.createBtn {
+      font-weight: 700;
+      font-size: 1.2vw;
+      margin-right: 4.5vw;
+      padding: 1vw 2.2vw;
+      ${(props) => props.theme.mixin.btnHover}
+    }
   }
 `;
 

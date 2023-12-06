@@ -1,7 +1,7 @@
 import React, { memo, useEffect, useRef } from "react";
 import type { FC, ReactNode } from "react";
 import ReactEcharts from "echarts-for-react";
-import { resultName, sceneToNum } from "@/assets/data/local_data";
+import { sceneToNum } from "@/assets/data/local_data";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "@/store";
 import {

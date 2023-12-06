@@ -15,8 +15,9 @@ interface Iprops {
 }
 
 const Dataset: FC<Iprops> = (props) => {
-  const { datasets } = useAppSelector((state) => ({
-    datasets: state.datasetMan.datasets
+  const { datasets, isUpLoading } = useAppSelector((state) => ({
+    datasets: state.datasetMan.datasets,
+    isUpLoading: state.datasetMan.isUploading
   }));
 
   const navigate = useNavigate();
@@ -25,6 +26,8 @@ const Dataset: FC<Iprops> = (props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
+    /* 调用了请求数据库所有数据的接口 */
+    console.log("调用了请求数据库所有数据的接口");
     dispatch(getDatasetInfoAction());
   }, []);
 
@@ -100,13 +103,11 @@ const Dataset: FC<Iprops> = (props) => {
       <Modal
         title="新建数据集"
         open={isModalOpen}
-        onOk={handleOk}
         onCancel={handleCancel}
-        okText="确认"
-        cancelText="取消"
-        width={470}
+        footer={null}
+        maskClosable={true}
       >
-        <Add_dataset />
+        <Add_dataset isUpLoading={isUpLoading} />
       </Modal>
     </DatasetWrap>
   );

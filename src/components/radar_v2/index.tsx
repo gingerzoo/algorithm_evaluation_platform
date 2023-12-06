@@ -47,7 +47,7 @@ const RadarV2: FC<Iprops> = (props) => {
         itemHeight: isAll_res ? 12 : 24,
         //图例之间的间距
         itemGap: 15,
-        orient: isAll_res ? "vertical" : "'horizontal"
+        orient: isAll_res ? "vertical" : "horizontal"
       },
       tooltip: {
         trigger: "item"

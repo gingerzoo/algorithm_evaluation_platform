@@ -152,7 +152,7 @@ const MultiWave: FC<Iprops> = () => {
           sceneNum={sceneNum}
           curResult={curResult}
           title="多波段协同"
-          nextPath={`/profile/table`}
+          nextPath={`/profile/absawareness`}
         />
       )}
     </MultiWrap>

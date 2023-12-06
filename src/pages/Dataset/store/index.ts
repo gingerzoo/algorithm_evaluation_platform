@@ -29,6 +29,7 @@ export type Ibuild_data = {
 export interface Idatasets {
   datasets: Idataset[];
   buildData: Ibuild_data;
+  isUploading: boolean;
 }
 const initialState: Idatasets = {
   datasets: [],
@@ -37,7 +38,8 @@ const initialState: Idatasets = {
     data_type: 0,
     scene: 0,
     info: "你好世界"
-  }
+  },
+  isUploading: false
 };
 
 export const getDatasetInfoAction = createAsyncThunk(
@@ -99,11 +101,29 @@ const datasetSlice = createSlice({
     },
     changeBuildDataAction(state, { payload }) {
       state.buildData = payload;
+    },
+    changeIsLoadingAction(state, { payload }) {
+      state.isUploading = payload;
     }
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getUploadDatasetAction.pending, (state) => {
+        state.isUploading = true;
+      })
+      .addCase(getUploadDatasetAction.fulfilled, (state) => {
+        state.isUploading = false;
+      })
+      .addCase(getUploadDatasetAction.rejected, (state) => {
+        state.isUploading = false;
+      });
   }
 });
 
 export default datasetSlice.reducer;
 
-export const { changeDatasetsInfoAction, changeBuildDataAction } =
-  datasetSlice.actions;
+export const {
+  changeDatasetsInfoAction,
+  changeBuildDataAction,
+  changeIsLoadingAction
+} = datasetSlice.actions;

@@ -231,6 +231,7 @@ const BasicConfig: FC<Iprops> = () => {
           nextPath={`/profile/basicwork`}
         />
       )}
+
       <div className="cover system">
         <App_cover btnClickHandle={systemCover} width={600}>
           <System_overview />

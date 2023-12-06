@@ -12,10 +12,10 @@ type Ihome = {
 };
 
 const initialState: Ihome = {
-  user_name: "yangpeng",
+  user_name: "luxiazhao",
   can_login: false,
   remember: true,
-  password: "yangpeng",
+  password: "",
   all_res: {
     basic_effectiveness: {
       scoreList: [[]],

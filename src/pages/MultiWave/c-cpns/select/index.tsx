@@ -64,7 +64,6 @@ const SelectData: FC<Iprops> = (props) => {
           onChange={handleChange}
           popupClassName={`select-item`}
           size="large"
-          //   labelInValue={true}
           options={[
             {
               value: "basic_effectiveness/remote_sensing",

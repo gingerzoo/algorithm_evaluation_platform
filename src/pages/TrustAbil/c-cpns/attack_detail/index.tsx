@@ -85,7 +85,7 @@ const AttackDetail: FC<Iprops> = (props) => {
       <div className="box">
         <TreeSelect
           showSearch
-          style={{ width: "82%" }}
+          style={{ width: "70%" }}
           value={value}
           size="large"
           // dropdownStyle={{ maxHeight: 400, overflow: "auto" }}

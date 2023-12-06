@@ -13,7 +13,7 @@ import Table1 from "./c-cpns/table1";
 import { basicResInfoList, basicResList } from "@/assets/data/local_data";
 import { IbasicRes } from "./type";
 import { getAlogListAction } from "../BasicConfig/store";
-import { getBasicEffectAction, getResultImgsAction } from "./store";
+import { getSelfLearnRunAction, getSelfLearnReImgsAction } from "./store";
 import { BASE_URL } from "src/services/config/index";
 
 interface Iprops {
@@ -23,29 +23,15 @@ interface Iprops {
 const SelfLearn: FC<Iprops> = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const {
-    scene,
-    sceneNum,
-    inputPlace,
-    inputRun,
-    nowProcess,
-    basicResult,
-    curModule,
-    commit_status,
-    isPending,
-    dataset
-  } = useAppSelector((state) => ({
-    scene: state.basicConfig.scene,
-    sceneNum: state.basicConfig.sceneNum,
-    inputPlace: state.basicConfig.inputPlace,
-    inputRun: state.basicConfig.inputRun,
-    nowProcess: state.basicConfig.nowProcess,
-    basicResult: state.selfLearn,
-    curModule: state.basicConfig.currentModule,
-    commit_status: state.basicConfig.commit_status,
-    isPending: state.basicEffect.isPending,
-    dataset: state.basicConfig.dataSet
-  }));
+  const { scene, sceneNum, nowProcess, basicResult, isPending, dataset } =
+    useAppSelector((state) => ({
+      scene: state.basicConfig.scene,
+      sceneNum: state.basicConfig.sceneNum,
+      nowProcess: state.basicConfig.nowProcess,
+      basicResult: state.selfLearn,
+      isPending: state.selfLearn.isPending,
+      dataset: state.basicConfig.dataSet
+    }));
   const { score, status } = basicResult["sl" + scene] as IbasicRes;
   console.log(score);
   const info = basicResult.run_info;
@@ -55,19 +41,19 @@ const SelfLearn: FC<Iprops> = () => {
   const [messageApi, contextHolder] = message.useMessage();
   console.log(test);
   function next() {
-    const nextPath = `/profile/colawareness`;
+    const nextPath = `/profile/result`;
     dispatch(changeNextPathAction(nextPath));
     navigate(nextPath);
-    dispatch(
-      changeNowProcessAction([
-        "基础设置",
-        "基础效能",
-        "可适应能力评估",
-        "可信赖能力评估",
-        "自学习能力评估",
-        "协同感知能力评估"
-      ])
-    );
+    // dispatch(
+    //   changeNowProcessAction([
+    //     "基础设置",
+    //     "基础效能",
+    //     "可适应能力评估",
+    //     "可信赖能力评估",
+    //     "自学习能力评估",
+    //     "协同感知能力评估"
+    //   ])
+    // );
   }
   const handleDownload = async () => {
     try {
@@ -125,13 +111,13 @@ const SelfLearn: FC<Iprops> = () => {
   function runSelfLearnBtnClick() {
     console.log("执行测试按钮处理函数");
     console.log(test);
-    dispatch(getBasicEffectAction()).then((res) => {
-      if (getBasicEffectAction.fulfilled.match(res)) {
+    dispatch(getSelfLearnRunAction()).then((res) => {
+      if (getSelfLearnRunAction.fulfilled.match(res)) {
         console.log(res.payload);
         if (!res.payload.status) {
           // setTest(info);
           success("执行成功");
-          dispatch(getResultImgsAction());
+          dispatch(getSelfLearnReImgsAction());
         } else {
           // failed(res.payload.info);
           failed("算法运行失败");
@@ -207,7 +193,7 @@ const SelfLearn: FC<Iprops> = () => {
       />
       <div className="next">
         <Button onClick={next} type="primary" className="btn">
-          进行协同感知能力评估
+          结果总览
         </Button>
       </div>
     </WorkWrap>

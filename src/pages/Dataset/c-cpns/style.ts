@@ -25,4 +25,14 @@ export const AddsetWrap = styled.div`
     flex: 0 0 74%;
     max-width: 80%;
   }
+
+  .oper {
+    .submit-btn {
+      margin-right: 20px;
+      ${(props) => props.theme.mixin.btnHover}
+    }
+    .reset-btn {
+      margin-left: 20px;
+    }
+  }
 `;

@@ -20,6 +20,9 @@ interface Iprops {
 
 const DataUpload: FC<Iprops> = (props) => {
   const { commandClickHandle } = props;
+  const { sceneNum } = useAppSelector((state) => ({
+    sceneNum: state.basicConfig.sceneNum
+  }));
 
   const dispatch = useAppDispatch();
 
@@ -84,6 +87,7 @@ const DataUpload: FC<Iprops> = (props) => {
           dispatch(changeStatusCommAction(-1));
           dispatch(changeBasicStatusAction(-1));
         }}
+        disabled={sceneNum === 3}
       >
         {item}
       </button>

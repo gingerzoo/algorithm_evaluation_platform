@@ -21,6 +21,15 @@ export const ModelDetailWrap = styled.div`
     }
   }
 
+/* .chart{
+    width:100%;
+    height:31vw;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+} */
+
   .explain{
     margin-top:1.2vw;
     .explain_name span{

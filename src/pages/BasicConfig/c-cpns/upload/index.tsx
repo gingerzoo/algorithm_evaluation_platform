@@ -16,8 +16,9 @@ interface Iprops {
 
 const App_header: FC<Iprops> = (props) => {
   const { isDocker, children, procommandClickHandle } = props;
-  const { curModule } = useAppSelector((state) => ({
-    curModule: state.basicConfig.currentModule
+  const { curModule, sceneNum } = useAppSelector((state) => ({
+    curModule: state.basicConfig.currentModule,
+    sceneNum: state.basicConfig.sceneNum
   }));
 
   const navigate = useNavigate();
@@ -34,7 +35,10 @@ const App_header: FC<Iprops> = (props) => {
   }
 
   return (
-    <UploadWrap>
+    <UploadWrap
+      notBrowser={sceneNum === 3 && !isDocker}
+      isVoice={sceneNum === 3}
+    >
       <div className="big-box" onClick={bigBoxHandle}>
         <span className="icon">
           <SwitcherFilled style={{ fontSize: "22px", color: "teal" }} />
@@ -48,9 +52,13 @@ const App_header: FC<Iprops> = (props) => {
         )}
         <div className="select">{children}</div>
       </div>
-      <span className="command" onClick={(e) => btnClickHandle(e)}>
+      <button
+        className="command"
+        onClick={(e) => btnClickHandle(e)}
+        disabled={sceneNum === 3 && !isDocker}
+      >
         {isDocker ? "查看系统简况" : "浏览数据集样本"}
-      </span>
+      </button>
     </UploadWrap>
   );
 };

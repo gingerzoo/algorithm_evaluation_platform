@@ -1,6 +1,10 @@
 import styled from "styled-components";
 
-export const UploadWrap = styled.div`
+interface IBrowswer {
+  notBrowser: boolean;
+  isVoice: boolean;
+}
+export const UploadWrap = styled.div<IBrowswer>`
   text-align: center;
   margin-bottom: 0.8vw;
   font-size: 1vw;
@@ -134,13 +138,20 @@ export const UploadWrap = styled.div`
         background-color: ${(props) => props.theme.color.secondColor};
         border-radius: 3px;
         box-shadow: 0 0 4px ${(props) => props.theme.color.secondColor};
+        background-color: ${(props) =>
+          props.notBrowser ? "#b8b8b8" : props.theme.color.primaryColor};
+
         &:hover {
-          transform: scale(1.1);
+          background-color: ${(props) =>
+            props.isVoice ? "#b8b8b8" : props.theme.color.primaryColor};
         }
         &.selected {
           color: white;
-          background-color: ${(props) => props.theme.color.orangeColor};
-          box-shadow: 0 0 4px ${(props) => props.theme.color.orangeColor};
+          background-color: ${(props) =>
+            props.notBrowser ? "#b8b8b8" : props.theme.color.orangeColor};
+          box-shadow: 0 0 4px
+            ${(props) =>
+              props.notBrowser ? "#b8b8b8" : props.theme.color.orangeColor};
         }
       }
     }
@@ -152,10 +163,13 @@ export const UploadWrap = styled.div`
     padding: 0.8vw 1.6vw 0.7vw 1.6vw;
     color: white;
     font-size: 1vw;
-    ${(props) => props.theme.mixin.btnHover}/* ${(props) =>
-      props.theme.mixin.btnHover}.ant-select-selector {
-      height: 2.4vw;
-      line-height: 2.4vw;
-    } */
+    /* ${(props) => props.theme.mixin.btnHover} */
+    background-color: ${(props) =>
+      props.notBrowser ? "#b8b8b8" : props.theme.color.primaryColor};
+
+    &:hover {
+      background-color: ${(props) =>
+        props.notBrowser ? "#b8b8b8" : props.theme.color.primaryColor};
+    }
   }
 `;

@@ -3,12 +3,14 @@ import type { FC, ReactNode } from "react";
 import { AddsetWrap } from "./style";
 import {
   Button,
+  Checkbox,
   DatePicker,
   Form,
   Input,
   message,
   Radio,
   RadioChangeEvent,
+  Spin,
   Upload
 } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
@@ -16,6 +18,8 @@ import { useDispatch } from "react-redux";
 import { changeBuildDataAction, getUploadDatasetAction } from "../store";
 import { useAppDispatch } from "@/store";
 import { failedMessage } from "@/utils/message";
+import { CheckboxChangeEvent } from "antd/es/checkbox";
+import { CheckboxValueType } from "antd/es/checkbox/Group";
 
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
@@ -29,6 +33,7 @@ const normFile = (e: any) => {
 
 interface Iprops {
   children?: ReactNode;
+  isUpLoading: boolean;
 }
 
 const Addset: FC<Iprops> = (props) => {
@@ -36,7 +41,7 @@ const Addset: FC<Iprops> = (props) => {
 
   const [uploadType, setUpload] = useState(0);
   console.log("uploadTYpe", uploadType);
-  const [dataType, setDataType] = useState(0);
+  const [dataType, setDataType] = useState<CheckboxValueType[]>([0]);
 
   const dispatch = useAppDispatch();
   const [form] = Form.useForm();
@@ -49,8 +54,9 @@ const Addset: FC<Iprops> = (props) => {
     setUpload(e.target.value);
   };
 
-  const onDataChange = (e: RadioChangeEvent) => {
-    setDataType(e.target.value);
+  const onDataChange = (e: CheckboxValueType[]) => {
+    console.log("checkbox的值", e);
+    setDataType(e);
   };
 
   const onSubmit: MouseEventHandler<HTMLAnchorElement> &
@@ -87,7 +93,7 @@ const Addset: FC<Iprops> = (props) => {
 
     if (flag) {
       const {
-        data_type = 0,
+        data_type = [0],
         data_name,
         scene = 0,
         info,
@@ -151,15 +157,15 @@ const Addset: FC<Iprops> = (props) => {
           <DatePicker />
         </Form.Item> */}
         <Form.Item label="数据集类型" name="data_type">
-          <Radio.Group
+          <Checkbox.Group
             onChange={onDataChange}
             value={dataType}
-            defaultValue={0}
+            defaultValue={[0]}
           >
-            <Radio value={0}> 可见光 </Radio>
-            <Radio value={1}> 近红外</Radio>
-            <Radio value={2}> radar</Radio>
-          </Radio.Group>
+            <Checkbox value={0}> 可见光 </Checkbox>
+            <Checkbox value={1}> 近红外</Checkbox>
+            <Checkbox value={2}> radar</Checkbox>
+          </Checkbox.Group>
         </Form.Item>
 
         <Form.Item label="场景" name="scene">
@@ -204,14 +210,17 @@ const Addset: FC<Iprops> = (props) => {
             </div>
           </Upload>
         </Form.Item>
-        <Form.Item>
+        <Form.Item className="oper">
           <Button
             // htmlType="submit"
             onClick={onSubmit}
+            className="submit-btn"
           >
             提交
           </Button>
-          <Button htmlType="button" onClick={onReset}>
+
+          <Spin spinning={props.isUpLoading} />
+          <Button htmlType="button" onClick={onReset} className="reset-btn">
             重置
           </Button>
         </Form.Item>

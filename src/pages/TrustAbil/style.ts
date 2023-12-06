@@ -24,6 +24,11 @@ export const TrustWrap = styled.div`
   }
 
   .top {
+    .attack_methods {
+      height: 17vw;
+      overflow-y: auto;
+      margin-bottom: 20px;
+    }
     .pic {
       display: flex;
       justify-content: center;
@@ -47,13 +52,15 @@ export const TrustWrap = styled.div`
   }
 
   .exec {
-    display: flex;
-    align-items: center;
-  }
-  button.btn {
-    margin-right: 3vw;
-    padding: 1vw 2vw;
-    font-weight: 700;
-    ${(props) => props.theme.mixin.btnHover}
+    /* display: flex;
+    justify-content: ; */
+    margin-top: 1vw;
+    button.btn {
+      /* margin-right: 4vw; */
+      padding: 1vw 3vw;
+      font-weight: 700;
+      font-size: 1.2vw;
+      ${(props) => props.theme.mixin.btnHover}
+    }
   }
 `;

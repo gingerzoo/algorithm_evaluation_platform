@@ -2,11 +2,11 @@ import styled from "styled-components";
 
 export const Introduction = styled.div`
   button.createBtn {
-    height: 25px; 
+    height: 25px;
     padding: 0 2.2vw;
     ${(props) => props.theme.mixin.btnHover}
   }
-  table{
+  table {
     margin-bottom: 40px;
   }
   input.fileinput {

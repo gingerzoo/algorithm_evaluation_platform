@@ -65,14 +65,15 @@ const Results: FC<Iprops> = (props) => {
   const { model_name } = curAlgo;
 
   const isBasicRun: boolean =
-    origin_all_res.basic_effectiveness.scoreList?.length !== 0;
+    origin_all_res.basic_effectiveness.scoreList?.length > 0;
   const color = ["#FCCA00", "#73C0DE", "#5470C6", "#EE6666"];
 
   const dispatch = useAppDispatch();
 
-  //   useEffect(() => {
-  //     dispatch(getAllWorkResAction());
-  //   }, [origin_all_res]);
+  useEffect(() => {
+    console.log("发送获取总数据的请求！");
+    dispatch(getAllWorkResAction());
+  }, []);
 
   /* 六维测评结果 */
   /* 拿出rate */
@@ -104,7 +105,7 @@ const Results: FC<Iprops> = (props) => {
   curName.forEach((item, index) => {
     basic_data.push({
       /* 这里要小心，取不取最后的总体分数 */
-      value: basicScoreList?.slice(0, -1)[index] * 100,
+      value: basicScoreList?.slice(0, -1)[index],
       name: curName[index]
     });
   });
@@ -163,6 +164,13 @@ const Results: FC<Iprops> = (props) => {
       name: "自学习能力"
     }
   ];
+  if (isBasicRun) {
+    selfLearn_data.push({
+      type: "bar",
+      data: basic_effectiveness.scoreList?.[0],
+      name: "基础效能"
+    });
+  }
 
   const echarts = [
     <Pie key={0} data={basic_data} />,

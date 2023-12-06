@@ -25,8 +25,7 @@ const Bar: FC<Iprops> = ({ value, workName }) => {
         }
       },
       legend: {
-        // orient: "horizontal",
-        right: "right",
+        right: "0px",
         orient: "verrical",
         top: "0%"
       },
@@ -53,7 +52,7 @@ const Bar: FC<Iprops> = ({ value, workName }) => {
       //   ref={chartRef}
       option={getOption()}
       notMerge={true}
-      style={{ width: "90%", height: "25vw" }}
+      style={{ width: "80%", height: "25vw" }}
     />
   );
 };

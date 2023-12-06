@@ -37,8 +37,7 @@ a:hover {
 img {
   vertical-align: top;
 }
-ul,
-li {
+ul {
   line-height: none;
   list-style: none;
 }

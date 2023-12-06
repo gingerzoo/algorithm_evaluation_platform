@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React, { Fragment, memo } from "react";
 import type { FC, ReactNode } from "react";
 import { TrustWrap } from "./style";
 import Attack_detail from "./c-cpns/attack_detail";
@@ -9,6 +9,7 @@ import { IbasicRes } from "@/type";
 import { message, Spin } from "antd";
 import { getTrustEffectAction } from "./store";
 import { trustDocument } from "@/assets/data/local_data";
+import Attack_method_item from "./c-cpns/attack_method_item";
 
 interface Iprops {
   children?: ReactNode;
@@ -37,11 +38,20 @@ const TrustAbil: FC<Iprops> = () => {
   return (
     <TrustWrap>
       <div className="top">
-        <p className="describe">
+        {/* <p className="describe">
           {trustDocument.map((item, index) => {
             return <span key={index}>{item}</span>;
           })}
-        </p>
+        </p> */}
+        <div className="attack_methods">
+          {trustDocument.map((data, index) => {
+            return (
+              <Fragment key={data.attack_name}>
+                <Attack_method_item item_info={data} />
+              </Fragment>
+            );
+          })}
+        </div>
         <div className="pic">
           <img src={attack_bg} />
         </div>
@@ -88,7 +98,7 @@ const TrustAbil: FC<Iprops> = () => {
           sceneNum={sceneNum}
           curResult={curResult}
           title="可信赖能力"
-          nextPath={`/profile/selflearning`}
+          nextPath={`/profile/multiwave`}
         />
       )}
     </TrustWrap>

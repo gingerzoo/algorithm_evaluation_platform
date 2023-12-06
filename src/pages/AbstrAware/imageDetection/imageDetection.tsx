@@ -66,7 +66,6 @@ function ImageDetection() {
   };
 
   const handleClick = () => {
-    // console.log("点击了按钮");
     if (parameters.flag === 0 || parameters.flag === 1) {
       parameters.flag += 2; // 加上2
       axios

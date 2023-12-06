@@ -4,7 +4,6 @@ import { TableWrap } from "./style";
 import { useAppDispatch, useAppSelector } from "@/store";
 import { datasets, subs } from "@/assets/data/local_data";
 import My_drawer from "@/components/my_drawer";
-import { getResultImgsAction } from "../../store";
 
 interface Isecindex {
   name: string;

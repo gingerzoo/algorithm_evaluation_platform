@@ -32,10 +32,10 @@ const Pie: FC<Iprops> = ({ data }) => {
       },
 
       legend: {
-        orient: "vertical",
-        right: "right",
-        // left: "left",
-        top: "10px"
+        orient: "horizontal",
+        right: "10px",
+        top: "15px",
+        itemGap: 15
       },
 
       grid: {
@@ -76,7 +76,7 @@ const Pie: FC<Iprops> = ({ data }) => {
       //   onEvents={}
       // onChartReady={onChartReady}
 
-      style={{ width: "90%", height: "25vw" }}
+      style={{ width: "100%", height: "25vw" }}
     />
   );
 };
