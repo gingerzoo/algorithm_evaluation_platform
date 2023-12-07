@@ -84,7 +84,7 @@ export const sideNav = [
 
   {
     icon: <BarChartOutlined />,
-    title: "多波段协同",
+    title: "多波段协同能力",
     link: "/profile/multiwave"
   },
   {

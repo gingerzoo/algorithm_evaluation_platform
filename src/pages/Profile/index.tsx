@@ -9,6 +9,7 @@ import AppSide from "@/components/app_side";
 import { Outlet } from "react-router-dom";
 import App_cover from "@/components/app_cover";
 import Green_hand from "@/components/green_hand";
+import { useAppSelector } from "@/store";
 
 interface Iprops {
   children?: ReactNode;
@@ -29,11 +30,15 @@ const Peofile: FC<Iprops> = (props) => {
         <Suspense>
           <div className="content">
             <Outlet />
-            <div className="cover green-hand">
-              <App_cover btnClickHandle={greenBtnHandle} width={800}>
+            {/* <div className="cover green-hand">
+              <App_cover
+                btnClickHandle={greenBtnHandle}
+                width={800}
+                isRemote={sceneNum == 2}
+              >
                 <Green_hand />
               </App_cover>
-            </div>
+            </div> */}
           </div>
         </Suspense>
       </div>

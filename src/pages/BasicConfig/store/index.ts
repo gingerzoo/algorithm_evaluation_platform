@@ -282,8 +282,11 @@ export const getDataImgInfoAction = createAsyncThunk<
 
   try {
     const res = await getDataSetImg(sceneNum, data_type, par);
+    console.log("获得的图片信息", res);
     if (res.status === 0) {
-      dispatch(changeCoordinateAction(res.coor[0].bbox));
+      if (sceneNum === 2) {
+        dispatch(changeCoordinateAction(res.coor[0].bbox));
+      }
       dispatch(changeDataImgInfoAction(res));
     }
   } catch (err) {
@@ -292,6 +295,7 @@ export const getDataImgInfoAction = createAsyncThunk<
       content: "网络错误",
       duration: 2
     });
+    console.log("网络错误", err);
   }
 });
 
@@ -320,7 +324,7 @@ export const getChangeCoorAction = createAsyncThunk<
       failedMessage(`更改图片失败,失败原因：${res.info}`);
     }
   } catch (err) {
-    successMessage('网络错误"');
+    successMessage(`网络错误:${err}`);
   }
 });
 

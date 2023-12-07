@@ -9,12 +9,13 @@ interface Iprops {
   children?: ReactNode;
   width: number;
   btnClickHandle: (e: React.MouseEvent<HTMLSpanElement, MouseEvent>) => void;
+  isRemote: boolean;
 }
 
 const AppCover: FC<Iprops> = (props) => {
-  const { width, btnClickHandle } = props;
+  const { width, btnClickHandle, isRemote } = props;
   return (
-    <CoverWrap width={width}>
+    <CoverWrap width={width} isRemote={isRemote}>
       <div className="cover-content">
         {props.children}
         <Button

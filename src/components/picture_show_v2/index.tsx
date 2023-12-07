@@ -19,9 +19,10 @@ interface Iprops {
 }
 
 const Picture: FC<Iprops> = (props) => {
-  const { imgInfo, curCoor } = useAppSelector((state) => ({
+  const { imgInfo, curCoor, sceneNum } = useAppSelector((state) => ({
     imgInfo: state.basicConfig.pic_info,
-    curCoor: state.basicConfig.coordinate
+    curCoor: state.basicConfig.coordinate,
+    sceneNum: state.basicConfig.sceneNum
   }));
 
   const { img, coor, num_all, status } = imgInfo;
@@ -92,7 +93,7 @@ const Picture: FC<Iprops> = (props) => {
         >
           <CaretRightFilled />
         </button>
-        {status === 0 && (
+        {status === 0 && sceneNum == 2 && (
           <div className="data_coor">
             <h3 className="pic_index">图片{imgIndex + 1}</h3>
 

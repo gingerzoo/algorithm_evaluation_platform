@@ -7,7 +7,9 @@ export const PictureWrap = styled.div`
     height: calc(100vh - 11vw);
     background-color: #364d79;
     .pic {
+      display: flex;
       height: calc(100vh - 11vw);
+      align-items: center;
       overflow: hidden;
     }
     img {

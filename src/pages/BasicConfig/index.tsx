@@ -102,12 +102,10 @@ const BasicConfig: FC<Iprops> = () => {
 
   //点击浏览数据集样本按钮的执行函数
   const pictureCover = useCallback(() => {
-    // if (commit_status === 0) {
-    //   setIsPicture(!isPicture);
-    // } else {
-    //   failed("请先确认配置！");
+    // if (sceneNum === 2) {
+
     // }
-    dispatch(getDataImgInfoAction(0));
+
     setIsPicture(!isPicture);
     // console.log("查看图片");
   }, [isPicture]);
@@ -147,8 +145,10 @@ const BasicConfig: FC<Iprops> = () => {
       dispatch(commitDataAction()).then((res) => {
         //类型谓词
         if (commitDataAction.fulfilled.match(res)) {
-          if (!res.payload.isAsure) successMessage("配置成功");
-          else failedMessage(res.payload.info);
+          if (!res.payload.isAsure) {
+            successMessage("配置成功");
+            dispatch(getDataImgInfoAction(0));
+          } else failedMessage(res.payload.info);
         }
       });
     } else {
@@ -233,12 +233,16 @@ const BasicConfig: FC<Iprops> = () => {
       )}
 
       <div className="cover system">
-        <App_cover btnClickHandle={systemCover} width={600}>
+        <App_cover btnClickHandle={systemCover} width={600} isRemote={false}>
           <System_overview />
         </App_cover>
       </div>
       <div className="picture cover">
-        <App_cover btnClickHandle={pictureCover} width={800}>
+        <App_cover
+          btnClickHandle={pictureCover}
+          width={800}
+          isRemote={sceneNum === 2}
+        >
           <Picture_show />
         </App_cover>
       </div>
