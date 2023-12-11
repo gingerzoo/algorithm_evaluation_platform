@@ -26,13 +26,13 @@ const SelectData: FC<Iprops> = (props) => {
 
   const treeData = [
     {
-      title: "不同波段数据集",
+      title: "波段",
       value: "0",
       key: "0",
       children: DataSets
     }
   ];
-
+  const defaultValue = treeData.map((node) => node.value);
   const dispatch = useAppDispatch();
   const value = useAppSelector((state) => state.multiwave.data);
   const onChange0 = (e: RadioChangeEvent) => {
@@ -58,7 +58,7 @@ const SelectData: FC<Iprops> = (props) => {
           <Radio value={"basic_effectiveness"}>真实数据集</Radio>
           <Radio value={"虚拟数据集路径"}>仿真数据集</Radio>
         </Radio.Group> */}
-        <Select
+        {/*         <Select
           style={{ width: "60%" }}
           placeholder="数据集"
           onChange={handleChange}
@@ -71,7 +71,7 @@ const SelectData: FC<Iprops> = (props) => {
             },
             { value: "虚拟数据集路径", label: "其他样本库" }
           ]}
-        />
+        /> */}
         <TreeSelect
           showSearch
           style={{ width: "60%" }}
@@ -84,6 +84,7 @@ const SelectData: FC<Iprops> = (props) => {
           treeDefaultExpandAll
           onChange={onChange}
           treeData={treeData}
+          defaultValue={defaultValue}
         />
       </div>
     </AttackDetWrap>

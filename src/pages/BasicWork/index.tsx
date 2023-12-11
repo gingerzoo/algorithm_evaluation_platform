@@ -12,6 +12,7 @@ import { Button } from "antd";
 import Table1 from "./c-cpns/table1";
 import { basicResInfoList, basicResList } from "@/assets/data/local_data";
 import { IbasicRes } from "@/type";
+import useNextPathBtn from "@/hooks/useNextPath";
 
 interface Iprops {
   children?: ReactNode;
@@ -30,11 +31,10 @@ const BasicWork: FC<Iprops> = () => {
   );
 
   const { score, status } = basicResult[scene] as IbasicRes;
+  const toNextPath = useNextPathBtn();
 
   function next() {
-    const nextPath = `/profile/adapt/${scene}`;
-    dispatch(changeNextPathAction(nextPath));
-    navigate(nextPath);
+    toNextPath(`/profile/adapt`);
     dispatch(
       changeNowProcessAction(["基础设置", "基础效能", "可适应能力评估"])
     );

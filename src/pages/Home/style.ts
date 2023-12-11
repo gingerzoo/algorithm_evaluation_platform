@@ -81,6 +81,13 @@ export const HomeWrapper = styled.div`
       box-sizing: border-box;
       overflow: hidden;
 
+      &.freedom {
+        .echarts-for-reacts canvas {
+          width: 40vw;
+          height: 30vw;
+        }
+      }
+
       h2 {
         position: relative;
         color: #666666;

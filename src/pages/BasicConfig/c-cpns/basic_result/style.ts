@@ -41,6 +41,16 @@ export const BasicResWrap = styled.div`
   }
   div.next {
     margin-top: 20px;
+
+    button.btn {
+      margin-right: 3vw;
+      padding: 1vw 3vw;
+      font-weight: 700;
+      font-size: 1.1vw;
+      height: auto;
+      line-height: normal;
+      ${(props) => props.theme.mixin.btnHover}
+    }
   }
   .result .header {
     text-align: center;

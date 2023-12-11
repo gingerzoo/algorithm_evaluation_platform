@@ -15,6 +15,7 @@ import { IbasicRes } from "./type";
 import { getAlogListAction } from "../BasicConfig/store";
 import { getSelfLearnRunAction, getSelfLearnReImgsAction } from "./store";
 import { BASE_URL } from "src/services/config/index";
+import useNextPathBtn from "@/hooks/useNextPath";
 
 interface Iprops {
   children?: ReactNode;
@@ -38,22 +39,11 @@ const SelfLearn: FC<Iprops> = () => {
   console.log(info);
   const [test, setTest] = useState(info);
   const [docker, setDocker] = useState(0);
+  const toNextPath = useNextPathBtn();
   const [messageApi, contextHolder] = message.useMessage();
   console.log(test);
   function next() {
-    const nextPath = `/profile/result`;
-    dispatch(changeNextPathAction(nextPath));
-    navigate(nextPath);
-    // dispatch(
-    //   changeNowProcessAction([
-    //     "基础设置",
-    //     "基础效能",
-    //     "可适应能力评估",
-    //     "可信赖能力评估",
-    //     "自学习能力评估",
-    //     "协同感知能力评估"
-    //   ])
-    // );
+    toNextPath(`/profile/result`);
   }
   const handleDownload = async () => {
     try {

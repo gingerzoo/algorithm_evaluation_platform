@@ -336,7 +336,7 @@ const Sunburst: FC<Iprops> = (props) => {
       option={getOption()}
       //   ref={sunburstRef}
       notMerge={true}
-      style={{ width: "100%", height: "25vw" }}
+      style={{ width: "120%", height: "25vw" }}
       onEvents={onEvents}
     />
   );

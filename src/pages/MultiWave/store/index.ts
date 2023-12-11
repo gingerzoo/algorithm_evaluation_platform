@@ -66,7 +66,7 @@ const initialState: Iprops = {
   rgb: "",
   infrared: "",
   sar: "",
-  data: [],
+  data: ["可见光", "红外", "雷达"],
   reality: "",
   info_ret: ""
 };

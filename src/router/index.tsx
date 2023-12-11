@@ -23,6 +23,8 @@ const PDFviewer = lazy(() => import("@/components/PDFviewer"));
 const Results = lazy(() => import("@/pages/Results"));
 const Annotation = lazy(() => import("@/pages/Annotation"));
 
+const MultiWaveRes = lazy(() => import("@/pages/MultiWave/c-cpns/table"));
+
 //路由表映射
 const routes: RouteObject[] = [
   {
@@ -116,6 +118,10 @@ const routes: RouteObject[] = [
       {
         path: "result",
         element: <Results />
+      },
+      {
+        path: "mutiRes",
+        element: <MultiWaveRes />
       }
     ]
   },

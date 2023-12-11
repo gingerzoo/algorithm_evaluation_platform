@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { basicResList } from "@/assets/data/local_data";
 import { Progress, Space } from "antd";
 import { IbasicRes } from "@/type";
+import useNextPathBtn from "@/hooks/useNextPath";
 
 interface Iprops {
   children?: ReactNode;
@@ -24,15 +25,12 @@ const BasicResult: FC<Iprops> = ({ curResult, sceneNum, title, nextPath }) => {
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const toNextPath = useNextPathBtn();
   const color = ["#73C0DE", "#7496d2", "#ecd472"];
 
   //下一步按钮点击处理函数
   function nextBtnClick() {
-    // const nextPath = `/profile/basicwork`;
-    dispatch(changeNextPathAction(nextPath));
-    dispatch(changeNowProcessAction(["基础设置", "基础效能"]));
-
-    navigate(nextPath);
+    toNextPath(nextPath);
   }
   return (
     <BasicResWrap>

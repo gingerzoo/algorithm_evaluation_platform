@@ -58,6 +58,7 @@ const MultiWave: FC<Iprops> = () => {
   };
   const postrgbHandle = () => {
     const values = Object.values(value);
+    console.log(values);
     if (values[0].includes("可见光")) {
       dispatch(changeRgbPath("rgb"));
     } else {
@@ -103,7 +104,7 @@ const MultiWave: FC<Iprops> = () => {
     console.log("sarpath is", sar); // 这里可以获取到最新的 rgb 值
   }, [sar]); // 当 rgb 值发生变化时触发 useEffect
   useEffect(() => {
-    console.log("run_status is", run_status, scene, sceneNum);
+    console.log("run_status is", run_status, scene, sceneNum, value);
   }, [run_status]);
   useEffect(() => {
     console.log("current_result is", curResult);
@@ -152,7 +153,7 @@ const MultiWave: FC<Iprops> = () => {
           sceneNum={sceneNum}
           curResult={curResult}
           title="多波段协同"
-          nextPath={`/profile/absawareness`}
+          nextPath={`/profile/mutiRes`}
         />
       )}
     </MultiWrap>

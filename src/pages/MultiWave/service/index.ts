@@ -217,8 +217,7 @@ export function runMultiWaveEffect(
     method: "post",
     timeout: 10000000,
     data: {
-      type_data,
-      path_data
+      type_data
     }
   });
 }
