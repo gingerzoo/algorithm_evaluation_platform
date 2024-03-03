@@ -3,7 +3,7 @@ import type { FC, ReactNode } from "react";
 import MyTable2 from "../table2";
 import { useAppSelector } from "@/store";
 import { shallowEqual } from "react-redux";
-import NoiceModule from "@/pages/NoiseModel";
+import NoiceModule from "@/pages/NoiseModel/index";
 
 interface Iprops {
   children?: ReactNode;

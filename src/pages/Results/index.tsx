@@ -8,7 +8,8 @@ import {
   basicResList,
   model_desribe,
   res_EnName,
-  res_measurement
+  res_measurement,
+  subs
 } from "@/assets/data/local_data";
 import Model_score from "./c-cpns/modelScore";
 import ModelDetail from "./c-cpns/modelDetail";
@@ -62,6 +63,8 @@ const Results: FC<Iprops> = (props) => {
     abstract,
     selflearn
   } = origin_all_res;
+
+  console.log("结果页的总结果————————————————————————————", origin_all_res);
   const { model_name } = curAlgo;
 
   const isBasicRun: boolean =
@@ -69,11 +72,12 @@ const Results: FC<Iprops> = (props) => {
   const color = ["#FCCA00", "#73C0DE", "#5470C6", "#EE6666"];
 
   const dispatch = useAppDispatch();
+  console.log("结果于页的curAlgo", curAlgo);
 
-  useEffect(() => {
-    console.log("发送获取总数据的请求！");
-    dispatch(getAllWorkResAction());
-  }, []);
+  //   useEffect(() => {
+  //     console.log("发送获取总数据的请求！");
+  //     dispatch(getAllWorkResAction());
+  //   }, []);
 
   /* 六维测评结果 */
   /* 拿出rate */
@@ -223,7 +227,7 @@ const Results: FC<Iprops> = (props) => {
   return (
     <ResultsWrap>
       <section>
-        <h3>模型 {model_name} 详情</h3>
+        <h3>模型 {curAlgo.model_name} 详情</h3>
         <p>
           <div className="item1 grid_item">
             <span>模型名称</span>
@@ -235,7 +239,7 @@ const Results: FC<Iprops> = (props) => {
           </div>
           <div className="item3 grid_item">
             <span>模型描述</span>
-            <span>{curAlgo.key_word?.join("、")}</span>
+            <span>{curAlgo.description}</span>
           </div>
           <div className="item4 grid_item">
             <span>数据格式</span>
@@ -243,7 +247,7 @@ const Results: FC<Iprops> = (props) => {
           </div>
           <div className="item5 grid_item">
             <span>应用场景</span>
-            <span>{scene}</span>
+            <span>{subs[curAlgo.scene]["title"]}</span>
           </div>
           {/* <span className="item6"></span> */}
           <div className="pic">

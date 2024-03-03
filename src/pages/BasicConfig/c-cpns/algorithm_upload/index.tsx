@@ -72,6 +72,8 @@ const AlgorithmUpload: FC<Iprops> = (props) => {
     const curAlgo = algorithmList.filter(
       (item) => item.model_name === value
     )[0];
+
+    console.log("curAlgo-------------------", curAlgo);
     dispatch(changeCurAlgoAction(curAlgo));
     dispatch(getSystemAction(value));
     dispatch(changeStatusCommAction(-1));

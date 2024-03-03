@@ -15,7 +15,7 @@ import { sceneToNum } from "@/assets/data/local_data";
 import { FulfilledAction, Iwork, IworkResult, RejectedAction } from "@/type";
 import {
   changeNoiceCompareResAction,
-  getVoiceWorkDataAction
+  getNoiceWorkDataAction
 } from "@/pages/NoiseModel/store";
 
 //这是干啥的？？？返回的不同场景下condition的列表

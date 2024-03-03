@@ -63,7 +63,7 @@ const Picture: FC<Iprops> = (props) => {
       <div className="slider">
         <div className="pic">
           {/* <img src="../../assets/images/0.jpg" />; */}
-          <img src={`data:image/png;base64,${img}`} />;
+          <img src={`data:image/png;base64,${img}`} />
         </div>
         <button
           className="left-btn slider-control"

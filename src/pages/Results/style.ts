@@ -29,7 +29,7 @@ export const ResultsWrap = styled.div`
         grid-template-areas:
           "item1 item4 pic "
           "item2 item5 pic"
-          "item3 . pic ";
+          "item3 item3 pic ";
         grid-row-gap: 20px;
         grid-column-gap: 10px;
         .grid_item {
@@ -38,14 +38,16 @@ export const ResultsWrap = styled.div`
           color: #8c909f;
           font-size: 14px;
           font-weight: 700;
+          /* margin-bottom:5px; */
           /* & span:nth-of-type(1) {
             font-size: 18px;
             color: black;
           } */
           & span:nth-of-type(2) {
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 400;
             color: black;
+            margin-top: 5px;
           }
         }
       }
@@ -73,7 +75,7 @@ export const ResultsWrap = styled.div`
         overflow: hidden;
         justify-self: center;
         img {
-          width: 60%;
+          width: 65%;
           object-fit: cover;
         }
       }

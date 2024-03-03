@@ -420,9 +420,9 @@ export const {
   changeRemoteModelNameAction,
   changeVoiceModelNameAction,
   changeSelectedSceneAction,
-  changeCurAlgoAction,
   changeDataImgInfoAction,
-  changeCoordinateAction
+  changeCoordinateAction,
+  changeCurAlgoAction
 } = sceneSlice.actions;
 
 export default sceneSlice.reducer;

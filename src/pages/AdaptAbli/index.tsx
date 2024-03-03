@@ -27,8 +27,8 @@ import useCalcWorkNum from "@/hooks/useCalcWorkNum";
 import {
   changeNoiceIsCheckedFlagAction,
   changeNoiceWorkStatusAction,
-  getVoiceWorkDataAction,
-  getVoiceWorkResAction
+  getNoiceWorkDataAction,
+  getNoiceWorkResAction
 } from "@/pages/NoiseModel/store";
 import { CaretRightOutlined } from "@ant-design/icons";
 import classNames from "classnames";
@@ -91,7 +91,7 @@ const AdaptAbil: FC<Iprops> = () => {
 
     if (isVoiceCheckedFlag) {
       dispatch(changeNoiceWorkStatusAction(-1));
-      res = await dispatch(getVoiceWorkDataAction());
+      res = await dispatch(getNoiceWorkDataAction());
     } else {
       dispatch(changeAdaptRunStatusAction(-1));
       res = await dispatch(getWorkDataAction());
@@ -119,7 +119,7 @@ const AdaptAbil: FC<Iprops> = () => {
     console.log("点击了执行工况！！！！！！");
     let res = null;
     if (isVoiceCheckedFlag) {
-      res = await dispatch(getVoiceWorkResAction());
+      res = await dispatch(getNoiceWorkResAction());
     } else {
       res = await dispatch(getWorkResultAction());
     }
@@ -175,14 +175,17 @@ const AdaptAbil: FC<Iprops> = () => {
       run_status={run_status}
     >
       <div className="checkbox">
-        <Button
-          onClick={checkHandle}
-          className={classNames("btn", "transfor")}
-          icon={<CaretRightOutlined />}
-          disabled={scene === "voice"}
-        >
-          {!isVoiceCheckedFlag ? "物理噪声模型" : "自定义模型"}
-        </Button>
+        {scene === "voice" ? (
+          ""
+        ) : (
+          <Button
+            onClick={checkHandle}
+            className={classNames("btn", "transfor")}
+            icon={<CaretRightOutlined />}
+          >
+            {!isVoiceCheckedFlag ? "物理噪声模型" : "自定义模型"}
+          </Button>
+        )}
       </div>
       {sceneNum == 0 && <WorkIntro />}
       {sceneNum == 1 && <WorkNav />}

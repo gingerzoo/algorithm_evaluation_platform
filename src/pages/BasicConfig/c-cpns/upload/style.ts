@@ -163,13 +163,9 @@ export const UploadWrap = styled.div<IBrowswer>`
     padding: 0.8vw 1.6vw 0.7vw 1.6vw;
     color: white;
     font-size: 1vw;
-    /* ${(props) => props.theme.mixin.btnHover} */
+    ${(props) => props.theme.mixin.btnHover};
     background-color: ${(props) =>
       props.notBrowser ? "#b8b8b8" : props.theme.color.primaryColor};
 
-    &:hover {
-      background-color: ${(props) =>
-        props.notBrowser ? "#b8b8b8" : props.theme.color.primaryColor};
-    }
-  }
+
 `;

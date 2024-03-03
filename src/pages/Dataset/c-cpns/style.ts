@@ -22,17 +22,23 @@ export const AddsetWrap = styled.div`
     .ant-row.ant-form-item-row
     .ant-col-14.ant-form-item-control {
     display: block;
-    flex: 0 0 74%;
-    max-width: 80%;
+    flex: 0 0 70%;
+
+    max-width: 78%;
   }
 
   .oper {
+    /* display: flex;
+    flex-direction: row;
+    justify-content: flex-end; */
     .submit-btn {
-      margin-right: 20px;
+      /* margin: 0 3.2vw 0 0; */
+      margin-right: 3.2vw;
       ${(props) => props.theme.mixin.btnHover}
     }
-    .reset-btn {
-      margin-left: 20px;
+
+    .ant-row {
+      justify-content: flex-end;
     }
   }
 `;

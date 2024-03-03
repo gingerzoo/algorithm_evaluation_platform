@@ -17,7 +17,7 @@ import {
   SettingOutlined
 } from "@ant-design/icons";
 import { getItem } from "@/utils/getItem";
-import { IruleData } from "@/type";
+import { IruleData, Iwork } from "@/type";
 
 interface Iscene {
   [index: string]: number;
@@ -990,6 +990,93 @@ export const noiseTableData: noiseTableType[] = [
   }
 ];
 
+type noiseLimitType = {
+  [key: string]: noisePar;
+};
+
+export const noiseDataLimit: noiseLimitType = {
+  current: {
+    min: 0,
+    max: 10,
+    step: 0.2,
+    defaultValue: 1,
+    curIndex: 0,
+    name: "电流大小I(A)"
+  },
+  bandwidth: {
+    min: 0,
+    max: 10,
+    step: 0.2,
+    defaultValue: 1,
+    curIndex: 1,
+    name: "带宽f1(kHz)"
+  },
+  exposureTime: {
+    min: 0,
+    max: 1000,
+    step: 20,
+    defaultValue: 100,
+    name: "光照时间t(ms)",
+    curIndex: 2
+  },
+  photonCount: {
+    min: 0,
+    max: 10000,
+    step: 100,
+    defaultValue: 1000,
+    name: "光粒子数n(M)",
+    curIndex: 3
+  },
+  temperature: {
+    min: 0,
+    max: 1000,
+    step: 20,
+    defaultValue: 300,
+    name: "光照时间t(ms)",
+    curIndex: 4
+  },
+  resistance: {
+    min: 0,
+    max: 10,
+    step: 0.5,
+    defaultValue: 1,
+    name: "电阻R(kΩ)",
+    curIndex: 5
+  },
+  tbandwidth: {
+    min: 0,
+    max: 10,
+    step: 0.2,
+    defaultValue: 1,
+    name: "带宽f2(kHz)",
+    curIndex: 6
+  },
+  mqUnit: {
+    min: 0,
+    max: 0.1,
+    step: 0.001,
+    defaultValue: 0.01,
+    name: "最小量化单位q",
+    curIndex: 7
+  },
+  gainK1: {
+    min: 0,
+    max: 1000,
+    step: 10,
+    defaultValue: 50,
+    name: "增益K1",
+    curIndex: 8
+  },
+  gainK2: {
+    min: 0,
+    max: 100,
+    step: 1,
+    defaultValue: 10,
+    name: "增益K2",
+    curIndex: 9
+  }
+};
+
 export const NoiseArray = [
   "current",
   "bandwidth",
@@ -1003,6 +1090,71 @@ export const NoiseArray = [
   "gainK2"
 ];
 
+// export const noiseToCh: { [key: string]: string } = {
+//   current: "电流I(A)",
+//   bandwidth: "带宽f1(kHz)",
+//   exposureTime: "光照时间t(ms)",
+//   photonCount: "光粒子数n(M)",
+//   temperature: "温度T(K)",
+//   resistance: "电阻R(kΩ)",
+//   tbandwidth: "带宽f2(kHz)",
+//   mqUnit: "最小量化单位q",
+//   gainK1: "增益K1",
+//   gainK2: "增益K2"
+// };
+
+export type noiceDefaultType = {
+  para_name: string;
+  intensity: number;
+};
+export const noiceDefault1: Iwork = {
+  current: {
+    weight: 0,
+    intensity: 1
+  },
+  bandwidth: {
+    weight: 0,
+    intensity: 10
+  },
+
+  temperature: {
+    weight: 0,
+    intensity: 300
+  },
+  resistance: {
+    weight: 0,
+    intensity: 1
+  },
+  tbandwidth: {
+    weight: 0,
+    intensity: 1
+  }
+};
+
+export const noiceDefault2: Iwork = {
+  exposureTime: {
+    weight: 0,
+    intensity: 100
+  },
+  photonCount: {
+    weight: 0,
+    intensity: 1000
+  },
+
+  mqUnit: {
+    weight: 0,
+    intensity: 0.01
+  },
+  gainK1: {
+    weight: 0,
+    intensity: 50
+  },
+  gainK2: {
+    weight: 0,
+    intensity: 10
+  }
+};
+
 export const NoiseNum: { [key: string]: number } = {
   "电流大小I(A)": 0,
   "带宽f1(kHz)": 1,
@@ -1013,8 +1165,25 @@ export const NoiseNum: { [key: string]: number } = {
   "带宽f2(kHz)": 6,
   最小量化单位q: 7,
   K1: 8,
-  K2: 9,
-  originalImage: 10
+  K2: 9
+};
+
+export const NoiseDescribe: { [key: string]: string } = {
+  "电流I(A)":
+    "散粒噪声的电流，与噪声大小成正比，会导致图像细节变得模糊，降低图像对比度",
+  "带宽f1(kHz)": "散粒噪声的带宽，与噪声大小成正比，会导致图像细节变得模糊",
+  "光照时间t(ms)":
+    "光子散粒噪声的光照时间，与噪声大小成正比，图像中的亮度和颜色会随机变化",
+  "光粒子数n(M)":
+    "光子散粒噪声的光粒子数，与噪声大小成正比，图像中的亮度和颜色会随机变化",
+  "温度T(K)":
+    "热噪声的温度，与噪声大小成正比，导致图像细节变得模糊，降低图像对比度",
+  "电阻R(kΩ)": "热噪声的电阻，与噪声大小成反比，会导致图像细节变得模糊",
+  "带宽f2(kHz)":
+    "热噪声的带宽，与噪声大小成正比，导致图像细节变得模糊，降低图像对比度",
+  最小量化单位q: "量化噪声最小的量化单位，会降低图像的对比度",
+  增益K1: "系统内增益",
+  增益K2: "系统全增益"
 };
 
 export const res_EnName = [

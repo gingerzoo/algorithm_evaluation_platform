@@ -9,6 +9,10 @@ export const HeaderWrap = styled.div`
   height: 4.8vw;
   z-index: 9;
   background: rgba(245, 245, 245, 0.9);
+
+  .ant-modal .ant-modal-content .ant-modal-body .history_list {
+    background: red;
+  }
   .header-content {
     display: flex;
     justify-content: space-between;
@@ -50,7 +54,7 @@ export const HeaderWrap = styled.div`
       background: url(${logo}) 0 0 / contain no-repeat;
     }
 
-    .right .backToHome {
+    .right .btn {
       color: ${(props) => props.theme.color.goldenColor};
       font-weight: 700;
       &:hover {
@@ -58,4 +62,15 @@ export const HeaderWrap = styled.div`
       }
     }
   }
+  /* .ant-modal .ant-modal-content .ant-modal-body .history_list {
+    margin-top: 20px;
+  } */
+`;
+
+export const HistoryModalWrap = styled.div`
+  margin-top: 12px;
+  display: flex;
+  row-gap: 12px;
+  column-gap: 15px;
+  flex-wrap: wrap;
 `;

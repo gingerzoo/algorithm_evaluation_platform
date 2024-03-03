@@ -1,6 +1,11 @@
 import styled from "styled-components";
 
 export const ModelDetailWrap = styled.div`
+  /* position:absolute;
+  left:0;
+  right:0;
+  top:0;
+  bottom:0; */
   .model_header {
     display: flex;
     justify-content:center
@@ -21,14 +26,15 @@ export const ModelDetailWrap = styled.div`
     }
   }
 
-/* .chart{
-    width:100%;
+.chart{
+    width:90%;
     height:31vw;
     display:flex;
     justify-content:center;
     align-items:center;
 
-} */
+
+}
 
   .explain{
     margin-top:1.2vw;

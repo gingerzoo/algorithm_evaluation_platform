@@ -105,8 +105,12 @@ const BasicConfig: FC<Iprops> = () => {
     // if (sceneNum === 2) {
 
     // }
+    if (commit_status !== 0) {
+      failedMessage("请先确认配置！");
+    } else {
+      setIsPicture(!isPicture);
+    }
 
-    setIsPicture(!isPicture);
     // console.log("查看图片");
   }, [isPicture]);
 
@@ -233,7 +237,7 @@ const BasicConfig: FC<Iprops> = () => {
       )}
 
       <div className="cover system">
-        <App_cover btnClickHandle={systemCover} width={600} isRemote={false}>
+        <App_cover btnClickHandle={systemCover} width={800} isRemote={false}>
           <System_overview />
         </App_cover>
       </div>

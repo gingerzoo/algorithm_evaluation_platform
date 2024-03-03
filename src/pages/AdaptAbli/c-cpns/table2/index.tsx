@@ -400,7 +400,7 @@ const MyTable2: FC<Iprops> = (props) => {
         <tbody>
           <tr>
             <td rowSpan={0} style={{ width: "8.5vw" }}>
-              可适应能力
+              可适应能力(自定义模型)
             </td>
             <td>说明</td>
             <td colSpan={4}>

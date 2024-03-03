@@ -21,7 +21,8 @@ export default function useCalcWorkNum() {
     basic_run_status,
     adapt_compareRes,
     noice_compareRes,
-    all_res
+    all_res,
+    adapt_status
   } = useAppSelector((state) => ({
     checkList: state.adaptAbili.checkList,
     sceneNum: state.basicConfig.sceneNum,
@@ -29,7 +30,8 @@ export default function useCalcWorkNum() {
     basic_run_status: state.basicEffect.run_status,
     adapt_compareRes: state.adaptAbili.compareRes,
     noice_compareRes: state.noiseModel.noice_compareRes,
-    all_res: state.home.all_res
+    all_res: state.home.all_res,
+    adapt_status: state.adaptAbili.runResult.status
   }));
 
   //   console.log("checkList", checkList);
@@ -39,11 +41,13 @@ export default function useCalcWorkNum() {
   const resList = basicAllResList;
   const compareList = isNoiceModel ? noice_compareRes : adapt_compareRes;
   if (!isNoiceModel) {
-    checkList[sceneNum].forEach((item, index) => {
-      if (item) {
-        resName.push(`工况${index + 1}`);
-      }
-    });
+    if (adapt_status == 0) {
+      checkList[sceneNum].forEach((item, index) => {
+        if (item) {
+          resName.push(`工况${index + 1}`);
+        }
+      });
+    }
   } else {
     resName.push("噪声模型");
     // if (basic_run_status === 0) {
@@ -66,6 +70,8 @@ export default function useCalcWorkNum() {
 
   console.log("结果展示的data", data);
   console.log("结果展示的indicator", indicator);
+
+  console.log("结果展示的工况", resName);
 
   return {
     data,

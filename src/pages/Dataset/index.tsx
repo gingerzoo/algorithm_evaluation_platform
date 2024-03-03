@@ -8,7 +8,6 @@ import { Modal } from "antd";
 import Add_dataset from "./c-cpns/buildData";
 import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
-import { datasetInfos } from "@/assets/data/local_data";
 
 interface Iprops {
   children?: ReactNode;
@@ -106,6 +105,8 @@ const Dataset: FC<Iprops> = (props) => {
         onCancel={handleCancel}
         footer={null}
         maskClosable={true}
+        centered={true}
+        width={"35vw"}
       >
         <Add_dataset isUpLoading={isUpLoading} />
       </Modal>

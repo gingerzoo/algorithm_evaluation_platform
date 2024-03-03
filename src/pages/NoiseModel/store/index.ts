@@ -1,22 +1,28 @@
-import { sceneToNum } from "@/assets/data/local_data";
+import {
+  noiceDefault1,
+  noiceDefault2,
+  noiceDefaultType,
+  sceneToNum
+} from "@/assets/data/local_data";
 import { IrootState } from "@/store";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { NoiseArray } from "@/assets/data/local_data";
 import { getWorkDataset, getWorkResult } from "@/pages/AdaptAbli/services";
 import { Iguid, Inav, Iremo, Ivoice, Iwork, IworkResult } from "@/type";
 import { getCompareResListAction } from "@/pages/AdaptAbli/store";
+import { scoreToRate } from "@/utils/classCalc";
 
 type INoiseModel = {
-  current: number;
-  bandwidth: number;
-  exposureTime: number;
-  photonCount: number;
-  temperature: number;
-  resistance: number;
-  tbandwidth: number;
-  mqUnit: number;
-  gainK1: number;
-  gainK2: number;
+  //   current: number;
+  //   bandwidth: number;
+  //   exposureTime: number;
+  //   photonCount: number;
+  //   temperature: number;
+  //   resistance: number;
+  //   tbandwidth: number;
+  //   mqUnit: number;
+  //   gainK1: number;
+  //   gainK2: number;
   isCheckedFlag: boolean;
   noiceGenIsPending: boolean;
   noiceTestIsPending: boolean;
@@ -25,12 +31,15 @@ type INoiseModel = {
   workCondition: Iwork[];
   work_result: IworkResult;
   noice_compareRes: number[][];
+  work_Allcondition: Iwork[];
+  isSelect: boolean[];
+  noiseResList: number[];
   //   scoreList: number[];
   //   statusList: number[];
 };
 
 /* 噪声模型生成数据集 */
-export const getVoiceWorkDataAction = createAsyncThunk<
+export const getNoiceWorkDataAction = createAsyncThunk<
   {
     status: number;
     info: string;
@@ -42,41 +51,15 @@ export const getVoiceWorkDataAction = createAsyncThunk<
   const scene = getState().basicConfig.scene;
   const sceneNum: number = sceneToNum[scene];
   const date_type = getState().basicConfig.dataSet;
-  const {
-    current,
-    bandwidth,
-    exposureTime,
-    photonCount,
-    temperature,
-    resistance,
-    tbandwidth,
-    mqUnit,
-    gainK1,
-    gainK2
-  } = getState().noiseModel;
-  const noiseArr = [
-    current,
-    bandwidth,
-    exposureTime,
-    photonCount,
-    temperature,
-    resistance,
-    tbandwidth,
-    mqUnit,
-    gainK1,
-    gainK2
-  ];
+  const { work_Allcondition, isSelect } = getState().noiseModel;
 
-  const interference = noiseArr.map((item, index) => {
-    return [NoiseArray[index], { intensity: item, weight: 0 }];
-  });
+  const curIndex = isSelect.findIndex((item) => item === true);
+  const interference1 = work_Allcondition[curIndex];
 
-  console.log("物理噪声模型发送的工况", Object.fromEntries(interference));
+  console.log("物理噪声模型生成的数据", interference1);
 
   try {
-    const res = await getWorkDataset(sceneNum, date_type, [
-      Object.fromEntries(interference)
-    ]);
+    const res = await getWorkDataset(sceneNum, date_type, [interference1]);
 
     dispatch(changeNoiceGenStatusAction(res.status));
 
@@ -93,7 +76,7 @@ export const getVoiceWorkDataAction = createAsyncThunk<
 });
 
 /* 噪声模型执行测试 */
-export const getVoiceWorkResAction = createAsyncThunk<
+export const getNoiceWorkResAction = createAsyncThunk<
   {
     status: number;
     info: string;
@@ -104,152 +87,26 @@ export const getVoiceWorkResAction = createAsyncThunk<
   //   const scene = getState().basicConfig.scene;
   const sceneNum: number = getState().basicConfig.sceneNum;
   const date_type = getState().basicConfig.dataSet;
-  const {
-    current,
-    bandwidth,
-    exposureTime,
-    photonCount,
-    temperature,
-    resistance,
-    tbandwidth,
-    mqUnit,
-    gainK1,
-    gainK2
-  } = getState().noiseModel;
-  const noiseArr = [
-    current,
-    bandwidth,
-    exposureTime,
-    photonCount,
-    temperature,
-    resistance,
-    tbandwidth,
-    mqUnit,
-    gainK1,
-    gainK2
-  ];
 
-  const interference = noiseArr.map((item, index) => {
-    return [NoiseArray[index], { intensity: item, weight: 0 }];
-  });
+  const { work_Allcondition, isSelect, noiseResList } = getState().noiseModel;
 
+  const curIndex = isSelect.findIndex((item) => item === true);
+  const interference1 = work_Allcondition[curIndex];
   try {
     console.log("运行噪声模型传递给后端的参数", {
       scene: sceneNum,
       data_type: date_type,
-      interference: [Object.fromEntries(interference)]
+      interference: [interference1]
     });
     const res: IworkResult = await getWorkResult(sceneNum, date_type, [
-      Object.fromEntries(interference)
+      interference1
     ]);
     console.log("噪声模型返回的测试结果", res);
+    const nowResList = new Array(noiseResList.length).fill(0);
+    nowResList[curIndex] = scoreToRate(res.population_score[0] * 100);
     dispatch(changeNoiceWorkStatusAction(res.status));
     dispatch(changeNoiceWorkResAction(res));
-
-    // let scoreList = null;
-    // let statusList = null;
-    // switch (sceneNum) {
-    //   case 0: {
-    //     const {
-    //       center_position_error_score,
-    //       center_position_error_result,
-    //       iou_score,
-    //       iou_result,
-    //       robustness_score,
-    //       robustness_result,
-    //       population_score,
-    //       population_result
-    //     } = res.score_info[0] as Iguid;
-    //     scoreList = [
-    //       center_position_error_score,
-    //       iou_score,
-    //       robustness_score,
-    //       population_score
-    //     ].map((item) => parseFloat((item * 100).toFixed(1)));
-    //     statusList = [
-    //       center_position_error_result,
-    //       iou_result,
-    //       robustness_result,
-    //       population_result
-    //     ];
-
-    //     break;
-    //   }
-    //   case 1: {
-    //     const {
-    //       mutual_information_score,
-    //       mutual_information_result,
-    //       relevance_score,
-    //       relevance_result,
-    //       positioning_accuracy_score,
-    //       positioning_accuracy_result,
-    //       population_score,
-    //       population_result
-    //     } = res.score_info[0] as Inav;
-    //     scoreList = [
-    //       mutual_information_score,
-    //       relevance_score,
-
-    //       positioning_accuracy_score,
-    //       population_score
-    //     ].map((item) => parseFloat((item * 100).toFixed(1)));
-    //     statusList = [
-    //       mutual_information_result,
-    //       relevance_result,
-
-    //       positioning_accuracy_result,
-    //       population_result
-    //     ];
-
-    //     break;
-    //   }
-    //   case 2: {
-    //     const {
-    //       f1_score,
-    //       f1_result,
-    //       map_score,
-    //       map_result,
-    //       mar_score,
-    //       mar_result,
-    //       population_score,
-    //       population_result
-    //     } = res.score_info[0] as Iremo;
-    //     scoreList = [f1_score, map_score, mar_score, population_score].map(
-    //       (item) => parseFloat((item * 100).toFixed(1))
-    //     );
-    //     statusList = [f1_result, map_result, mar_result, population_result];
-
-    //     break;
-    //   }
-    //   case 3: {
-
-    //     const {
-    //       word_error_rate_score,
-    //       word_error_rate_result,
-    //       sentence_error_rate_score,
-    //       sentence_error_rate_result,
-    //       population_score,
-    //       population_result
-    //     } = res.score_info[0] as Ivoice;
-    //     scoreList = [
-    //       word_error_rate_score,
-    //       sentence_error_rate_score,
-    //       population_score
-    //     ].map((item) => parseFloat((item * 100).toFixed(1)));
-    //     statusList = [
-    //       word_error_rate_result,
-    //       sentence_error_rate_result,
-    //       population_result
-    //     ];
-
-    //     break;
-    //   }
-    //   default:
-    //     break;
-    // }
-
-    // dispatch(changeNoiceScoreListAction(scoreList));
-    // dispatch(changeNoiceStatusListAction(statusList));
+    dispatch(changeNoiceResListAction(nowResList));
     dispatch(getCompareResListAction());
     return {
       status: res.status,
@@ -264,16 +121,16 @@ export const getVoiceWorkResAction = createAsyncThunk<
 });
 
 const initialState: INoiseModel = {
-  current: 1,
-  bandwidth: 1,
-  exposureTime: 1,
-  photonCount: 1,
-  temperature: 1,
-  resistance: 1,
-  tbandwidth: 1,
-  mqUnit: 1,
-  gainK1: 1,
-  gainK2: 1,
+  //   current: 1,
+  //   bandwidth: 1,
+  //   exposureTime: 1,
+  //   photonCount: 1,
+  //   temperature: 1,
+  //   resistance: 1,
+  //   tbandwidth: 1,
+  //   mqUnit: 1,
+  //   gainK1: 1,
+  //   gainK2: 1,
   isCheckedFlag: false,
   noiceGenIsPending: false,
   noiceTestIsPending: false,
@@ -288,45 +145,48 @@ const initialState: INoiseModel = {
     population_score: [],
     score_info: []
   },
-  noice_compareRes: []
+  noice_compareRes: [],
   //   scoreList: [],
-  //   statusList: []
+  //   statusList: [];
+  isSelect: [true, false],
+  work_Allcondition: [noiceDefault1, noiceDefault2],
+  noiseResList: [0, 0]
 };
 
 const resultSlice = createSlice({
   name: "selectTaskSlick",
   initialState,
   reducers: {
-    changeNoiceCurrentAction(state, { payload }) {
-      state.current = payload;
-    },
-    changeNoiceBandwidthAction(state, { payload }) {
-      state.bandwidth = payload;
-    },
-    changeNoiceExposureTimeAction(state, { payload }) {
-      state.exposureTime = payload;
-    },
-    changeNoicePhotonCountAction(state, { payload }) {
-      state.photonCount = payload;
-    },
-    changeNoiceTemperatureAction(state, { payload }) {
-      state.temperature = payload;
-    },
-    changeNoiceResistanceAction(state, { payload }) {
-      state.resistance = payload;
-    },
-    changeNoiceMinQuantizationUnitAction(state, { payload }) {
-      state.mqUnit = payload;
-    },
-    changeNoiceGainK1Action(state, { payload }) {
-      state.gainK1 = payload;
-    },
-    changeNoiceGainK2Action(state, { payload }) {
-      state.gainK2 = payload;
-    },
-    changeNoiceTbandwidthAction(state, { payload }) {
-      state.tbandwidth = payload;
-    },
+    // changeNoiceCurrentAction(state, { payload }) {
+    //   state.current = payload;
+    // },
+    // changeNoiceBandwidthAction(state, { payload }) {
+    //   state.bandwidth = payload;
+    // },
+    // changeNoiceExposureTimeAction(state, { payload }) {
+    //   state.exposureTime = payload;
+    // },
+    // changeNoicePhotonCountAction(state, { payload }) {
+    //   state.photonCount = payload;
+    // },
+    // changeNoiceTemperatureAction(state, { payload }) {
+    //   state.temperature = payload;
+    // },
+    // changeNoiceResistanceAction(state, { payload }) {
+    //   state.resistance = payload;
+    // },
+    // changeNoiceMinQuantizationUnitAction(state, { payload }) {
+    //   state.mqUnit = payload;
+    // },
+    // changeNoiceGainK1Action(state, { payload }) {
+    //   state.gainK1 = payload;
+    // },
+    // changeNoiceGainK2Action(state, { payload }) {
+    //   state.gainK2 = payload;
+    // },
+    // changeNoiceTbandwidthAction(state, { payload }) {
+    //   state.tbandwidth = payload;
+    // },
     changeNoiceIsCheckedFlagAction(state, { payload }) {
       state.isCheckedFlag = payload;
     },
@@ -350,6 +210,15 @@ const resultSlice = createSlice({
     },
     changeNoiceCompareResAction(state, { payload }) {
       state.noice_compareRes = payload;
+    },
+    changeNoiceCheckListAction(state, { payload }) {
+      state.isSelect = payload;
+    },
+    changeNoiceAllWorkCondition(state, { payload }) {
+      state.work_Allcondition = payload;
+    },
+    changeNoiceResListAction(state, { payload }) {
+      state.noiseResList = payload;
     }
     // changeNoiceScoreListAction(state, { payload }) {
     //   state.scoreList = payload;
@@ -360,61 +229,64 @@ const resultSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getVoiceWorkDataAction.pending, (state) => {
+      .addCase(getNoiceWorkDataAction.pending, (state) => {
         state.noiceGenIsPending = true;
       })
-      .addCase(getVoiceWorkDataAction.fulfilled, (state) => {
+      .addCase(getNoiceWorkDataAction.fulfilled, (state) => {
         state.noiceGenIsPending = false;
       })
-      .addCase(getVoiceWorkDataAction.rejected, (state) => {
+      .addCase(getNoiceWorkDataAction.rejected, (state) => {
         state.noiceGenIsPending = false;
       })
-      .addCase(getVoiceWorkResAction.pending, (state) => {
+      .addCase(getNoiceWorkResAction.pending, (state) => {
         state.noiceTestIsPending = true;
       })
-      .addCase(getVoiceWorkResAction.fulfilled, (state) => {
+      .addCase(getNoiceWorkResAction.fulfilled, (state) => {
         state.noiceTestIsPending = false;
       })
-      .addCase(getVoiceWorkResAction.rejected, (state) => {
+      .addCase(getNoiceWorkResAction.rejected, (state) => {
         state.noiceTestIsPending = false;
       });
   }
 });
 
 export const {
-  changeNoiceBandwidthAction,
-  changeNoiceCurrentAction,
-  changeNoiceExposureTimeAction,
-  changeNoiceGainK1Action,
-  changeNoiceGainK2Action,
+  //   changeNoiceBandwidthAction,
+  //   changeNoiceCurrentAction,
+  //   changeNoiceExposureTimeAction,
+  //   changeNoiceGainK1Action,
+  //   changeNoiceGainK2Action,
   changeNoiceIsCheckedFlagAction,
-  changeNoiceMinQuantizationUnitAction,
-  changeNoicePhotonCountAction,
-  changeNoiceResistanceAction,
-  changeNoiceTbandwidthAction,
-  changeNoiceTemperatureAction,
+  //   changeNoiceMinQuantizationUnitAction,
+  //   changeNoicePhotonCountAction,
+  //   changeNoiceResistanceAction,
+  //   changeNoiceTbandwidthAction,
+  //   changeNoiceTemperatureAction,
   changeNoiceGenIsPendingAction,
   changeNoiceTestIsPendingAction,
   changeNoiceWorkStatusAction,
   changeNoiceWorkCondiAction,
   changeNoiceWorkResAction,
   changeNoiceGenStatusAction,
-  changeNoiceCompareResAction
+  changeNoiceCompareResAction,
+  changeNoiceCheckListAction,
+  changeNoiceAllWorkCondition,
+  changeNoiceResListAction
   //   changeNoiceScoreListAction,
   //   changeNoiceStatusListAction
 } = resultSlice.actions;
 
-export const changeNoiseArray = [
-  changeNoiceCurrentAction,
-  changeNoiceBandwidthAction,
-  changeNoiceExposureTimeAction,
-  changeNoicePhotonCountAction,
-  changeNoiceTemperatureAction,
-  changeNoiceResistanceAction,
-  changeNoiceTbandwidthAction,
-  changeNoiceMinQuantizationUnitAction,
-  changeNoiceGainK1Action,
-  changeNoiceGainK2Action
-];
+// export const changeNoiseArray = [
+//   changeNoiceCurrentAction,
+//   changeNoiceBandwidthAction,
+//   changeNoiceExposureTimeAction,
+//   changeNoicePhotonCountAction,
+//   changeNoiceTemperatureAction,
+//   changeNoiceResistanceAction,
+//   changeNoiceTbandwidthAction,
+//   changeNoiceMinQuantizationUnitAction,
+//   changeNoiceGainK1Action,
+//   changeNoiceGainK2Action
+// ];
 
 export default resultSlice.reducer;
